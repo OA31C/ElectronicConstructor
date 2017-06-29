@@ -4,8 +4,8 @@
 
 Install all dependencies:
 
-  $ npm install
+    $ npm install
 
 Compile and run local server (8080 port):
 
-  $ npm run build
+    $ npm run build
