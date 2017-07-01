@@ -1,3 +1,4 @@
+
 export class Menu {
 
   constructor(canvas) {
