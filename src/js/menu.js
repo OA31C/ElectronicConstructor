@@ -1,5 +1,3 @@
-import * as settings from './settings.js'
-
 export class Menu {
 
   constructor(canvas) {
@@ -21,7 +19,7 @@ export class Menu {
 
     this.isDisplayed = true;
 
-    this.borderWidth = 2;
+    this.borderWidth = 1;
     this.borderColor = '#000000';
 
     this.backgroundColor = '#cccccc';
@@ -50,7 +48,6 @@ export class Menu {
 
   init() {
     this.initItems();
-    setInterval(() => this.mainLoop(), 1000 / settings.FPS);
   }
 
   drawBorder() {
@@ -69,19 +66,6 @@ export class Menu {
     this.drawBackground();
     this.drawBorder();
     this.items.draw();
-  }
-
-  clear() {
-    this.ctx.clearRect(this.posX, this.posY, this.width, this.height);
-  }
-
-  redraw() {
-    this.clear();
-    this.draw();
-  }
-
-  mainLoop() {
-    this.redraw();
   }
 
 }
@@ -181,7 +165,7 @@ class MenuItem {
     this.isSelected = false;
   }
 
-  /**[draw description]
+  /**
    * @param  {Menu} menu
    * @param  {number} itemIndex index of the item in MenuItemsList
    */

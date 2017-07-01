@@ -15,11 +15,14 @@ class App {
     this.ctx = this.canvas.getContext('2d');
 
     this.menu = new Menu(this.canvas);
+
+    // true: when user has been clicked on canvas and he hasn't set loose it yet
+    this.isHold = false;
   }
 
   init() {
-    // this.initEvents();
-    // setInterval(() => this.mainLoop(), 1000 / settings.FPS);
+    this.initEvents();
+    setInterval(() => this.mainLoop(), 1000 / settings.FPS);
   }
 
   initEvents() {
@@ -42,12 +45,11 @@ class App {
   }
 
   onMouseDown(event) {
-    let mousePos = this.getMousePos(event);
+    this.isHold = true;
   }
 
   onMouseUp(event) {
-    this.deselectElements();
-    this.canvas.style.cursor = 'default';
+    this.isHold = false;
   }
 
   isElementHover(element, mousePos) {
@@ -63,13 +65,12 @@ class App {
     }
   }
 
-
   clear() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   draw() {
-    
+    this.menu.draw();
   }
 
   redraw() {
@@ -79,5 +80,6 @@ class App {
 
 }
 
-let app = new App('app');
-app.init();
+// remove it later
+window.app = new App('app');
+window.app.init();
