@@ -8,7 +8,7 @@ export class LinesDrawer {
 
     this.posX = rect.posX || 0;
     this.posY = rect.posY || 0;
-    this.width = rect.width || this.canvas.width;
+    this._width = rect.width || this.canvas.width;
     this.height = rect.height || this.canvas.height;
 
     this.lineWidth = lineWidth;
@@ -34,9 +34,17 @@ export class LinesDrawer {
     this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
   }
 
+  get width() {
+    if (this._width.constructor.name === 'Function') {
+      return this._width();
+    };
+    return this._width;
+  }
+
   onMouseMove(event) {
-    if (this.isHold) {
-      this.linesList.update(this.getMousePos(event));
+    let mousePos = this.getMousePos(event);
+    if (this.isHold && this.isInRect(mousePos)) {
+      this.linesList.update(mousePos);
     };
   }
 
@@ -49,7 +57,10 @@ export class LinesDrawer {
   onMouseUp(event) {
     this.isHold = false;
 
-    // TODO: remove the last line, if there's only one coordinate
+    // remove the last line, if there's only one or no coordinate
+    if (this.linesList.lines[this.linesList.length - 1].coordinates.length <= 1) {
+      this.linesList.pop();
+    };
   }
 
   // FIXME: move it out of the class
@@ -59,6 +70,11 @@ export class LinesDrawer {
       x: event.clientX - canvasRect.left,
       y: event.clientY - canvasRect.top
     }
+  }
+
+  isInRect(mousePos) {
+    return (mousePos.x >= this.posX) && (this.posX + this.width >= mousePos.x) &&
+           (mousePos.y >= this.posY) && (this.posY + this.height >= mousePos.y);
   }
 
   draw() {
@@ -98,6 +114,10 @@ class LinesList {
     }
   }
 
+  pop() {
+    this.lines.pop();
+  }
+
   get length() {
     return this.lines.length;
   }
@@ -116,48 +136,33 @@ class Line {
   }
 
   update(mousePos) {
-
-    // 1) if only coordinate: add a new coodinate
-    if (this.coordinates.length === 1) {
-      this.coordinates.push(mousePos);
-      return;
+    // 1) skip this coordinate when it's the same as last saved one
+    if (this.coordinates.length) {
+      let lastCoordinate = this.coordinates[this.coordinates.length - 1];
+      if (lastCoordinate.x === mousePos.x && lastCoordinate.y === mousePos.y) return;
     };
 
-    let lastCoordinate = this.coordinates[this.coordinates.length - 1];
+    // 2) add a new coordinate everytime
+    this.coordinates.push(mousePos);
 
-    // FIXME: change the algorithm to:
-    // - write coordinates some every pixels (like 5)
-    // - check all coordinates of the line and if there're some straight lines:
-    //   * remove coordinates which are between start and end
-    //   like:    -------
-    //   or/and:  |
-    //            |
-    //   or/and: /
-    //          /
+    // 3) check last three coordinates
+    // -------------------------------
+    if (this.coordinates.length < 3) return;
 
-    // 2) if x OR y of last coordinate HASN'T been changed: update the last coordinate
-    if (lastCoordinate.x === mousePos.x) {
-      lastCoordinate.y = mousePos.y;
-      return;
-    };
-    if (lastCoordinate.y === mousePos.y) {
-      lastCoordinate.x = mousePos.x;
-      return;
-    };
+    let lastThreeCoordinates = this.coordinates.slice(-3);
 
-    // 3) if x AND y of last coordinate HAS been changed: add a new coordinate
-    if (lastCoordinate.x !== mousePos.x && lastCoordinate.y !== mousePos.y) {
-      this.coordinates.push(mousePos);
-      return;
+    // * if it's a straight line, like: ---, or: |
+    //                                           |
+    // - remove a second coordinate
+    if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x && lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
+        (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y && lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
+      this.coordinates.splice(-2, 1);
     }
 
-    // 4) something has gone wrong - log error
-    console.error(`Could not recognize action.
-      mousePos: ${JSON.stringify(mousePos)},
-      lastCoordinate: ${JSON.stringify(lastCoordinate)},
-      coordinates count: ${this.coordinates.length}`
-    );
-
+    // TODO: optimization
+    // add checks lines like this /
+    //                           /
+    // -------------------------------
   }
 
   draw() {

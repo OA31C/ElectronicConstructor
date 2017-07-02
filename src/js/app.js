@@ -16,7 +16,7 @@ class App {
     this.ctx = this.canvas.getContext('2d');
 
     this.menu = new Menu(this.canvas);
-    this.linesDrawer = new LinesDrawer(this.canvas);
+    this.linesDrawer = new LinesDrawer(this.canvas, {width: () => this.getWidth()});
   }
 
   init() {
@@ -63,6 +63,15 @@ class App {
       x: event.clientX - canvasRect.left,
       y: event.clientY - canvasRect.top
     }
+  }
+
+  /**
+   * returns dynamic width
+   * @return {Number}
+   */
+  getWidth() {
+    // TODO: move the method to drawing canvas class later.
+    return this.canvas.width - this.menu.width;
   }
 
   clear() {
