@@ -153,7 +153,7 @@ class Line {
 
     // * if it's a straight line, like: ---, or: |
     //                                           |
-    // - remove a second coordinate
+    // - remove the second coordinate
     if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x && lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
         (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y && lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
       this.coordinates.splice(-2, 1);
