@@ -8,20 +8,49 @@ import { LinesDrawer } from './utils/lines_drawer.js';
 class App {
 
   constructor(canvasSelector) {
-    // canvas init
-    this.canvas = document.getElementById(canvasSelector);
-    this.canvas.width  = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    this.canvasSelector = canvasSelector;  // type: String
 
-    this.ctx = this.canvas.getContext('2d');
+    this.canvas = null;                    // type: HTMLCanvasElement
+    this.ctx    = null;                    // type: CanvasRenderingContext2D
+    this.width  = 0;                       // type: Number
+    this.height = 0;                       // type: Number
 
-    this.menu = new Menu(this.canvas);
-    this.linesDrawer = new LinesDrawer(this.canvas, {width: () => this.getWidth()});
+    this.menu        = null;               // type: Menu
+    this.linesDrawer = null;               // type: LinesDrawer
   }
 
   init() {
+    this._canvasSetup();
     this.initEvents();
+
+    this.menu        = new Menu(this);
+    this.linesDrawer = new LinesDrawer(this, {width: () => this.getWidth()});  // TODO: move it to Edit mode class
+
     setInterval(() => this.mainLoop(), 1000 / settings.FPS);
+  }
+
+  _canvasSetup() {
+    this.canvas = document.getElementById(this.canvasSelector);
+    this.ctx = this.canvas.getContext('2d');
+    this.width  = window.innerWidth;
+    this.height = window.innerHeight;
+
+    this._qualitySetup();
+  }
+
+  _qualitySetup() {
+    let devicePixelRatio = window.devicePixelRatio || 1;
+    let backingStoreRatio = this.ctx.webkitBackingStorePixelRatio ||
+                            this.ctx.mozBackingStorePixelRatio ||
+                            this.ctx.msBackingStorePixelRatio ||
+                            this.ctx.oBackingStorePixelRatio ||
+                            this.ctx.backingStorePixelRatio || 1;
+    let ratio = devicePixelRatio / backingStoreRatio;
+    this.canvas.width = this.width * ratio;
+    this.canvas.height = this.height * ratio;
+    this.canvas.style.width = this.width + 'px';
+    this.canvas.style.height = this.height + 'px';
+    this.ctx.scale(ratio, ratio);
   }
 
   initEvents() {
@@ -56,7 +85,6 @@ class App {
            (mousePos.y >= element.posY) && (element.posY + element.height >= mousePos.y);
   }
 
-  // FIXME: move it out of the class
   getMousePos(event) {
     let canvasRect = this.canvas.getBoundingClientRect();
     return {
@@ -71,11 +99,11 @@ class App {
    */
   getWidth() {
     // TODO: move the method to drawing canvas class later.
-    return this.canvas.width - this.menu.width;
+    return this.width - this.menu.width;
   }
 
   clear() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   draw() {

@@ -1,15 +1,14 @@
 
 export class LinesDrawer {
 
-  constructor(canvas, rect={}, lineWidth=2, lineColor='#000000') {
+  constructor(app, rect={}, lineWidth=2, lineColor='#000000') {
 
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    this.app = app;
 
     this.posX = rect.posX || 0;
     this.posY = rect.posY || 0;
-    this._width = rect.width || this.canvas.width;
-    this.height = rect.height || this.canvas.height;
+    this._width = rect.width || app.canvas.width;
+    this.height = rect.height || app.canvas.height;
 
     this.lineWidth = lineWidth;
     this.lineColor = lineColor;
@@ -22,16 +21,16 @@ export class LinesDrawer {
     this.isSelected = false;
 
     // all drawn lines are keeping here
-    this.linesList = new LinesList(this.ctx);
+    this.linesList = new LinesList(this.app.ctx);
 
     this.init();
 
   }
 
   init() {
-    this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
-    this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
-    this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
+    this.app.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    this.app.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+    this.app.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
   }
 
   get width() {
@@ -42,14 +41,14 @@ export class LinesDrawer {
   }
 
   onMouseMove(event) {
-    let mousePos = this.getMousePos(event);
+    let mousePos = this.app.getMousePos(event);
     if (this.isHold && this.isInRect(mousePos)) {
       this.linesList.update(mousePos);
     };
   }
 
   onMouseDown(event) {
-    let mousePos = this.getMousePos(event);
+    let mousePos = this.app.getMousePos(event);
     if (this.isInRect(mousePos)) {
       this.isHold = true;
       this.linesList.addNew(mousePos);
@@ -63,15 +62,6 @@ export class LinesDrawer {
     if (this.linesList.lines[this.linesList.length - 1].coordinates.length <= 1) {
       this.linesList.pop();
     };
-  }
-
-  // FIXME: move it out of the class
-  getMousePos(event) {
-    let canvasRect = this.canvas.getBoundingClientRect();
-    return {
-      x: event.clientX - canvasRect.left,
-      y: event.clientY - canvasRect.top
-    }
   }
 
   isInRect(mousePos) {

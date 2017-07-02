@@ -1,9 +1,9 @@
 
 export class Menu {
 
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+  constructor(app) {
+
+    this.app = app;
 
     // size, that will be cut for menu
     // example: (c = canvas, m = menu, part = 4)
@@ -13,9 +13,9 @@ export class Menu {
     // ccccccccccccccccccccccccmmmmmmmm
     this.partOfCanvas = 5;
 
-    this.width = this.canvas.width / this.partOfCanvas;
-    this.height = this.canvas.height;
-    this.posX = this.canvas.width - this.width;
+    this.width = app.width / this.partOfCanvas;
+    this.height = app.height;
+    this.posX = app.width - this.width;
     this.posY = 0;
 
     this.isDisplayed = true;
@@ -52,14 +52,14 @@ export class Menu {
   }
 
   drawBorder() {
-    this.ctx.lineWidth = this.borderWidth;
-    this.ctx.strokeStyle = this.borderColor;
-    this.ctx.strokeRect(this.posX, this.posY, this.width, this.height);
+    this.app.ctx.lineWidth = this.borderWidth;
+    this.app.ctx.strokeStyle = this.borderColor;
+    this.app.ctx.strokeRect(this.posX, this.posY, this.width, this.height);
   }
 
   drawBackground() {
-    this.ctx.fillStyle = this.backgroundColor;
-    this.ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    this.app.ctx.fillStyle = this.backgroundColor;
+    this.app.ctx.fillRect(this.posX, this.posY, this.width, this.height);
   }
 
   draw() {
@@ -173,16 +173,16 @@ class MenuItem {
   draw(menu, itemIndex) {
     if (!this.isDisplayed) return;
 
-    menu.ctx.fillStyle = menu.itemTextColor;
-    menu.ctx.font = `${menu.itemTextSize}px ${menu.itemTextFont}`;
-    menu.ctx.textAlign = "center";
+    menu.app.ctx.fillStyle = menu.itemTextColor;
+    menu.app.ctx.font = `${menu.itemTextSize}px ${menu.itemTextFont}`;
+    menu.app.ctx.textAlign = "center";
 
     let itemInListNum = ++itemIndex;
     // center by width of the menu rect
     let posX = menu.posX + menu.width / 2;
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
     let poxY = menu.itemTextSize * itemInListNum + menu.itemTopMargin * itemInListNum;
-    menu.ctx.fillText(this.text, posX, poxY);
+    menu.app.ctx.fillText(this.text, posX, poxY);
   }
 
 }
