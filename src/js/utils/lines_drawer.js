@@ -50,8 +50,10 @@ export class LinesDrawer {
 
   onMouseDown(event) {
     let mousePos = this.getMousePos(event);
-    this.isHold = true;
-    this.linesList.addNew(mousePos);
+    if (this.isInRect(mousePos)) {
+      this.isHold = true;
+      this.linesList.addNew(mousePos);
+    };
   }
 
   onMouseUp(event) {
