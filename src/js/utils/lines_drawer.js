@@ -21,7 +21,7 @@ export class LinesDrawer {
     this.isSelected = false;
 
     // all drawn lines are keeping here
-    this.linesList = new LinesList(this.app.ctx);
+    this.linesList = new LinesList(this.app);
 
     this.init();
 
@@ -78,15 +78,15 @@ export class LinesDrawer {
 
 class LinesList {
 
-  constructor(ctx, ...lines) {
+  constructor(app, ...lines) {
 
-    this.ctx = ctx;
+    this.app = app;
     this.lines = lines;  // [Line]
 
   }
 
   addNew(mousePos) {
-    this.lines.push(new Line(this.ctx, mousePos));
+    this.lines.push(new Line(this.app, mousePos));
   }
 
   update(mousePos) {
@@ -119,12 +119,12 @@ class LinesList {
 
 class Line {
 
-  constructor(ctx, mousePos) {
+  constructor(app, mousePos) {
 
-    this.ctx = ctx;
+    this.app = app;
 
     this.coordinates = [{x: mousePos.x, y: mousePos.y}];  // [{x, y}]
-    this.width = 0;
+    this.width = 0;  // FIXME: use it
   }
 
   update(mousePos) {
@@ -139,7 +139,10 @@ class Line {
 
     // 3) check last three coordinates
     // -------------------------------
-    if (this.coordinates.length < 3) return;
+    if (this.coordinates.length < 3) {
+      this.app.isValidCanvasState = false;
+      return;
+    };
 
     let lastThreeCoordinates = this.coordinates.slice(-3);
 
@@ -155,19 +158,20 @@ class Line {
     // add checks lines like this /
     //                           /
     // -------------------------------
+    this.app.isValidCanvasState = false;
   }
 
   draw() {
-    this.ctx.beginPath();
+    this.app.ctx.beginPath();
     for (let i = 0, len = this.coordinates.length; i < len; i++) {
       let coordinate = this.coordinates[i];
       if (!i) {  // first coordinate
-        this.ctx.moveTo(coordinate.x, coordinate.y);
+        this.app.ctx.moveTo(coordinate.x, coordinate.y);
         continue;
       };
-      this.ctx.lineTo(coordinate.x, coordinate.y);
+      this.app.ctx.lineTo(coordinate.x, coordinate.y);
     };
-    this.ctx.stroke();
+    this.app.ctx.stroke();
   }
 
 }

@@ -17,6 +17,9 @@ class App {
 
     this.menu        = null;               // type: Menu
     this.linesDrawer = null;               // type: LinesDrawer
+
+    // canvas will have been redrawn when it's `false`
+    this.isValidCanvasState = false;       // type: Boolean
   }
 
   init() {
@@ -112,8 +115,10 @@ class App {
   }
 
   redraw() {
+    if (this.isValidCanvasState) return;
     this.clear();
     this.draw();
+    this.isValidCanvasState = true;
   }
 
 }

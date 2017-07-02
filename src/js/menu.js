@@ -41,10 +41,12 @@ export class Menu {
 
   show() {
     this.isDisplayed = true;
+    this.app.isValidCanvasState = false;
   }
 
   hide() {
     this.isDisplayed = false;
+    this.app.isValidCanvasState = false;
   }
 
   init() {
@@ -95,6 +97,7 @@ class MenuItemsList {
       item = new MenuItem(this.menu, item);
     };
     this.items.push(item);
+    this.menu.app.isValidCanvasState = false;
     return this.items;
   }
 
@@ -108,6 +111,7 @@ class MenuItemsList {
       item = item.text;
     };
     this.items = this.items.filter(e => e.text !== item);
+    this.menu.app.isValidCanvasState = false;
     return this.items;
   }
 
@@ -154,16 +158,20 @@ class MenuItem {
 
   show() {
     this.isDisplayed = true;
+    this.menu.app.isValidCanvasState = false;
   }
   hide() {
     this.isDisplayed = false;
+    this.menu.app.isValidCanvasState = false;
   }
 
   select() {
     this.isSelected = true;
+    this.menu.app.isValidCanvasState = false;
   }
   deselect() {
     this.isSelected = false;
+    this.menu.app.isValidCanvasState = false;
   }
 
   /**
