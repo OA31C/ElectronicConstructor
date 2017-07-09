@@ -13,7 +13,12 @@ module.exports = {
         test: /\.js$/,
           loader: 'babel-loader',
           query: {
-            presets: ['es2015', 'es2016', 'es2017']
+            presets: ['es2015', 'es2016', 'es2017'],
+            plugins: [
+              ['babel-plugin-transform-builtin-extend', {
+                globals: ['Error', 'Array']
+              }]
+            ]
           }
       },
       {
@@ -23,6 +28,6 @@ module.exports = {
           'css-loader'
         ]
       }
-    ],
-  },
+    ]
+  }
 };

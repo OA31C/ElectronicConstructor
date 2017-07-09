@@ -1,3 +1,5 @@
+const constants = require('../constants.js');
+const coreUtils = require('../core/utils.js');
 
 export class LinesDrawer {
 
@@ -7,8 +9,8 @@ export class LinesDrawer {
 
     this.posX = rect.posX || 0;
     this.posY = rect.posY || 0;
-    this._width = rect.width || app.canvas.width;
-    this.height = rect.height || app.canvas.height;
+    this._width = rect.width || constants.canvas.width;
+    this.height = rect.height || constants.canvas.height;
 
     this.lineWidth = lineWidth;
     this.lineColor = lineColor;
@@ -28,9 +30,9 @@ export class LinesDrawer {
   }
 
   init() {
-    this.app.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
-    this.app.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
-    this.app.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
+    constants.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    constants.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+    constants.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
   }
 
   get width() {
@@ -41,14 +43,14 @@ export class LinesDrawer {
   }
 
   onMouseMove(event) {
-    let mousePos = this.app.getMousePos(event);
+    let mousePos = coreUtils.getMousePos(event);
     if (this.isHold && this.isInRect(mousePos)) {
       this.linesList.update(mousePos);
     };
   }
 
   onMouseDown(event) {
-    let mousePos = this.app.getMousePos(event);
+    let mousePos = coreUtils.getMousePos(event);
     if (this.isInRect(mousePos)) {
       this.isHold = true;
       this.linesList.addNew(mousePos);
@@ -162,16 +164,16 @@ class Line {
   }
 
   draw() {
-    this.app.ctx.beginPath();
+    constants.canvasCtx.beginPath();
     for (let i = 0, len = this.coordinates.length; i < len; i++) {
       let coordinate = this.coordinates[i];
       if (!i) {  // first coordinate
-        this.app.ctx.moveTo(coordinate.x, coordinate.y);
+        constants.canvasCtx.moveTo(coordinate.x, coordinate.y);
         continue;
       };
-      this.app.ctx.lineTo(coordinate.x, coordinate.y);
+      constants.canvasCtx.lineTo(coordinate.x, coordinate.y);
     };
-    this.app.ctx.stroke();
+    constants.canvasCtx.stroke();
   }
 
 }

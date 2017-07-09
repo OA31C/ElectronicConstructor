@@ -1,7 +1,10 @@
+const constants = require('./constants.js');
+const coreModels = require('./core/models.js');
 
-export class Menu {
+export class Menu extends coreModels.UIElement {
 
-  constructor(app) {
+  constructor(app, partOfCanvas) {
+    super();
 
     this.app = app;
 
@@ -11,59 +14,52 @@ export class Menu {
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
-    this.partOfCanvas = 5;
+    this.partOfCanvas = 5;           // type: Number
 
     this.width = app.width / this.partOfCanvas;
     this.height = app.height;
     this.posX = app.width - this.width;
     this.posY = 0;
 
-    this.isDisplayed = true;
-
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
-    this.backgroundColor = '#cccccc';
+    this.background = '#cccccc';
 
     this.items = new MenuItemsList(this);
-    this.itemTopMargin = 10;
-    this.itemTextSize = 18;
-    this.itemTextFont = 'Tahoma';
-    this.itemTextColor = '#000000';
 
-    this.init();
+    this.initItems();
+    this.show();
+
   }
 
   initItems() {
-    this.items.add('Copper');
-    this.items.add('another item');
+    this.addItem(new MenuItem(this, 'Copper'));
+    this.addItem(new MenuItem(this, 'another item'));
   }
 
   show() {
-    this.isDisplayed = true;
+    super.show();
     this.app.isValidCanvasState = false;
   }
 
   hide() {
-    this.isDisplayed = false;
+    super.hide();
     this.app.isValidCanvasState = false;
   }
 
-  init() {
-    this.initItems();
+  drawBackground() {
+    constants.canvasCtx.fillStyle = this.background;
+    constants.canvasCtx.fillRect(this.posX, this.posY, this.width, this.height);
   }
 
   drawBorder() {
-    this.app.ctx.lineWidth = this.borderWidth;
-    this.app.ctx.strokeStyle = this.borderColor;
-    this.app.ctx.strokeRect(this.posX, this.posY, this.width, this.height);
+    constants.canvasCtx.lineWidth = this.borderWidth;
+    constants.canvasCtx.strokeStyle = this.borderColor;
+    constants.canvasCtx.strokeRect(this.posX, this.posY, this.width, this.height);
   }
 
-  drawBackground() {
-    this.app.ctx.fillStyle = this.backgroundColor;
-    this.app.ctx.fillRect(this.posX, this.posY, this.width, this.height);
-  }
-
+  // move the method out of model class
   draw() {
     if (!this.isDisplayed) return;
     this.drawBackground();
@@ -71,69 +67,29 @@ export class Menu {
     this.items.draw();
   }
 
-}
-
-class MenuItemsList {
-
-  constructor(menu, ...items) {
-    this.menu = menu;
-    this.items = items;
+  get itemsListClass() {
+    return MenuItemsList;
   }
 
+}
+
+class MenuItemsList extends coreModels.UIElementsList {
+
+  constructor(menu, ...items) {
+    super(...items);
+    this.menu = menu;
+  }
+
+  // move the method out of model class
   /**
    * draws all items of the list
    */
   draw() {
-    this.forEach((item, i) => item.draw(this.menu, i), 0, true);
-  }
-
-  /**
-   * adds an item to items list
-   * @param {MenuItem or string} item : item's text or whole MenuItem instance
-   * @return {MenuItemsList}
-   */
-  add(item) {
-    if (item.constructor !== MenuItem) {
-      item = new MenuItem(this.menu, item);
-    };
-    this.items.push(item);
-    this.menu.app.isValidCanvasState = false;
-    return this.items;
-  }
-
-  /**
-   * removes item from list by its text value or instance
-   * @param  {MenuItem or string} item
-   * @return {MenuItemsList}
-   */
-  remove(item) {
-    if (item.constructor === MenuItem) {
-      item = item.text;
-    };
-    this.items = this.items.filter(e => e.text !== item);
-    this.menu.app.isValidCanvasState = false;
-    return this.items;
-  }
-
-  /**
-   * @param  {Function} callback : takes 2 arguments (currentValue, index)
-   * @param  {number} sets : index value at begin
-   * @param  {boolean} displayedOnly : iterates by displayed items only
-   */
-  forEach(callback, start=0, displayedOnly=false) {
-    let items;
-    if (displayedOnly) {
-      items = this.displayedItems;
-    } else {
-      items = this.items;
-    }
-    for (let i = start, len = items.length+start; i < len; i++) {
-      callback(items[i-start], i);
-    }
+    this.displayedItems.forEach((item, i) => item.draw(this.menu, i), 0, true);
   }
 
   get displayedItems() {
-    return this.items.filter(item => item.isDisplayed);
+    return this.filter(item => item.isDisplayed);
   }
 
   get displayedItemsLength() {
@@ -146,22 +102,30 @@ class MenuItemsList {
 
 }
 
-class MenuItem {
+class MenuItem extends coreModels.UIText {
 
   constructor(menu, text) {
+    super();
+
     this.menu = menu;
     this.text = text;
+
+    this.textColor = '#000000';
+    this.textFont = 'Tahoma';
+    this.textSize = 18;
+
+    this.topMargin = 10;
 
     this.isDisplayed = true;
     this.isSelected = false;
   }
 
   show() {
-    this.isDisplayed = true;
+    super.show();
     this.menu.app.isValidCanvasState = false;
   }
   hide() {
-    this.isDisplayed = false;
+    super.hide();
     this.menu.app.isValidCanvasState = false;
   }
 
@@ -174,6 +138,7 @@ class MenuItem {
     this.menu.app.isValidCanvasState = false;
   }
 
+  // move the method out of model class
   /**
    * @param  {Menu} menu
    * @param  {number} itemIndex index of the item in MenuItemsList
@@ -181,16 +146,17 @@ class MenuItem {
   draw(menu, itemIndex) {
     if (!this.isDisplayed) return;
 
-    menu.app.ctx.fillStyle = menu.itemTextColor;
-    menu.app.ctx.font = `${menu.itemTextSize}px ${menu.itemTextFont}`;
-    menu.app.ctx.textAlign = "center";
+    constants.canvasCtx.fillStyle = this.textColor;
+    constants.canvasCtx.font = `${this.textSize}px ${this.textFont}`;
+    constants.canvasCtx.textAlign = "center";
 
     let itemInListNum = ++itemIndex;
     // center by width of the menu rect
     let posX = menu.posX + menu.width / 2;
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
-    let poxY = menu.itemTextSize * itemInListNum + menu.itemTopMargin * itemInListNum;
-    menu.app.ctx.fillText(this.text, posX, poxY);
+    let posY = this.textSize * itemInListNum + this.topMargin * itemInListNum;
+
+    constants.canvasCtx.fillText(this.text, posX, posY);
   }
 
 }
