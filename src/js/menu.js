@@ -18,8 +18,7 @@ export class Menu extends coreModels.UIElement {
 
     this.width = app.width / this.partOfCanvas;
     this.height = app.height;
-    this.posX = app.width - this.width;
-    this.posY = 0;
+    this.location = new coreModels.Location(app.width - this.width, 0);
 
     this.borderWidth = 1;
     this.borderColor = '#000000';
@@ -30,7 +29,6 @@ export class Menu extends coreModels.UIElement {
 
     this.initItems();
     this.show();
-
   }
 
   initItems() {
@@ -50,13 +48,13 @@ export class Menu extends coreModels.UIElement {
 
   drawBackground() {
     constants.canvasCtx.fillStyle = this.background;
-    constants.canvasCtx.fillRect(this.posX, this.posY, this.width, this.height);
+    constants.canvasCtx.fillRect(this.location.x, this.location.y, this.width, this.height);
   }
 
   drawBorder() {
     constants.canvasCtx.lineWidth = this.borderWidth;
     constants.canvasCtx.strokeStyle = this.borderColor;
-    constants.canvasCtx.strokeRect(this.posX, this.posY, this.width, this.height);
+    constants.canvasCtx.strokeRect(this.location.x, this.location.y, this.width, this.height);
   }
 
   // move the method out of model class
@@ -152,7 +150,7 @@ class MenuItem extends coreModels.UIText {
 
     let itemInListNum = ++itemIndex;
     // center by width of the menu rect
-    let posX = menu.posX + menu.width / 2;
+    let posX = menu.location.x + menu.width / 2;
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
     let posY = this.textSize * itemInListNum + this.topMargin * itemInListNum;
 
