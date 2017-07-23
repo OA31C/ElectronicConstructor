@@ -1,5 +1,7 @@
 const constants = require('./constants.js');
 const coreModels = require('./core/models.js');
+const utils = require('./core/utils.js');
+
 
 export class Menu extends coreModels.UIElement {
 
@@ -29,6 +31,7 @@ export class Menu extends coreModels.UIElement {
 
     this.initItems();
     this.show();
+    this.initEvents();
   }
 
   initItems() {
@@ -39,6 +42,21 @@ export class Menu extends coreModels.UIElement {
   show() {
     super.show();
     this.app.isValidCanvasState = false;
+  }
+
+  initEvents() {
+    constants.canvas.addEventListener('click', (e) => this.onClicked(e));
+  }  
+
+  onClicked(e) {
+    let mousePosition = utils.getMousePos(e);
+    for (let item of this.items){
+      if(item.isHover(mousePosition)){
+        item.select();
+      } else {
+        item.deselect();
+      }
+    }; 
   }
 
   hide() {
@@ -136,6 +154,14 @@ class MenuItem extends coreModels.UIText {
     this.menu.app.isValidCanvasState = false;
   }
 
+  isHover(mousePos) {
+    if (!this.isDisplayed || !this.location ||  !this.width ||  !this.height){
+      return false
+    } 
+    return (mousePos.x >= this.location.x) && (this.location.x + this.width >= mousePos.x) &&
+      (mousePos.y >= this.location.y) && (this.location.y + this.height >= mousePos.y);
+  }
+
   // move the method out of model class
   /**
    * @param  {Menu} menu
@@ -146,6 +172,9 @@ class MenuItem extends coreModels.UIText {
 
     constants.canvasCtx.fillStyle = this.textColor;
     constants.canvasCtx.font = `${this.textSize}px ${this.textFont}`;
+    if (this.isSelected) {
+      constants.canvasCtx.font = "bold " + constants.canvasCtx.font;
+    }
     constants.canvasCtx.textAlign = "center";
 
     let itemInListNum = ++itemIndex;
@@ -155,6 +184,13 @@ class MenuItem extends coreModels.UIText {
     let posY = this.textSize * itemInListNum + this.topMargin * itemInListNum;
 
     constants.canvasCtx.fillText(this.text, posX, posY);
+
+    let x = menu.location.x;
+    let y = posY-this.textSize;
+
+    this.location = new coreModels.Location(x, y);
+    this.width = menu.width;
+    this.height = this.textSize;
   }
 
 }
