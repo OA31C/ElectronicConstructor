@@ -68,6 +68,9 @@ export class UIView {
   drawText(element, elementNum) {
     constants.canvasCtx.fillStyle = element.textColor;
     constants.canvasCtx.font = `${element.textSize}px ${element.textFont}`;
+    if (element.isSelected) {  // FIXME
+      constants.canvasCtx.font = "bold " + constants.canvasCtx.font;
+    };
     constants.canvasCtx.textAlign = element.textAlign;
 
     // center by width of the element rect
@@ -77,6 +80,20 @@ export class UIView {
     let posY = element.textSize * elementNum + element.topMargin * elementNum;
 
     constants.canvasCtx.fillText(element.text, posX, posY);
+
+    // FIXME: remove it
+    // use the next algorithm:
+    // 1) if item doesn't have location:
+    //   - set location to the nearest X, Y:
+    //     * where it isn't filled by another element
+    //     * check whether height and width also isn't filled
+    //     + top and left margin
+    // ...
+    let x = this.element.location.x;
+    let y = posY-element.textSize;
+    element.location = new models.Location(x, y);
+    element.width = this.element.width;
+    element.height = element.textSize;
   }
 
   /**

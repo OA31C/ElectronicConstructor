@@ -1,5 +1,6 @@
 const constants = require('../constants.js');
 const coreModels = require('../core/models.js');
+const utils = require('../core/utils.js');
 const data = require('../data.js');
 
 export class Menu extends coreModels.UIElement {
@@ -71,5 +72,12 @@ class MenuItem extends coreModels.UIText {
     data.isValidCanvasState = false;
   }
 
+
+  isHover(mousePos) {
+    if (!this.isDisplayed || !this.location ||  !this.width ||  !this.height){
+      return false;
+    };
+    return utils.isElementHover(this, mousePos);
+  }
 
 }
