@@ -1,3 +1,4 @@
+const data = require('../data.js');
 
 /**
  * This is using for all of coordinate instances
@@ -20,14 +21,27 @@ export class Location {
 /**
  * Every custom list of ui elements should inheritance from this class
  */
-export class UIElementsList extends Array {}
+export class UIElementsList extends Array {
+
+  get displayedChildren() {
+    return this.filter(item => item.isDisplayed);
+  }
+  get displayedChildrenLength() {
+    return this.displayedChildren.length;
+  }
+
+}
 
 /**
  * Every model that need to show in the canvas - should inheritance from this class
  */
 export class UIElement {
 
-  constructor() {
+  constructor(parent) {
+    if (!parent) throw new Error('parent is required');
+    this.parent      = null;           // type: UIElement || App
+    this.setParent(parent);
+
     this.location    = null;           // type: Location
 
     this.width       = null;           // type: Number
@@ -39,7 +53,7 @@ export class UIElement {
     this.borderColor = null;           // type: String
 
     // elements which the element contains on its area
-    this.items       = null;           // type: UIElementsList
+    this.children    = null;           // type: UIElementsList
 
     this.isDisplayed = null;           // type: Boolean
 
@@ -56,21 +70,41 @@ export class UIElement {
 
   show() {
     this.isDisplayed = true;
+    data.isValidCanvasState = false;
+
   }
 
   hide() {
     this.isDisplayed = false;
+    data.isValidCanvasState = false;
   }
 
-  addItem(item) {
-    if (this.items === null) {
-      this.items = new this.itemsListClass(item);
+  /**
+   * sets parent property to self, and adds this instance as a child to parent.children property.
+   * @param {UIElement || App} parent
+   */
+  setParent(parent) {
+    this.parent = parent;
+    if (parent.children === null || parent.children === undefined) {
+      parent.children = new parent.childrenListClass(this);
       return;
-    }
-    this.items.push(item);
+    };
+    if (!parent.children.includes(this)) {
+      parent.children.push(this);
+    };
   }
 
-  get itemsListClass() {
+  addChild(child) {
+    if (this.children === null || parent.children === undefined) {
+      this.children = new this.childrenListClass(child);
+      return;
+    };
+    if (!this.children.includes(child)) {
+      this.children.push(child);
+    };
+  }
+
+  get childrenListClass() {
     return UIElementsList;
   }
 
@@ -93,10 +127,11 @@ export class UIElement {
  */
 export class UIText extends UIElement {
 
-  constructor() {
-    super();
+  constructor(parent) {
+    super(parent);
 
     this.text      = null;           // type: String
+    this.textAlign = null;           // type: String
     this.textColor = null;           // type: String
     this.textFont  = null;           // type: String
     this.textSize  = null;           // type: Number

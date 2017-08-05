@@ -1,8 +1,8 @@
 import '../css/main.css';
 
 const constants = require('./constants.js');
-import { Menu } from './menu.js';
-import { LinesDrawer } from './utils/lines_drawer.js';
+const coreModels = require('./core/models.js');
+const menu = require('./menu');
 
 
 class App {
@@ -15,17 +15,15 @@ class App {
     this.menu        = null;               // type: Menu
     this.linesDrawer = null;               // type: LinesDrawer
 
-    // canvas will have been redrawn when it's `false`
-    this.isValidCanvasState = false;       // type: Boolean
+    this.children    = null;               // type: UIElementsList
   }
 
   init() {
     this._canvasSetup();
 
-    this.menu        = new Menu(this);
-    this.linesDrawer = new LinesDrawer(this, {width: () => this.getWidth()});  // TODO: move it to Edit mode class
-
-    setInterval(() => this.mainLoop(), 1000 / constants.FPS);
+    // ###### MENU ######
+    this.menu        = new menu.Menu(this);
+    new menu.MenuView(this.menu);
   }
 
   _canvasSetup() {
@@ -50,39 +48,8 @@ class App {
     constants.canvasCtx.scale(ratio, ratio);
   }
 
-  mainLoop() {
-    this.redraw();
-  }
-
-  isElementHover(element, mousePos) {
-    return (mousePos.x >= element.posX) && (element.posX + element.width >= mousePos.x) &&
-           (mousePos.y >= element.posY) && (element.posY + element.height >= mousePos.y);
-  }
-
-  /**
-   * returns dynamic width
-   * @return {Number}
-   */
-  getWidth() {
-    // TODO: move the method to drawing canvas class later.
-    return this.width - this.menu.width;
-  }
-
-  clear() {
-    constants.canvasCtx.clearRect(0, 0, this.width, this.height);
-  }
-
-  // move the method out of model class
-  draw() {
-    this.menu.draw();
-    this.linesDrawer.draw();
-  }
-
-  redraw() {
-    if (this.isValidCanvasState) return;
-    this.clear();
-    this.draw();
-    this.isValidCanvasState = true;
+  get childrenListClass() {
+    return coreModels.UIElementsList;
   }
 
 }
