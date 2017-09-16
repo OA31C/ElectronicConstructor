@@ -31,6 +31,7 @@ export class Menu extends coreModels.UIElement {
   }
 
   initItems() {
+    new MenuItem(this, '-------------');
     new MenuItem(this, 'Copper');
     new MenuItem(this, 'another item');
   }

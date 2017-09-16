@@ -9,8 +9,8 @@ class App {
 
   constructor() {
 
-    this.width  = 0;                       // type: Number
-    this.height = 0;                       // type: Number
+    this.width       = 0;                  // type: Number
+    this.height      = 0;                  // type: Number
 
     this.menu        = null;               // type: Menu
     this.linesDrawer = null;               // type: LinesDrawer
@@ -57,3 +57,4 @@ class App {
 // remove it later
 window.app = new App();
 window.app.init();
+window.constants = constants;

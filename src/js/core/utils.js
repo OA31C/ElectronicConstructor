@@ -21,3 +21,29 @@ export function isElementHover(element, mousePos) {
   return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
          (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }
+
+// FIXME: ???
+export function drawTextByCenter(element) {
+    return;
+}
+
+/**
+ * @param  {UIElement} element [description]
+ * @return {Array}  [location, height, width]
+ */
+export function getTheNearestFreeSpace(element) {
+    let parent = element.parent,
+        x      = parent.location.x,
+        y      = parent.location.y,
+        height = 0,
+        width  = 0;
+
+    element.parent.children.forEach(child => {
+        if (child === element) return;  // skip elemets after the current one
+        if (child.isDisplayed) {
+            x += child.location.x;
+            y += child.location.y;
+        };
+    });
+    return [new models.Location(x, y), height, width];
+}

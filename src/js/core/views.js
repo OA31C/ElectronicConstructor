@@ -81,6 +81,9 @@ export class UIView {
 
     constants.canvasCtx.fillText(element.text, posX, posY);
 
+    element.width = constants.canvasCtx.measureText(element.text).width;
+    element.height = element.textSize;
+
     // FIXME: remove it
     // use the next algorithm:
     // 1) if item doesn't have location:
@@ -89,11 +92,13 @@ export class UIView {
     //     * check whether height and width also isn't filled
     //     + top and left margin
     // ...
-    let x = this.element.location.x;
+
+    // TODO: get X position for centered text element
+    let x = element.parent.location.x + (element.parent.width / 2) - (element.width / 2);
     let y = posY-element.textSize;
     element.location = new models.Location(x, y);
-    element.width = this.element.width;
-    element.height = element.textSize;
+
+    constants.canvasCtx.strokeRect(x, y, element.width, element.height)
   }
 
   /**
