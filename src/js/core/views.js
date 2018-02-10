@@ -126,8 +126,6 @@ export class UIView {
     let x = element.parent.location.x + (element.parent.width / 2) - (element.width / 2);
     let y = posY-element.textSize;
     element.location = new models.Location(x, y);
-
-    constants.canvasCtx.strokeRect(x, y, element.width, element.height)
   }
 
   /**
