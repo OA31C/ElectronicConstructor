@@ -11,7 +11,6 @@ export class Location {
     if (typeof x !== 'number' || typeof y !== 'number') {
       throw new TypeError('Location takes two required arguments, type: number.');
     };
-
     this.x = x;                        // type: Number
     this.y = y;                        // type: Number
   }
@@ -33,7 +32,7 @@ export class UIElementsList extends Array {
 }
 
 /**
- * Every model that need to show in the canvas - should inheritance from this class
+ * Every model that one is needed to be shown in the canvas - should be inherited from this class
  */
 export class UIElement {
 
@@ -57,13 +56,6 @@ export class UIElement {
 
     this.isDisplayed = null;           // type: Boolean
 
-    // events
-    // TODO: haven't finished yet
-    this.onClick     = null;           // type: Function
-    this.onMouseMove = null;           // type: Function
-    this.onMouseDown = null;           // type: Function
-    this.onMouseUp   = null;           // type: Function
-
     // all instances of UIElement are saving in ClassName.instances list
     this._addToList();
   }
@@ -71,7 +63,6 @@ export class UIElement {
   show() {
     this.isDisplayed = true;
     data.isValidCanvasState = false;
-
   }
 
   hide() {

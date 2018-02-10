@@ -18,6 +18,9 @@ export function getMousePos(event) {
  * @return {Boolean}
  */
 export function isElementHover(element, mousePos) {
+  if (!element.isDisplayed || !element.location || !element.width || !element.height) {
+    return false;
+  };
   return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
          (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }

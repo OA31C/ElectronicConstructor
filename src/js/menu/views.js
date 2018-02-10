@@ -6,18 +6,9 @@ const utils = require('../core/utils.js');
 
 export class MenuView extends views.UIView {
 
-  constructor(element) {
-    super(element);
-    this.initEvents();
-  }
-
-  initEvents() {
-    constants.canvas.addEventListener('click', (e) => this.onClicked(e));
-  }  
-
-  onClicked(e) {
-    let mousePosition = utils.getMousePos(e);
-    for (let item of this.element.children){
+  onClick(self, event) {
+    let mousePosition = utils.getMousePos(event);
+    for (let item of self.element.children){
       if(item.isHover(mousePosition)){
         item.select();
       } else {

@@ -2,6 +2,7 @@
 const constants = require('../constants.js');
 const data = require('../data.js');
 const models = require('./models.js');
+const utils = require('./utils.js');
 
 
 export class UIView {
@@ -9,7 +10,34 @@ export class UIView {
   constructor(element) {
     this.element = element;
 
+    // view EVENTS
+    // HOW TO USE:
+    // - add a method with name from availableEvents list
+    // - method gets 2 arguments: (view instance (like `this`), event)
+    this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
+    this._initEvents();
+
     setInterval(() => this.redraw(), 1000 / constants.FPS);
+  }
+
+  _initEvents() {
+    function handleWrapper(self, event, eventName) {
+      const eventHandler = self[eventName];
+      if (!eventHandler || typeof eventHandler !== 'function') return;
+      let mousePosition = utils.getMousePos(event);
+      if (utils.isElementHover(self.element, mousePosition)) {
+        eventHandler(self, event);
+      };
+    };
+
+    for (let availableEvent of this.availableEvents) {
+      let eventName = availableEvent.toLowerCase();
+      // remove `on` from event name, like: onclick => click
+      if (eventName.slice(0, 2) === 'on') {
+        eventName = eventName.slice(2);
+      };
+      constants.canvas.addEventListener(eventName, (event) => handleWrapper(this, event, availableEvent));
+    };
   }
 
   clear() {
@@ -84,6 +112,7 @@ export class UIView {
     element.width = constants.canvasCtx.measureText(element.text).width;
     element.height = element.textSize;
 
+    // FIXME: should it be in drawElement method maybe? before drawBackground
     // FIXME: remove it
     // use the next algorithm:
     // 1) if item doesn't have location:
