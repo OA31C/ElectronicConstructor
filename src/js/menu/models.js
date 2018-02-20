@@ -73,11 +73,7 @@ class MenuItem extends coreModels.UIText {
     data.isValidCanvasState = false;
   }
 
-
   isHover(mousePos) {
-    if (!this.isDisplayed || !this.location ||  !this.width ||  !this.height){
-      return false;
-    };
     return utils.isElementHover(this, mousePos);
   }
 

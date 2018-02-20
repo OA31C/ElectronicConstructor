@@ -13,20 +13,21 @@ export class UIView {
     // view EVENTS
     // HOW TO USE:
     // - add a method with name from availableEvents list
-    // - method gets 2 arguments: (view instance (like `this`), event)
+    // - method gets 1 argument: Event
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
     this._initEvents();
 
-    setInterval(() => this.redraw(), 1000 / constants.FPS);
+    setInterval(this.redraw.bind(this), 1000 / constants.FPS);
   }
 
+  // FIXME: use Chain of Responsibility design pattern in App object, instead of js events for each view...
   _initEvents() {
-    function handleWrapper(self, event, eventName) {
-      const eventHandler = self[eventName];
+    function handleWrapper(event, eventName) {
+      const eventHandler = this[eventName];
       if (!eventHandler || typeof eventHandler !== 'function') return;
       let mousePosition = utils.getMousePos(event);
-      if (utils.isElementHover(self.element, mousePosition)) {
-        eventHandler(self, event);
+      if (utils.isElementHover(this.element, mousePosition)) {
+        eventHandler.bind(this)(event);
       };
     };
 
@@ -36,7 +37,7 @@ export class UIView {
       if (eventName.slice(0, 2) === 'on') {
         eventName = eventName.slice(2);
       };
-      constants.canvas.addEventListener(eventName, (event) => handleWrapper(this, event, availableEvent));
+      constants.canvas.addEventListener(eventName, (event) => handleWrapper.bind(this)(event, availableEvent));
     };
   }
 

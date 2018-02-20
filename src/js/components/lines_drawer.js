@@ -16,13 +16,13 @@ export class LinesDrawer {
     this.lineColor = lineColor;
 
     // true: when user has clicked on canvas and he hasn't set loose it yet
-    // and user's mouse isn't out of the rect
+    // AND user's mouse isn't out of the rect
     this.isHold = false;
 
     // true: when user has clicked by any of drawn line
     this.isSelected = false;
 
-    // all drawn lines are keeping here
+    // all drawn lines are keeped here
     this.linesList = new LinesList(this.app);
 
     this.init();
@@ -36,10 +36,7 @@ export class LinesDrawer {
   }
 
   get width() {
-    if (this._width.constructor.name === 'Function') {
-      return this._width();
-    };
-    return this._width;
+    return typeof this._width === 'function' ? this._width() : this._width;
   }
 
   onMouseMove(event) {
@@ -125,7 +122,7 @@ class Line {
 
     this.app = app;
 
-    this.coordinates = [{x: mousePos.x, y: mousePos.y}];  // [{x, y}]
+    this.coordinates = [{x: mousePos.x, y: mousePos.y}];
     this.width = 0;  // FIXME: use it
   }
 
