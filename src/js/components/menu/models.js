@@ -8,7 +8,7 @@ export class Menu extends coreModels.UIElement {
   constructor(parent) {
     super(parent);
 
-    // size, that will be cut for menu
+    // size, that one will be cut for the menu
     // example: (c = canvas, m = menu, part = 4)
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm

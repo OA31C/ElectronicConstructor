@@ -1,0 +1,14 @@
+[ignore]
+./.je-project-settings/.*
+./dist
+
+[include]
+./src/js/app.js
+
+[libs]
+
+[lints]
+
+[options]
+
+[strict]
