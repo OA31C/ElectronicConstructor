@@ -1,3 +1,4 @@
+// @flow
 
 /**
  * The main controller that contains all other controllers

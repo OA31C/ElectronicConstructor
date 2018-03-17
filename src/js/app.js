@@ -1,3 +1,5 @@
+// @flow
+
 import '../css/main.css';
 
 const constants = require('./constants.js');
