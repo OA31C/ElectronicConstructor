@@ -69,6 +69,8 @@ class App {
    * [render description]
    */
   render() {
+    requestAnimationFrame(this.render.bind(this));
+
     this.clear();
 
     // render background

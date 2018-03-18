@@ -1,7 +1,9 @@
 // @flow
 
-const constants = require('../constants.js');
 const models = require('./base/models.js');
+
+import {$canvas} from '../constants.js';
+import {UIElement} from '../core/base/models.js';
 
 /**
  * gets X and Y positions of mouse by its event
@@ -9,7 +11,7 @@ const models = require('./base/models.js');
  * @return {Location}
  */
 export function getMousePos(event: MouseEvent) {
-  let canvasRect = constants.canvas.getBoundingClientRect();
+  let canvasRect = $canvas.getBoundingClientRect();
   return new models.Location(event.clientX - canvasRect.left,
                              event.clientY - canvasRect.top);
 };
@@ -19,7 +21,7 @@ export function getMousePos(event: MouseEvent) {
  * @param  {Location}  mousePos
  * @return {Boolean}
  */
-export function isElementHover(element, mousePos: Object) {
+export function isElementHover(element: UIElement, mousePos: Object) {
   if (!element.isDisplayed || !element.location || !element.width || !element.height) {
     return false;
   };

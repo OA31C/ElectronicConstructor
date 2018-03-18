@@ -50,7 +50,7 @@ export class AppController {
           const controllerHandler = controller[availableEvent];
           if (!controllerHandler || typeof controllerHandler !== 'function') continue;
 
-          const propagate = controllerHandler(event);
+          const propagate = controllerHandler.bind(controller)(event);
           if (!propagate) break;
         };
       });
