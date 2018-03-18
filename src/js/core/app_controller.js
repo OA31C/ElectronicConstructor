@@ -1,5 +1,11 @@
 // @flow
 
+import {UICtrl} from './base/controllers.js';
+import {$canvas} from '../constants.js';
+import {MenuCtrl} from '../components/menu/controllers.js';
+import {Menu} from '../components/menu/models.js';
+import {MenuView} from '../components/menu/views.js';
+
 /**
  * The main controller that contains all other controllers
  */
@@ -9,11 +15,14 @@ export class AppController {
 
   /**
    * [constructor description]
+   * @param  {[type]} appHeight: number        [description]
+   * @param  {[type]} appWidth:  number        [description]
    */
-  constructor() {
+  constructor(appHeight: number, appWidth: number) {
     // *** PROPERTIES ***
-
-    this.controllers = [];
+    this.controllers = [
+      new MenuCtrl(new Menu(appHeight, appWidth), new MenuView()),
+    ];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
 
     // *** Initializaions ***
@@ -36,7 +45,7 @@ export class AppController {
         jsEventName = jsEventName.slice(2);
       };
 
-      constants.canvas.addEventListener(jsEventName, (event) => {
+      $canvas.addEventListener(jsEventName, (event) => {
         for (const controller of this.controllers) {
           const controllerHandler = controller[availableEvent];
           if (!controllerHandler || typeof controllerHandler !== 'function') continue;
@@ -46,5 +55,14 @@ export class AppController {
         };
       });
     };
+  }
+
+  /**
+   * [render description]
+   */
+  render() {
+    for (const controller of this.controllers) {
+      controller.render();
+    }
   }
 }

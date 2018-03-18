@@ -1,12 +1,23 @@
-const constants = require('../constants.js');
-const coreModels = require('../core/models.js');
-const utils = require('../core/utils.js');
-const data = require('../data.js');
+// @flow
 
-export class Menu extends coreModels.UIElement {
+const data = require('../../data.js');
+import {isElementHover} from '../../core/utils.js';
+import {Location, UIElement, UIText} from '../../core/base/models.js';
 
-  constructor(parent) {
-    super(parent);
+/**
+ * ...
+ */
+export class Menu extends UIElement {
+  partOfCanvas: number;
+  items: Array<MenuItem>;
+
+  /**
+   * [constructor description]
+   * @param  {[type]} parentHeight: number        [description]
+   * @param  {[type]} parentWidth:  number        [description]
+   */
+  constructor(parentHeight: number, parentWidth: number) {
+    super();
 
     // size, that one will be cut for the menu
     // example: (c = canvas, m = menu, part = 4)
@@ -14,11 +25,11 @@ export class Menu extends coreModels.UIElement {
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
-    this.partOfCanvas = 5;           // type: Number
+    this.partOfCanvas = 5;
 
-    this.setWidth();
-    this.height = parent.height;
-    this.location = new coreModels.Location(parent.width, 0);
+    this.height = parentHeight;
+    this.width = parentWidth / this.partOfCanvas;
+    this.location = new Location(parentWidth - this.width, 0);
 
     this.borderWidth = 1;
     this.borderColor = '#000000';
@@ -30,28 +41,30 @@ export class Menu extends coreModels.UIElement {
     this.initItems();
   }
 
+  /**
+   * [initItems description]
+   */
   initItems() {
-    new MenuItem(this, '-------------');
-    new MenuItem(this, 'Copper');
-    new MenuItem(this, 'another item');
-  }
-
-  setWidth(value) {
-    if (!value) {
-      value = this.parent.width / this.partOfCanvas;
-    }
-    this.width = value;
-    this.parent.width -= value;
-  }
-
+    this.items = [
+      new MenuItem('-------------'),
+      new MenuItem('Copper'),
+      new MenuItem('another item'),
+    ];
+  };
 }
 
-class MenuItem extends coreModels.UIText {
+/**
+ * ...
+ */
+export class MenuItem extends UIText {
+  isSelected: boolean;
 
-  constructor(parent, text) {
-    super(parent);
-
-    this.text = text;
+  /**
+   * [constructor description]
+   * @param  {[type]} text: string        [description]
+   */
+  constructor(text: string) {
+    super(text);
 
     this.textAlign = 'center';
     this.textColor = '#000000';
@@ -64,17 +77,28 @@ class MenuItem extends coreModels.UIText {
     this.isSelected = false;
   }
 
+  /**
+   * [select description]
+   */
   select() {
     this.isSelected = true;
     data.isValidCanvasState = false;
   }
+
+  /**
+   * [deselect description]
+   */
   deselect() {
     this.isSelected = false;
     data.isValidCanvasState = false;
   }
 
-  isHover(mousePos) {
-    return utils.isElementHover(this, mousePos);
+  /**
+   * [isHover description]
+   * @param  {[type]}  mousePos [description]
+   * @return {Boolean}          [description]
+   */
+  isHover(mousePos: Object): boolean {
+    return isElementHover(this, mousePos);
   }
-
 }

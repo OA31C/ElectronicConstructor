@@ -2,15 +2,17 @@
 
 import '../css/main.css';
 
-const constants = require('./constants.js');
+import {$canvas, canvasCtx} from './constants.js';
 // const coreModels = require('./core/models.js');
 // const menu = require('./menu');
+import {AppController} from './core/app_controller.js';
 
 /**
  * ...
  */
 class App {
   background: string;
+  controller: AppController;
   width: number;
   height: number;
 
@@ -21,23 +23,13 @@ class App {
     // *** PROPERTIES ***
 
     this.background = '#e3e172';
-    this.width = 0;
-    this.height = 0;
-    this.height = ''; // REMOVE IT
+    this.height = window.innerHeight;
+    this.width = window.innerWidth;
+    this.controller = new AppController(this.height, this.width);
 
     // *** Initializaions ***
-    this._canvasSetup();
-    this.render();
-  }
-
-  /**
-   * [_canvasSetup description]
-   */
-  _canvasSetup() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-
     this._qualitySetup();
+    this.render();
   }
 
   /**
@@ -45,32 +37,32 @@ class App {
    */
   _qualitySetup() {
     let devicePixelRatio = window.devicePixelRatio || 1;
-    let backingStoreRatio = constants.canvasCtx.webkitBackingStorePixelRatio ||
-                            constants.canvasCtx.mozBackingStorePixelRatio ||
-                            constants.canvasCtx.msBackingStorePixelRatio ||
-                            constants.canvasCtx.oBackingStorePixelRatio ||
-                            constants.canvasCtx.backingStorePixelRatio || 1;
+    let backingStoreRatio = canvasCtx.webkitBackingStorePixelRatio ||
+                            canvasCtx.mozBackingStorePixelRatio ||
+                            canvasCtx.msBackingStorePixelRatio ||
+                            canvasCtx.oBackingStorePixelRatio ||
+                            canvasCtx.backingStorePixelRatio || 1;
     let ratio = devicePixelRatio / backingStoreRatio;
-    constants.canvas.width = this.width * ratio;
-    constants.canvas.height = this.height * ratio;
-    constants.canvas.style.width = this.width + 'px';
-    constants.canvas.style.height = this.height + 'px';
-    constants.canvasCtx.scale(ratio, ratio);
+    $canvas.width = this.width * ratio;
+    $canvas.height = this.height * ratio;
+    $canvas.style.width = this.width + 'px';
+    $canvas.style.height = this.height + 'px';
+    canvasCtx.scale(ratio, ratio);
   }
 
   /**
    * [childrenListClass description]
    * @return {[type]} [description]
    */
-  get childrenListClass() {
-    return coreModels.UIElementsList;
-  }
+  // get childrenListClass() {
+  //   return coreModels.UIElementsList;
+  // }
 
   /**
    * [clear description]
    */
   clear() {
-    constants.canvasCtx.clearRect(0, 0, this.width, this.height);
+    canvasCtx.clearRect(0, 0, this.width, this.height);
   }
 
   /**
@@ -80,15 +72,12 @@ class App {
     this.clear();
 
     // render background
-    constants.canvasCtx.fillStyle = this.background;
-    constants.canvasCtx.fillRect(0, 0, this.width, this.height);
+    canvasCtx.fillStyle = this.background;
+    canvasCtx.fillRect(0, 0, this.width, this.height);
 
-    // for (let child of this.children) {
-    //   child.render();
-    // };
+    this.controller.render();
   }
 }
 
 // remove it later
 window.app = new App();
-window.constants = constants;

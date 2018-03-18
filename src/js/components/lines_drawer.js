@@ -1,3 +1,5 @@
+// @flow
+
 const constants = require('../constants.js');
 const coreUtils = require('../core/utils.js');
 
