@@ -15,8 +15,6 @@ export class AppController {
 
   /**
    * [constructor description]
-   * @param  {[type]} appHeight: number        [description]
-   * @param  {[type]} appWidth:  number        [description]
    */
   constructor(appHeight: number, appWidth: number) {
     // *** PROPERTIES ***
@@ -25,8 +23,7 @@ export class AppController {
     ];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
 
-    // *** Initializaions ***
-
+    // *** Initializations ***
     this.handleEvents();
   }
 
@@ -43,7 +40,7 @@ export class AppController {
       // remove `on` from event name, like: onclick => click
       if (jsEventName.slice(0, 2) === 'on') {
         jsEventName = jsEventName.slice(2);
-      };
+      }
 
       $canvas.addEventListener(jsEventName, (event) => {
         for (const controller of this.controllers) {
@@ -52,9 +49,9 @@ export class AppController {
 
           const propagate = controllerHandler.bind(controller)(event);
           if (!propagate) break;
-        };
+        }
       });
-    };
+    }
   }
 
   /**

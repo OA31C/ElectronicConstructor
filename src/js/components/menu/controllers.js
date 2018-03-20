@@ -12,10 +12,8 @@ export class MenuCtrl extends UICtrl {
 
   /**
    * [onClick description]
-   * @param  {[type]} event [description]
-   * @return {[type]}       [description]
    */
-  onClick(event: MouseEvent): bool {
+  onClick(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
     // FIXME: check is mouse in menu rect.
     for (const item of this.model.items) {
@@ -24,7 +22,7 @@ export class MenuCtrl extends UICtrl {
       } else {
         item.deselect();
       }
-    };
+    }
     return true;
   }
 }

@@ -12,8 +12,6 @@ export class UICtrl {
 
   /**
    * [constructor de scription]
-   * @param  {UIElement} model [description]
-   * @param  {UIView} view  [description]
    */
   constructor(model: UIElement, view: UIView) {
     this.model = model;

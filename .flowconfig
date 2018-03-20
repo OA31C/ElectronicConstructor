@@ -1,5 +1,4 @@
 [ignore]
-./.je-project-settings/.*
 ./dist
 
 [include]

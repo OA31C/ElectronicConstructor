@@ -3,8 +3,6 @@
 import '../css/main.css';
 
 import {$canvas, canvasCtx} from './constants.js';
-// const coreModels = require('./core/models.js');
-// const menu = require('./menu');
 import {AppController} from './core/app_controller.js';
 
 /**
@@ -21,13 +19,12 @@ class App {
    */
   constructor() {
     // *** PROPERTIES ***
-
     this.background = '#e3e172';
     this.height = window.innerHeight;
     this.width = window.innerWidth;
     this.controller = new AppController(this.height, this.width);
 
-    // *** Initializaions ***
+    // *** Initializations ***
     this._qualitySetup();
     this.render();
   }
@@ -49,14 +46,6 @@ class App {
     $canvas.style.height = this.height + 'px';
     canvasCtx.scale(ratio, ratio);
   }
-
-  /**
-   * [childrenListClass description]
-   * @return {[type]} [description]
-   */
-  // get childrenListClass() {
-  //   return coreModels.UIElementsList;
-  // }
 
   /**
    * [clear description]

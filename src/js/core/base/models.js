@@ -17,7 +17,7 @@ export class Location {
   constructor(x: number, y: number) {
     if (typeof x !== 'number' || typeof y !== 'number') {
       throw new TypeError('Location takes two required arguments, type: number.');
-    };
+    }
     this.x = x;
     this.y = y;
   }
@@ -29,7 +29,6 @@ export class Location {
 export class UIElementsList extends Array {
   /**
    * [displayedChildren description]
-   * @return {[type]} [description]
    */
   get displayedChildren() {
     return this.filter((item) => item.isDisplayed);
@@ -37,7 +36,6 @@ export class UIElementsList extends Array {
 
   /**
    * [displayedChildrenLength description]
-   * @return {[type]} [description]
    */
   get displayedChildrenLength() {
     return this.displayedChildren.length;
@@ -90,7 +88,6 @@ export class UIText extends UIElement {
 
   /**
    * [constructor description]
-   * @param  {String} text        [description]
    */
   constructor(text: string) {
     super();

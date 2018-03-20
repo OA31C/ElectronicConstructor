@@ -12,7 +12,6 @@ import {Menu, MenuItem} from './models.js';
 export class MenuView extends UIView {
   /**
    * render menu and its items
-   * @param  {UIElement} menu : menu that's needed to draw and its items
    */
   render(menu: Menu) {
     if (!menu.isDisplayed) return;
@@ -26,7 +25,7 @@ export class MenuView extends UIView {
   }
 
   /**
-  * @param  {UIElement} element
+  * @param  {Menu | MenuItem} element
   */
   drawBackground(element: UIElement) {
     if (!element.background) return;
@@ -35,21 +34,21 @@ export class MenuView extends UIView {
   }
 
   /**
-  * @param  {UIElement} element
+  * @param  {Menu | MenuItem} element
   */
   drawBorder(element: UIElement) {
     let isBorder = false;
     if (element.borderWidth) {
       canvasCtx.lineWidth = element.borderWidth;
       isBorder = true;
-    };
-    if (element.strokeStyle) {
+    }
+    if (element.borderColor) {
       canvasCtx.strokeStyle = element.borderColor;
       isBorder = true;
-    };
+    }
     if (isBorder) {
       canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height);
-    };
+    }
   }
 
   /**
@@ -64,9 +63,9 @@ export class MenuView extends UIView {
 
     canvasCtx.fillStyle = item.textColor;
     canvasCtx.font = `${item.textSize}px ${item.textFont}`;
-    if (item.isSelected) { // FIXME
-      canvasCtx.font = "bold " + canvasCtx.font;
-    };
+    if (item.isSelected) {
+      canvasCtx.font = `bold ${canvasCtx.font}`;
+    }
     canvasCtx.textAlign = item.textAlign;
 
     // center by width of the item rect
@@ -83,7 +82,7 @@ export class MenuView extends UIView {
     // FIXME: should it be in drawElement method maybe? before drawBackground
     // FIXME: remove it
     // use the next algorithm:
-    // 1) if item doesn't have locatilocationon:
+    // 1) if item doesn't have location:
     //   - set location to the nearest X, Y:
     //     * where it isn't filled by another item
     //     * check whether height and width also isn't filled
@@ -95,4 +94,4 @@ export class MenuView extends UIView {
     let y = posY-item.textSize;
     item.location = new Location(x, y);
   }
-};
+}
