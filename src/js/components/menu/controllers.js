@@ -1,14 +1,15 @@
 // @flow
 
-import {UICtrl} from '../../core/base/controllers.js';
-import {getMousePos} from '../../core/utils.js';
-import {Menu} from './models.js';
+import {UICtrl} from '../../core/base/controllers';
+import {getMousePos} from '../../core/utils';
+import {Menu} from './models';
 
 /**
  * ...
  */
 export class MenuCtrl extends UICtrl {
   model: Menu;
+  // view: MenuView;
 
   /**
    * [onClick description]

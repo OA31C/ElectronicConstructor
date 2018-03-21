@@ -1,17 +1,15 @@
 // @flow
 
-const models = require('./base/models.js');
-
-import {$canvas} from '../constants.js';
-import {UIElement} from '../core/base/models.js';
+import {Location} from './base/models';
+import {$canvas} from '../constants';
+import {UIElement} from '../core/base/models';
 
 /**
  * gets X and Y positions of mouse by its event
  */
 export function getMousePos(event: MouseEvent): Location {
-  let canvasRect = $canvas.getBoundingClientRect();
-  return new models.Location(event.clientX - canvasRect.left,
-                             event.clientY - canvasRect.top);
+  const canvasRect = $canvas.getBoundingClientRect();
+  return new Location(event.clientX - canvasRect.left, event.clientY - canvasRect.top);
 }
 
 /**

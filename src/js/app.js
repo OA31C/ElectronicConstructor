@@ -22,10 +22,11 @@ class App {
     this.background = '#e3e172';
     this.height = window.innerHeight;
     this.width = window.innerWidth;
-    this.controller = new AppController(this.height, this.width);
 
     // *** Initializations ***
     this._qualitySetup();
+
+    this.controller = new AppController(this.height, this.width);
     this.render();
   }
 

@@ -2,9 +2,8 @@
 
 import {UICtrl} from './base/controllers.js';
 import {$canvas} from '../constants.js';
-import {MenuCtrl} from '../components/menu/controllers.js';
-import {Menu} from '../components/menu/models.js';
-import {MenuView} from '../components/menu/views.js';
+import {createMenu} from '../components/menu';
+import {createLinesDrawer} from '../components/lines_drawer';
 
 /**
  * The main controller that contains all other controllers
@@ -19,7 +18,8 @@ export class AppController {
   constructor(appHeight: number, appWidth: number) {
     // *** PROPERTIES ***
     this.controllers = [
-      new MenuCtrl(new Menu(appHeight, appWidth), new MenuView()),
+      createMenu(appHeight, appWidth),
+      createLinesDrawer(),
     ];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
 

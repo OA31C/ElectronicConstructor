@@ -13,8 +13,6 @@ export class Menu extends UIElement {
 
   /**
    * [constructor description]
-   * @param  {[type]} parentHeight: number        [description]
-   * @param  {[type]} parentWidth:  number        [description]
    */
   constructor(parentHeight: number, parentWidth: number) {
     super();
@@ -61,7 +59,6 @@ export class MenuItem extends UIText {
 
   /**
    * [constructor description]
-   * @param  {[type]} text: string        [description]
    */
   constructor(text: string) {
     super(text);
@@ -95,8 +92,6 @@ export class MenuItem extends UIText {
 
   /**
    * [isHover description]
-   * @param  {[type]}  mousePos [description]
-   * @return {Boolean}          [description]
    */
   isHover(mousePos: Object): boolean {
     return isElementHover(this, mousePos);
