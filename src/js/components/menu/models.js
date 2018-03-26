@@ -10,12 +10,14 @@ import {Location, UIElement, UIText} from '../../core/base/models.js';
 export class Menu extends UIElement {
   partOfCanvas: number;
   items: Array<MenuItem>;
+  workingSpace: Object;
 
   /**
    * [constructor description]
    */
-  constructor(parentHeight: number, parentWidth: number) {
+  constructor(parentHeight: number, parentWidth: number, workingSpace: Object) {
     super();
+    this.workingSpace = workingSpace;
 
     // size, that one will be cut for the menu
     // example: (c = canvas, m = menu, part = 4)
@@ -37,6 +39,24 @@ export class Menu extends UIElement {
     this.isDisplayed = true;
 
     this.initItems();
+  }
+
+  /**
+   * ...
+   * @param value
+   */
+  set width(value: number) {
+    this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
+    this.__filledWorkingSpace = value;
+    this._width = value;
+  }
+
+  /**
+   * ...
+   * @returns {number}
+   */
+  get width(): number {
+    return this._width;
   }
 
   /**

@@ -13,16 +13,16 @@ export class LinesDrawer extends UIElement {
   isHold: boolean;
   isSelected: boolean;
   lines: LinesList<Line>;
+  rect: Object;
 
   /**
    * ...
+   * @param rect {Object}  Rect where's drawable area
    */
   constructor(rect: Object={}) {
     super();
+    this.rect = rect;
     this.location = rect.location || new Location(0, 0);
-    this.width = rect.width || $canvas.width;
-    this.height = rect.height || $canvas.height;
-
     this.isDisplayed = true;
 
     // true: when user has clicked on canvas and he hasn't set loose it yet
@@ -34,6 +34,22 @@ export class LinesDrawer extends UIElement {
 
     // all drawn lines are keeping here
     this.lines = new LinesList();
+  }
+
+  /**
+   * Returns a dynamic height
+   * @returns {number}
+   */
+  get height(): number {
+    return this.rect.height || $canvas.height;
+  }
+
+  /**
+   * Returns a dynamic width
+   * @returns {number}
+   */
+  get width(): number {
+    return this.rect.width || $canvas.width;
   }
 
   /**

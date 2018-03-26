@@ -5,8 +5,9 @@ import {Menu} from './models';
 /**
  *
  */
-export function createMenu(parentHeight: number, parentWidth: number): MenuCtrl {
-  const menu = new Menu(parentHeight, parentWidth);
+export function createMenu(parentHeight: number, parentWidth: number, workingSpace: Object): MenuCtrl {
+  const menu = new Menu(parentHeight, parentWidth, workingSpace);
   const view = new MenuView();
-  return new MenuCtrl(menu, view);
+  window.menu = new MenuCtrl(menu, view);
+  return window.menu;
 }

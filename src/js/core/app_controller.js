@@ -15,11 +15,11 @@ export class AppController {
   /**
    * [constructor description]
    */
-  constructor(appHeight: number, appWidth: number) {
+  constructor(appHeight: number, appWidth: number, workingSpace: Object) {
     // *** PROPERTIES ***
     this.controllers = [
-      createMenu(appHeight, appWidth),
-      createLinesDrawer(),
+      createMenu(appHeight, appWidth, workingSpace),
+      createLinesDrawer(workingSpace),
     ];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
 

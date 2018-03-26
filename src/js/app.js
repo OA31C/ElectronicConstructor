@@ -2,8 +2,9 @@
 
 import '../css/main.css';
 
-import {$canvas, canvasCtx} from './constants.js';
-import {AppController} from './core/app_controller.js';
+import {$canvas, canvasCtx} from './constants';
+import {AppController} from './core/app_controller';
+import {Location} from './core/base/models';
 
 /**
  * ...
@@ -13,6 +14,7 @@ class App {
   controller: AppController;
   width: number;
   height: number;
+  workingSpace: Object;
 
   /**
    * initializates default properties and starts main loop
@@ -23,10 +25,13 @@ class App {
     this.height = window.innerHeight;
     this.width = window.innerWidth;
 
+    // rect without including menu or navigation
+    this.workingSpace = {'height': this.height, 'width': this.width, 'location': new Location(0, 0)};
+
     // *** Initializations ***
     this._qualitySetup();
 
-    this.controller = new AppController(this.height, this.width);
+    this.controller = new AppController(this.height, this.width, this.workingSpace);
     this.render();
   }
 

@@ -2,7 +2,7 @@
 ./dist
 
 [include]
-./src/js/app.js
+./src/js
 
 [libs]
 
