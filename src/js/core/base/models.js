@@ -1,7 +1,5 @@
 // @flow
 
-const data = require('../../data.js');
-
 /**
  * Use it for all of coordinate instances
  */
@@ -63,7 +61,6 @@ export class UIElement {
    */
   show() {
     this.isDisplayed = true;
-    data.isValidCanvasState = false;
   }
 
   /**
@@ -71,7 +68,6 @@ export class UIElement {
    */
   hide() {
     this.isDisplayed = false;
-    data.isValidCanvasState = false;
   }
 }
 

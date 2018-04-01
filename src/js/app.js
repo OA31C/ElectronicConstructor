@@ -5,6 +5,7 @@ import '../css/main.css';
 import {$canvas, canvasCtx} from './constants';
 import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
+import {redraw} from './core/utils';
 
 /**
  * ...
@@ -66,6 +67,9 @@ class App {
   render() {
     requestAnimationFrame(this.render.bind(this));
 
+    // skip render if nothing is changed
+    if (redraw.isValidCanvasState) return;
+
     this.clear();
 
     // render background
@@ -73,6 +77,8 @@ class App {
     canvasCtx.fillRect(0, 0, this.width, this.height);
 
     this.controller.render();
+
+    redraw.isValidCanvasState = true;
   }
 }
 

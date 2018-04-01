@@ -93,7 +93,7 @@ export class Line extends UIElement {
    * ...
    */
   update(mousePos: Location) {
-    // 1) skip this coordinate when it's the same as last saved one
+    // 1) skip this coordinate when it's the same as well as the latest saved one
     if (this.coordinates.length) {
       let lastCoordinate = this.coordinates[this.coordinates.length - 1];
       if (lastCoordinate.x === mousePos.x && lastCoordinate.y === mousePos.y) return;
@@ -105,7 +105,6 @@ export class Line extends UIElement {
     // 3) check last three coordinates
     // -------------------------------
     if (this.coordinates.length < 3) {
-      // FIXME: do app redraw
       return;
     }
 
@@ -125,7 +124,6 @@ export class Line extends UIElement {
     // add checks lines like this /
     //                           /
     // -------------------------------
-    // FIXME: do app redraw
   }
 }
 
@@ -134,7 +132,7 @@ export class Line extends UIElement {
  */
 class LinesList extends Array {
   /**
-   * ...
+   * Creates a new line from a location, and puts it to an array
    * @param mousePos
    */
   add(mousePos: Location) {
@@ -142,7 +140,7 @@ class LinesList extends Array {
   }
 
   /**
-   * ...
+   * Adds a new coordinate to the latest line in an array
    * @param mousePos
    */
   update(mousePos: Location) {

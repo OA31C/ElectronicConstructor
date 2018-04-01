@@ -1,6 +1,5 @@
 // @flow
 
-const data = require('../../data.js');
 import {isElementHover} from '../../core/utils.js';
 import {Location, UIElement, UIText} from '../../core/base/models.js';
 
@@ -99,7 +98,6 @@ export class MenuItem extends UIText {
    */
   select() {
     this.isSelected = true;
-    data.isValidCanvasState = false;
   }
 
   /**
@@ -107,7 +105,6 @@ export class MenuItem extends UIText {
    */
   deselect() {
     this.isSelected = false;
-    data.isValidCanvasState = false;
   }
 
   /**

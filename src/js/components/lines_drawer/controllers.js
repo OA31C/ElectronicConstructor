@@ -3,7 +3,7 @@
 import {UICtrl} from '../../core/base/controllers';
 import {LinesDrawer} from './models';
 import {LinesDrawerView} from './views';
-import {getMousePos} from '../../core/utils';
+import {getMousePos, redraw} from '../../core/utils';
 
 /**
  * ...
@@ -41,6 +41,7 @@ export class LinesDrawerCtrl extends UICtrl {
     const mousePos = getMousePos(event);
     if (this.model.isInRect(mousePos)) {
       this.model.lines.update(mousePos);
+      redraw();
     }
     return true;
   }

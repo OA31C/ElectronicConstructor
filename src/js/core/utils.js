@@ -22,3 +22,10 @@ export function isElementHover(element: UIElement, mousePos: Location): boolean 
   return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
          (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }
+
+/**
+ * say to App that need to redraw the canvas
+ */
+export function redraw() {
+  redraw.isValidCanvasState = false;
+}
