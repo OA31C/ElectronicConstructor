@@ -16,7 +16,7 @@ export class MenuCtrl extends UICtrl {
    */
   onClick(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
-    // FIXME: check is mouse in menu rect. Return `false` otherwise
+    // FIXME: check is mouse in menu rect. Return `true` otherwise
     for (const item of this.model.items) {
       if (item.isHover(mousePosition)) {
         item.select();

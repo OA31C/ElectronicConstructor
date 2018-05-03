@@ -144,7 +144,7 @@ class LinesList extends Array {
    * @param mousePos
    */
   update(mousePos: Location) {
-    if (!this.length) return; // skip when list is empty
+    if (!this.length) return; // skip when nothing to update
     this[this.length - 1].update(mousePos);
   }
 }

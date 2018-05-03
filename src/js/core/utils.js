@@ -1,7 +1,7 @@
 // @flow
 
 import {Location} from './base/models';
-import {$canvas} from '../constants';
+import {$canvas, canvasCtx} from '../constants';
 import {UIElement} from '../core/base/models';
 
 /**
@@ -28,4 +28,26 @@ export function isElementHover(element: UIElement, mousePos: Location): boolean 
  */
 export function redraw() {
   redraw.isValidCanvasState = false;
+}
+
+/**
+ * Renders an image on the canvas
+ * - saves a loaded image to cache and loads it next times for the same `url`
+ */
+export function drawImage(url: string, ...args) {
+  const cacheKey = `img__${url}`;
+  // try to get the image from cache
+  let img = drawImage[cacheKey];
+
+  if (img) {
+    canvasCtx.drawImage(img, ...args);
+  } else {
+    img = new Image();
+    img.onload = function() {
+      canvasCtx.drawImage(img, ...args);
+    };
+    img.src = `/src/img/${url}`;
+    // save img to cache
+    drawImage[cacheKey] = img;
+  }
 }

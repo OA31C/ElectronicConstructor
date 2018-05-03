@@ -90,3 +90,8 @@ export class UIText extends UIElement {
     this.text = text;
   }
 }
+
+/**
+ * ...
+ */
+export class Electron {}

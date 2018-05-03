@@ -11,6 +11,7 @@ export class LinesDrawerView extends UIView {
    * ...
    */
   render(coordinates: Array<Line>) {
+    canvasCtx.lineWidth = 4; // FIXME: get it from a model
     canvasCtx.beginPath();
     for (let i = 0, len = coordinates.length; i < len; i++) {
       let coordinate = coordinates[i];

@@ -6,6 +6,7 @@ import {$canvas, canvasCtx} from './constants';
 import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
+import {createElement} from './components';
 
 /**
  * ...
@@ -33,6 +34,8 @@ class App {
     this._qualitySetup();
 
     this.controller = new AppController(this.height, this.width, this.workingSpace);
+    this.initElements();
+
     this.render();
   }
 
@@ -52,6 +55,14 @@ class App {
     $canvas.style.width = this.width + 'px';
     $canvas.style.height = this.height + 'px';
     canvasCtx.scale(ratio, ratio);
+  }
+
+  /**
+   * create elements that should be added just after loaded app
+   */
+  initElements() {
+    createElement('menu', {parentHeight: this.height, parentWidth: this.width, workingSpace: this.workingSpace});
+    createElement('line', this.workingSpace);
   }
 
   /**

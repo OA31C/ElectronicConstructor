@@ -14,7 +14,7 @@ export class Menu extends UIElement {
   /**
    * [constructor description]
    */
-  constructor(parentHeight: number, parentWidth: number, workingSpace: Object) {
+  constructor({parentHeight, parentWidth, workingSpace}) {
     super();
     this.workingSpace = workingSpace;
 
@@ -81,6 +81,9 @@ export class MenuItem extends UIText {
    */
   constructor(text: string) {
     super(text);
+
+    this.title = '';
+    this.description = '';
 
     this.textAlign = 'center';
     this.textColor = '#000000';
