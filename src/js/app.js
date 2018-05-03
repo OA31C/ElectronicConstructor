@@ -82,7 +82,7 @@ class App {
 
     // draw grid
     canvasCtx.lineWidth = 1;
-    canvasCtx.strokeStyle = '#8a893c';
+    canvasCtx.strokeStyle = '#bbb842';
 
     canvasCtx.beginPath();
     // horizontal
