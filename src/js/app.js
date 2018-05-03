@@ -2,7 +2,7 @@
 
 import '../css/main.css';
 
-import {$canvas, canvasCtx} from './constants';
+import {$canvas, canvasCtx, gridStep} from './constants';
 import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
@@ -73,6 +73,32 @@ class App {
   }
 
   /**
+   * draw background & grid
+   */
+  renderBackground() {
+    // draw background
+    canvasCtx.fillStyle = this.background;
+    canvasCtx.fillRect(0, 0, this.width, this.height);
+
+    // draw grid
+    canvasCtx.lineWidth = 1;
+    canvasCtx.strokeStyle = '#8a893c';
+
+    canvasCtx.beginPath();
+    // horizontal
+    for (let i = 0; this.height > i; i+=gridStep) {
+      canvasCtx.moveTo(0, i);
+      canvasCtx.lineTo(this.width, i);
+    }
+    // vertical
+    for (let i = 0; this.width > i; i+=gridStep) {
+      canvasCtx.moveTo(i, 0);
+      canvasCtx.lineTo(i, this.height);
+    }
+    canvasCtx.stroke();
+  }
+
+  /**
    * [render description]
    */
   render() {
@@ -82,11 +108,7 @@ class App {
     if (redraw.isValidCanvasState) return;
 
     this.clear();
-
-    // render background
-    canvasCtx.fillStyle = this.background;
-    canvasCtx.fillRect(0, 0, this.width, this.height);
-
+    this.renderBackground();
     this.controller.render();
 
     redraw.isValidCanvasState = true;
