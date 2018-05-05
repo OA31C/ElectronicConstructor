@@ -83,7 +83,6 @@ class App {
     // draw grid
     canvasCtx.lineWidth = 1;
     canvasCtx.strokeStyle = '#bbb842';
-
     canvasCtx.beginPath();
     // horizontal
     for (let i = 0; this.height > i; i+=gridStep) {

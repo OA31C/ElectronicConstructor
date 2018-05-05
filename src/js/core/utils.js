@@ -31,6 +31,27 @@ export function redraw() {
 }
 
 /**
+ * check are both args are the same
+ * it checks object type and object fields
+ */
+export function isEqual(first: any, second: any): boolean {
+  if (typeof first !== 'object' || typeof second !== 'object' ||
+      first === null || second === null) {
+    return first === second;
+  }
+  if (first.constructor !== second.constructor) return false;
+
+  // check object fields
+  const firstKeys = Object.getOwnPropertyNames(first);
+  const secondKeys = Object.getOwnPropertyNames(second);
+  if (firstKeys.length !== secondKeys.length) return false;
+  for (const field of firstKeys.sort()) {
+    if (!isEqual(first[field], second[field])) return false;
+  }
+  return true;
+}
+
+/**
  * Renders an image on the canvas
  * - saves a loaded image to cache and loads it next times for the same `url`
  */
