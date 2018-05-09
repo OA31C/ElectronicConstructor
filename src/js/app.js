@@ -36,6 +36,8 @@ class App {
     this.controller = new AppController(this.height, this.width, this.workingSpace);
     this.initElements();
 
+    $canvas.style.cursor = 'crosshair';
+
     this.render();
   }
 
@@ -62,7 +64,7 @@ class App {
    */
   initElements() {
     createElement('menu', {parentHeight: this.height, parentWidth: this.width, workingSpace: this.workingSpace});
-    createElement('line', this.workingSpace);
+    createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
   }
 
   /**

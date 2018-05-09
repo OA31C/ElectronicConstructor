@@ -16,11 +16,22 @@ export function getMousePos(event: MouseEvent): Location {
  * ...
  */
 export function isElementHover(element: UIElement, mousePos: Location): boolean {
-  if (!element.isDisplayed || !element.location || !element.width || !element.height) {
-    return false;
-  }
+  if (!element.isDisplayed || !element.location || !element.width || !element.height) return false;
   return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
          (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+}
+
+/**
+ * ...
+ */
+export function isCircleHover(element: Object, mousePos: Location): boolean {
+  if (!element.location || !element.radius) throw Error('element object has to have location and radius!');
+  // Euclidean distance in various coordinate systems
+  const distance = Math.sqrt(
+    Math.pow(element.location.x - mousePos.x, 2) +
+    Math.pow(element.location.y - mousePos.y, 2)
+  );
+  return distance <= element.radius;
 }
 
 /**
@@ -45,7 +56,7 @@ export function isEqual(first: any, second: any): boolean {
   const firstKeys = Object.getOwnPropertyNames(first);
   const secondKeys = Object.getOwnPropertyNames(second);
   if (firstKeys.length !== secondKeys.length) return false;
-  for (const field of firstKeys.sort()) {
+  for (const field of firstKeys) {
     if (!isEqual(first[field], second[field])) return false;
   }
   return true;
