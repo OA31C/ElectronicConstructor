@@ -3,6 +3,7 @@ const path = require('path');
 // FIXME: add FLOW checker
 
 module.exports = {
+  devtool: 'source-map',
   entry: './src/js/app.js',
   output: {
     path: path.resolve(__dirname, 'dist'),

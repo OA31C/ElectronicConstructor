@@ -3,6 +3,7 @@
 
 import {Location, UIElement} from '../../core/base/models';
 import {isCircleHover, isEqual} from '../../core/utils';
+import {gridStep} from '../../constants';
 
 
 /**
@@ -17,7 +18,7 @@ export class Line extends UIElement {
    * ...
    */
   constructor({startPoint, endPoint}) {
-    if (!startPoint || !endPoint) throw Error('arguments are required!');
+    if (!startPoint || !endPoint) throw new Error('arguments are required!');
     super();
     this.coordinates = [startPoint, endPoint];
     this.lineWidth = 3;
@@ -81,29 +82,34 @@ export class Line extends UIElement {
   update(mousePos: Location) {
     // 1) skip if no holding
     if (!this.hold) return false;
+    // 2) Line instance always has to have some coordinates before update
+    if (!this.coordinates.length) throw new Error('Line has to have initial coordinates!');
 
-    // 2) skip this coordinate when it's the same as well as the latest saved one
-    if (this.coordinates.length) {
-      let lastCoordinate = this.coordinates[this.coordinates.length - 1];
-      if (isEqual(lastCoordinate, mousePos)) return false;
-    }
+    let lastCoordinate = this.coordinates[this.coordinates.length - 1];
 
-    // 3) push the coordinate
+    // 3) skip this coordinate when it's the same as well as the latest saved one
+    if (isEqual(lastCoordinate, mousePos)) return false;
+
+    mousePos.x = Math.round(mousePos.x / gridStep) * gridStep;
+    mousePos.y = Math.round(mousePos.y / gridStep) * gridStep;
+
+    // 4) push the coordinate
     if (this.hold === 'input') {
       this.coordinates.unshift(mousePos);
     } else if (this.hold === 'output') {
       this.coordinates.push(mousePos);
-    }
+    } else console.warn(`Unknown hold: ${this.hold}`);
 
-    // 4) check last three coordinates (FIXME: should check first three coordinates too, if it's input)
+    // 5) check last three coordinates (FIXME: should check first three coordinates too, if it's input)
     // -------------------------------
     if (this.coordinates.length > 3) {
       const lastThreeCoordinates = this.coordinates.slice(-3);
-      // * if it's a straight line, like: ---, or: |
-      //                                           |
-      // - remove the second coordinate
-      if (isEqual(lastThreeCoordinates[0], lastThreeCoordinates[1]) &&
-          isEqual(lastThreeCoordinates[0], lastThreeCoordinates[2])) {
+      // * if it's a horizontal or vertical line:
+      //   - remove the second coordinate
+      if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x &&
+           lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
+          (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
+           lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
         this.coordinates.splice(-2, 1);
       }
     }
