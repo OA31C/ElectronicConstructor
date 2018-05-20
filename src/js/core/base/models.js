@@ -1,5 +1,7 @@
 // @flow
 
+// FIXME: use flow interfaces!!!
+
 /**
  * Use it for all of coordinate instances
  */

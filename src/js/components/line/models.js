@@ -4,6 +4,8 @@
 import {Location, UIElement} from '../../core/base/models';
 import {isCircleHover, isEqual} from '../../core/utils';
 import {gridStep} from '../../constants';
+import {createElement} from '../index';
+import {LineCtrl} from './controllers';
 
 
 /**
@@ -11,17 +13,25 @@ import {gridStep} from '../../constants';
  */
 export class Line extends UIElement {
   coordinates: Array<Location>;
-  lineWidth: number;
   hold: string | boolean;
+  immutableLineColor: string;
+  lineColor: string;
+  lineWidth: number;
+  mutable: boolean;
 
   /**
    * ...
    */
-  constructor({startPoint, endPoint}) {
+  constructor({startPoint, endPoint, mutable=true}) {
     if (!startPoint || !endPoint) throw new Error('arguments are required!');
     super();
     this.coordinates = [startPoint, endPoint];
+    this.lineColor = '#3e3e3e';
     this.lineWidth = 3;
+
+    // `true`: updates the current instance; `false`: creates a new instance
+    this.mutable = mutable;
+    this.immutableLineColor = '#ff5644';
 
     this.isDisplayed = true;
 
@@ -57,6 +67,13 @@ export class Line extends UIElement {
   }
 
   /**
+   * @returns: lineColor if mutable, immutableLineColor otherwise
+   */
+  get color() {
+    return this.mutable ? this.lineColor : this.immutableLineColor;
+  }
+
+  /**
    * returns the first coordinate and radius
    */
   get input(): Object {
@@ -79,38 +96,60 @@ export class Line extends UIElement {
   /**
    * ...
    */
-  update(mousePos: Location) {
+  update(mousePos: Location): boolean {
     // 1) skip if no holding
     if (!this.hold) return false;
+    // or wrong hold
+    if (!this[this.hold]) throw new Error(`Incorrect 'this.hold': ${this.hold}`);
     // 2) Line instance always has to have some coordinates before update
     if (!this.coordinates.length) throw new Error('Line has to have initial coordinates!');
 
-    let lastCoordinate = this.coordinates[this.coordinates.length - 1];
-
-    // 3) skip this coordinate when it's the same as well as the latest saved one
-    if (isEqual(lastCoordinate, mousePos)) return false;
-
+    // 3) move location to the nearest grid point
     mousePos.x = Math.round(mousePos.x / gridStep) * gridStep;
     mousePos.y = Math.round(mousePos.y / gridStep) * gridStep;
 
-    // 4) push the coordinate
+    const theLatestLocation = this[this.hold].location;
+
+    // 4) skip this coordinate when it's the same as well as the latest saved one
+    if (isEqual(theLatestLocation, mousePos)) return false;
+
+    // 5) immutable? -> create another Line instance
+    if (!this.mutable) {
+      let newLineOptions;
+      if (this.hold === 'input') {
+        newLineOptions = {startPoint: mousePos, endPoint: theLatestLocation};
+      } else {
+        newLineOptions = {startPoint: theLatestLocation, endPoint: mousePos};
+      }
+      const newLineCtrl: LineCtrl = createElement('line', newLineOptions);
+      // move mouse hold from the current line to the new one
+      newLineCtrl.model.hold = this.hold;
+      this.hold = false;
+      return true;
+    }
+    // 6) push the coordinate
     if (this.hold === 'input') {
       this.coordinates.unshift(mousePos);
     } else if (this.hold === 'output') {
       this.coordinates.push(mousePos);
-    } else console.warn(`Unknown hold: ${this.hold}`);
+    } else throw new Error(`Unknown 'this.hold': ${this.hold}`);
 
-    // 5) check last three coordinates (FIXME: should check first three coordinates too, if it's input)
+    // 7) check last three coordinates
     // -------------------------------
-    if (this.coordinates.length > 3) {
-      const lastThreeCoordinates = this.coordinates.slice(-3);
+    if (this.coordinates.length >= 3) {
+      let lastThreeCoordinates;
+      if (this.hold === 'output') {
+        lastThreeCoordinates = this.coordinates.slice(-3);
+      } else {
+        lastThreeCoordinates = this.coordinates.slice(0, 3);
+      }
       // * if it's a horizontal or vertical line:
       //   - remove the second coordinate
       if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x &&
            lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
           (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
            lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
-        this.coordinates.splice(-2, 1);
+        this.coordinates.splice(this.hold === 'output' ? -2 : 1, 1);
       }
     }
     return true;

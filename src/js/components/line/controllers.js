@@ -11,7 +11,9 @@ export class LineCtrl extends UICtrl {
   view: LineView;
 
   render() {
-    this.view.render(this.model.coordinates, this.model.lineWidth, this.model.input, this.model.output);
+    this.view.render(
+      this.model.coordinates, this.model.lineWidth, this.model.input, this.model.output, this.model.color
+    );
   }
 
   onMouseDown(event: MouseEvent): boolean {
