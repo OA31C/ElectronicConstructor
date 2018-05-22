@@ -56,7 +56,7 @@ export class Line extends UIElement {
   /**
    * check is mouse on input/output
    */
-  setHold(mousePos: Location) {
+  setHold(mousePos: Location): boolean {
     if (this.isInputHover(mousePos)) {
       this.hold = 'input';
     } else if (this.isOutputHover(mousePos)) {
@@ -64,6 +64,7 @@ export class Line extends UIElement {
     } else {
       this.hold = false;
     }
+    return !!this.hold;
   }
 
   /**

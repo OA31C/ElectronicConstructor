@@ -18,8 +18,7 @@ export class LineCtrl extends UICtrl {
 
   onMouseDown(event: MouseEvent): boolean {
     const mousePos = getMousePos(event);
-    this.model.setHold(mousePos);
-    return true;
+    return !this.model.setHold(mousePos);
   }
 
   onMouseMove(event: MouseEvent): boolean {
@@ -34,7 +33,10 @@ export class LineCtrl extends UICtrl {
       $canvas.style.cursor = this.prevCursor;
     }
     // update line
-    if (this.model.update(mousePos)) redraw();
+    if (this.model.update(mousePos)) {
+      redraw();
+      return false;
+    }
     return true;
   }
 
