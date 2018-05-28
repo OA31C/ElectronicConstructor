@@ -11,7 +11,7 @@ import {createElement} from './components';
 /**
  * ...
  */
-class App {
+export class App  {
   background: string;
   controller: AppController;
   width: number;
@@ -65,7 +65,7 @@ class App {
   initElements() {
     createElement('menu', {getParentHeight: () => this.height, getParentWidth: () => this.width, workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
-    // createElement('lamp', {location: new Location(600, 100)});
+    createElement('lamp', {location: new Location(600, 100)});
   }
 
   /**

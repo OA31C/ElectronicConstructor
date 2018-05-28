@@ -10,6 +10,8 @@ export class Menu extends UIElement {
   partOfCanvas: number;
   items: Array<MenuItem>;
   workingSpace: Object;
+  getParentHeight: Function;
+  getParentWidth: Function;
 
   /**
    * [constructor description]
@@ -37,21 +39,14 @@ export class Menu extends UIElement {
     this.initItems();
   }
 
-  /**
-   * [return location]
-   */
-  get location() {
+  get location(): Location {
     return new Location(this.getParentWidth() - this.width, 0);
   }
 
-  get height():number {
+  get height(): number {
     return this.getParentHeight();
   }
 
-  /**
-   *
-   * [returns value width]
-   */
   get width(): number {
     const width = this.getParentWidth() / this.partOfCanvas;
     this.workingSpace.width -= width - (this.__filledWorkingSpace || 0);
