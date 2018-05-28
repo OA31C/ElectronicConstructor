@@ -65,7 +65,7 @@ class App {
   initElements() {
     createElement('menu', {parentHeight: this.height, parentWidth: this.width, workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
-    createElement('line', {startPoint: new Location(300, 100), endPoint: new Location(300, 200), mutable: false});
+    createElement('lamp', {location: new Location(600, 100)});
   }
 
   /**

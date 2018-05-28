@@ -10,6 +10,6 @@ export class LampView extends UIView {
    * ...
    */
   render(lamp: Lamp) {
-    drawImage(lamp.imgActive, lamp.location.x, lamp.location.y, lamp.width, lamp.height);
+    drawImage(lamp.img, lamp.location.x, lamp.location.y, lamp.width, lamp.height);
   }
 }

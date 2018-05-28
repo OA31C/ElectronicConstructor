@@ -6,11 +6,14 @@ import {LineCtrl} from './line/controllers';
 import {MenuCtrl} from './menu/controllers';
 import {MenuView} from './menu/views';
 import {Menu} from './menu/models';
+import {Lamp} from './lamp/models';
+import {LampCtrl} from './lamp/controllers';
+import {LampView} from './lamp/views';
 
 
 const ELEMENTS = {
   battery: {},
-  lamp: {},
+  lamp: {model: Lamp, view: LampView, ctrl: LampCtrl},
   line: {model: Line, view: LineView, ctrl: LineCtrl},
   menu: {model: Menu, view: MenuView, ctrl: MenuCtrl},
 };
