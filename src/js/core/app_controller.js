@@ -2,6 +2,7 @@
 
 import {UICtrl} from './base/controllers.js';
 import {$canvas} from '../constants.js';
+import {redraw} from './utils';
 
 
 /**
@@ -14,12 +15,15 @@ export class AppController {
   /**
    * [constructor description]
    */
-  constructor() {
+  constructor(app) {
     // *** PROPERTIES ***
     this.controllers = [];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
 
     // *** Initializations ***
+    this.app = app;
+
+    this.initAppEvents();
     this.handleEvents();
 
     AppController.instance = this;
@@ -66,5 +70,19 @@ export class AppController {
     for (const controller of this.controllers) {
       controller.render();
     }
+  }
+
+  /**
+   * [resize window]
+   */
+  initAppEvents() {
+    window.addEventListener('resize', () => this.onResizeWindow());
+  }
+
+  onResizeWindow() {
+    this.app.width = window.innerWidth;
+    this.app.height = window.innerHeight;
+    this.app._qualitySetup();
+    redraw();
   }
 }

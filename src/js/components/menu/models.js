@@ -14,8 +14,10 @@ export class Menu extends UIElement {
   /**
    * [constructor description]
    */
-  constructor({parentHeight, parentWidth, workingSpace}) {
+  constructor({getParentHeight, getParentWidth, workingSpace}) {
     super();
+    this.getParentHeight = getParentHeight;
+    this.getParentWidth = getParentWidth;
     this.workingSpace = workingSpace;
 
     // size, that one will be cut for the menu
@@ -25,11 +27,6 @@ export class Menu extends UIElement {
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
     this.partOfCanvas = 5;
-
-    this.height = parentHeight;
-    this.width = parentWidth / this.partOfCanvas;
-    this.location = new Location(parentWidth - this.width, 0);
-
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
@@ -41,21 +38,25 @@ export class Menu extends UIElement {
   }
 
   /**
-   * ...
-   * @param value
+   * [return location]
    */
-  set width(value: number) {
-    this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
-    this.__filledWorkingSpace = value;
-    this._width = value;
+  get location() {
+    return new Location(this.getParentWidth() - this.width, 0);
+  }
+
+  get height():number {
+    return this.getParentHeight();
   }
 
   /**
-   * ...
-   * @returns {number}
+   *
+   * [returns value width]
    */
   get width(): number {
-    return this._width;
+    const width = this.getParentWidth() / this.partOfCanvas;
+    this.workingSpace.width -= width - (this.__filledWorkingSpace || 0);
+    this.__filledWorkingSpace = width;
+    return width;
   }
 
   /**

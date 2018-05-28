@@ -33,7 +33,7 @@ class App {
     // *** Initializations ***
     this._qualitySetup();
 
-    this.controller = new AppController(this.height, this.width, this.workingSpace);
+    this.controller = new AppController(this);
     this.initElements();
 
     $canvas.style.cursor = 'crosshair';
@@ -63,9 +63,9 @@ class App {
    * create elements that should be added just after loaded app
    */
   initElements() {
-    createElement('menu', {parentHeight: this.height, parentWidth: this.width, workingSpace: this.workingSpace});
+    createElement('menu', {getParentHeight: () => this.height, getParentWidth: () => this.width, workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
-    createElement('lamp', {location: new Location(600, 100)});
+    // createElement('lamp', {location: new Location(600, 100)});
   }
 
   /**
