@@ -1,10 +1,9 @@
 // @flow
 
-import {canvasCtx} from '../../constants.js';
+import {$canvas, canvasCtx} from '../../constants.js';
 import {Location, UIElement} from '../../core/base/models.js';
 import {UIView} from '../../core/base/views.js';
 import {Menu, MenuItem} from './models.js';
-
 
 /**
  * ...

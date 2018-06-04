@@ -1,6 +1,6 @@
 // @flow
 
-// import {UIElement} from './models.js';
+import {UIElement} from './models.js';
 
 /**
  * ...

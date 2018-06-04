@@ -58,6 +58,7 @@ export class UIElement {
 
   isDisplayed: boolean;
 
+
   /**
    * [show description]
    */

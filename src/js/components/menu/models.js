@@ -28,17 +28,23 @@ export class Menu extends UIElement {
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
+
+    this.isResizeHold = false;
+
     this.partOfCanvas = 5;
-    this.borderWidth = 1;
+    this.borderWidth = 5;
     this.borderColor = '#000000';
 
     this.background = '#cccccc';
 
     this.isDisplayed = true;
-
+    this.width = this.getParentWidth() / this.partOfCanvas;
     this.initItems();
   }
 
+  /**
+   * returns the location
+   */
   get location(): Location {
     return new Location(this.getParentWidth() - this.width, 0);
   }
@@ -47,11 +53,17 @@ export class Menu extends UIElement {
     return this.getParentHeight();
   }
 
+  /**
+   * return width
+   */
+  set width(value: number) {
+    this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
+    this.__filledWorkingSpace = value;
+    this._width = value;
+  }
+
   get width(): number {
-    const width = this.getParentWidth() / this.partOfCanvas;
-    this.workingSpace.width -= width - (this.__filledWorkingSpace || 0);
-    this.__filledWorkingSpace = width;
-    return width;
+    return this._width;
   }
 
   /**
