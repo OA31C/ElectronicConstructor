@@ -32,7 +32,7 @@ export class Menu extends UIElement {
     this.isResizeHold = false;
 
     this.partOfCanvas = 5;
-    this.borderWidth = 5;
+    this.borderWidth = 1;
     this.borderColor = '#000000';
 
     this.background = '#cccccc';
