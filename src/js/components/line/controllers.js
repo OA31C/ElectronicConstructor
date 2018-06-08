@@ -4,7 +4,7 @@ import {UICtrl} from '../../core/base/controllers';
 import {Line} from './models';
 import {LineView} from './views';
 import {getMousePos, redraw} from '../../core/utils';
-import {$canvas} from '../../constants';
+import {$canvas, DEFAULT_CURSOR} from '../../constants';
 
 export class LineCtrl extends UICtrl {
   model: Line;
@@ -23,21 +23,20 @@ export class LineCtrl extends UICtrl {
 
   onMouseMove(event: MouseEvent): boolean {
     const mousePos = getMousePos(event);
+    let isHover = false;
     // set cursor
     if (this.model.isInputHover(mousePos) || this.model.isOutputHover(mousePos)) {
-      const hoverCursor = 'pointer';
-      // save the cursor that was before hoverCursor
-      this.prevCursor = $canvas.style.cursor !== hoverCursor ? $canvas.style.cursor : this.prevCursor;
-      $canvas.style.cursor = hoverCursor;
+      $canvas.style.cursor = 'crosshair';
+      isHover = true;
     } else if (!this.model.hold) {
-      $canvas.style.cursor = this.prevCursor;
+      $canvas.style.cursor = DEFAULT_CURSOR;
     }
     // update line
     if (this.model.update(mousePos)) {
       redraw();
       return false;
     }
-    return true;
+    return !isHover;
   }
 
   onMouseUp(event: MouseEvent): boolean {

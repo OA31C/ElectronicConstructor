@@ -2,7 +2,7 @@
 
 import '../css/main.css';
 
-import {$canvas, canvasCtx, gridStep} from './constants';
+import {$canvas, canvasCtx, DEFAULT_CURSOR, GRID_STEP} from './constants';
 import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
@@ -36,7 +36,7 @@ class App {
     this.controller = new AppController(this.height, this.width, this.workingSpace);
     this.initElements();
 
-    $canvas.style.cursor = 'crosshair';
+    $canvas.style.cursor = DEFAULT_CURSOR;
 
     this.render();
   }
@@ -89,12 +89,12 @@ class App {
     canvasCtx.strokeStyle = '#c7c7c7';
     canvasCtx.beginPath();
     // horizontal
-    for (let i = 0; this.height > i; i+=gridStep) {
+    for (let i = 0; this.height > i; i+=GRID_STEP) {
       canvasCtx.moveTo(0, i);
       canvasCtx.lineTo(this.width, i);
     }
     // vertical
-    for (let i = 0; this.width > i; i+=gridStep) {
+    for (let i = 0; this.width > i; i+=GRID_STEP) {
       canvasCtx.moveTo(i, 0);
       canvasCtx.lineTo(i, this.height);
     }
