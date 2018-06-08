@@ -23,12 +23,11 @@ export class LineCtrl extends UICtrl {
 
   onMouseMove(event: MouseEvent): boolean {
     const mousePos = getMousePos(event);
-    let isHover = false;
+    const isHover = this.model.isInputHover(mousePos) || this.model.isOutputHover(mousePos);
     // set cursor
-    if (this.model.isInputHover(mousePos) || this.model.isOutputHover(mousePos)) {
+    if (isHover || this.model.hold) {
       $canvas.style.cursor = 'crosshair';
-      isHover = true;
-    } else if (!this.model.hold) {
+    } else {
       $canvas.style.cursor = DEFAULT_CURSOR;
     }
     // update line
@@ -36,10 +35,13 @@ export class LineCtrl extends UICtrl {
       redraw();
       return false;
     }
-    return !isHover;
+    return !isHover && !this.model.hold;
   }
 
   onMouseUp(event: MouseEvent): boolean {
+    if (this.model.hold) {
+      $canvas.style.cursor = DEFAULT_CURSOR;
+    }
     this.model.hold = false;
     return true;
   }
