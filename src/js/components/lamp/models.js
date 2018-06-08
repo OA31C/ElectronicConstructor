@@ -20,8 +20,8 @@ export class Lamp extends UIElement {
     super();
     this.location = location;
     this.active = false;
-    this.width = 50;
-    this.height = 50;
+    this.width = 60;
+    this.height = 60;
 
     this.line = createElement(
       'line', {

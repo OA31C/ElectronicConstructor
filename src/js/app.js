@@ -23,7 +23,7 @@ class App {
    */
   constructor() {
     // *** PROPERTIES ***
-    this.background = '#e3e172';
+    this.background = '#e4e4e4';
     this.height = window.innerHeight;
     this.width = window.innerWidth;
 
@@ -66,6 +66,7 @@ class App {
     createElement('menu', {parentHeight: this.height, parentWidth: this.width, workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
+    createElement('battery', {location: new Location(605, 195)});
   }
 
   /**
@@ -85,7 +86,7 @@ class App {
 
     // draw grid
     canvasCtx.lineWidth = 1;
-    canvasCtx.strokeStyle = '#bbb842';
+    canvasCtx.strokeStyle = '#c7c7c7';
     canvasCtx.beginPath();
     // horizontal
     for (let i = 0; this.height > i; i+=gridStep) {

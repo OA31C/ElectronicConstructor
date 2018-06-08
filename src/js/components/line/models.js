@@ -31,7 +31,7 @@ export class Line extends UIElement {
 
     // `true`: updates the current instance; `false`: creates a new instance
     this.mutable = mutable;
-    this.immutableLineColor = '#ff5644';
+    this.immutableLineColor = '#ff2e34';
 
     this.isDisplayed = true;
 

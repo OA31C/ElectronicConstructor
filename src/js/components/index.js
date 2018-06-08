@@ -9,10 +9,13 @@ import {Menu} from './menu/models';
 import {Lamp} from './lamp/models';
 import {LampCtrl} from './lamp/controllers';
 import {LampView} from './lamp/views';
+import {Battery} from './battery/models';
+import {BatteryView} from './battery/views';
+import {BatteryCtrl} from './battery/controllers';
 
 
 const ELEMENTS = {
-  battery: {},
+  battery: {model: Battery, view: BatteryView, ctrl: BatteryCtrl},
   lamp: {model: Lamp, view: LampView, ctrl: LampCtrl},
   line: {model: Line, view: LineView, ctrl: LineCtrl},
   menu: {model: Menu, view: MenuView, ctrl: MenuCtrl},
