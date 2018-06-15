@@ -11,7 +11,7 @@ import {createElement} from './components';
 /**
  * ...
  */
-export class App  {
+export class App {
   background: string;
   controller: AppController;
   width: number;
@@ -63,7 +63,8 @@ export class App  {
    * create elements that should be added just after loaded app
    */
   initElements() {
-    createElement('menu', {getParentHeight: () => this.height, getParentWidth: () => this.width, workingSpace: this.workingSpace});
+    createElement('menu', {getParentHeight: () => this.height, getParentWidth: () => this.width,
+    workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
   }

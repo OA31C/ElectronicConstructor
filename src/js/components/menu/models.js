@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // @flow
 
 import {isElementHover} from '../../core/utils.js';
@@ -39,7 +40,13 @@ export class Menu extends UIElement {
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
+
+    this.closeButton = new MenuButton({location: new Location(this.location.x+this.width-19, 0), width: 18, height: 18, background: '#EE3742', text: '◄'});
+    this.closeButton.onClick = (event) => {
+this.show();
+};
     this.initItems();
+    console.log(this.isDisplayed);
   }
 
   /**
@@ -125,3 +132,32 @@ export class MenuItem extends UIText {
     return isElementHover(this, mousePos);
   }
 }
+
+/**
+ * Start create button
+ */
+export class MenuButton extends UIElement {
+  /**
+    * [constructor description]
+  * */
+  constructor({location, width, height, background, text}) {
+      super();
+      this.location = location;
+
+      this.width = width;
+      this.height = height;
+
+      this.background = background;
+      this.borderColor = '#050505';
+      this.borderWidth = 1;
+
+      this.imgButton = 'buttons/menu_button.png';
+
+      this.isDisplayed = true;
+
+      MenuButton.instances.push(this);
+  }
+}
+
+MenuButton.instances = [];
+console.log(MenuButton.partOfCanvas);

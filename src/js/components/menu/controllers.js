@@ -2,8 +2,8 @@
 
 import {UICtrl} from '../../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../../core/utils';
-import {Menu} from './models';
-import {$canvas} from '../../constants';
+import {Menu, MenuButton} from './models';
+import {$canvas, canvasCtx} from '../../constants';
 import {hoverCursor} from '../line/controllers';
 /**
  * ...
@@ -17,6 +17,13 @@ export class MenuCtrl extends UICtrl {
    */
   onClick(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
+
+    // checked button
+    for (const button of MenuButton.instances) {
+      if (isElementHover(button, mousePosition)) {
+        button.onClick && button.onClick();
+      }
+    }
     // FIXME: check is mouse in menu rect. Return `true` otherwise
     for (const item of this.model.items) {
       if (item.isHover(mousePosition)) {
@@ -38,6 +45,7 @@ export class MenuCtrl extends UICtrl {
       this.model.isResizeHold = true;
     } else return true;
   }
+
   onMouseMove(event: MouseEvent): boolean {
     let mousePosition = getMousePos(event);
     const colResize = 'col-resize';
@@ -52,9 +60,15 @@ export class MenuCtrl extends UICtrl {
       $canvas.style.cursor = colResize;
       let resize = mousePosition.x;
       let resizeWidth = this.model.width + this.model.location.x - resize;
-
       this.model.width = resizeWidth;
+
       redraw();
+
+      // hides the menu
+      if (this.model.width <= 4) {
+        this.model.hide();
+        this.model.width = this.model.getParentWidth() / this.model.partOfCanvas;
+      }
     } else return true;
   }
 
