@@ -2,7 +2,7 @@
 
 import '../css/main.css';
 
-import {$canvas, canvasCtx, gridStep} from './constants';
+import {$canvas, canvasCtx, DEFAULT_CURSOR, GRID_STEP} from './constants';
 import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
@@ -23,7 +23,7 @@ export class App {
    */
   constructor() {
     // *** PROPERTIES ***
-    this.background = '#e3e172';
+    this.background = '#e4e4e4';
     this.height = window.innerHeight;
     this.width = window.innerWidth;
 
@@ -36,7 +36,7 @@ export class App {
     this.controller = new AppController(this);
     this.initElements();
 
-    $canvas.style.cursor = 'crosshair';
+    $canvas.style.cursor = DEFAULT_CURSOR;
 
     this.render();
   }
@@ -67,6 +67,7 @@ export class App {
     workingSpace: this.workingSpace});
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
+    createElement('battery', {location: new Location(605, 195)});
   }
 
   /**
@@ -86,15 +87,15 @@ export class App {
 
     // draw grid
     canvasCtx.lineWidth = 1;
-    canvasCtx.strokeStyle = '#bbb842';
+    canvasCtx.strokeStyle = '#c7c7c7';
     canvasCtx.beginPath();
     // horizontal
-    for (let i = 0; this.height > i; i+=gridStep) {
+    for (let i = 0; this.height > i; i+=GRID_STEP) {
       canvasCtx.moveTo(0, i);
       canvasCtx.lineTo(this.width, i);
     }
     // vertical
-    for (let i = 0; this.width > i; i+=gridStep) {
+    for (let i = 0; this.width > i; i+=GRID_STEP) {
       canvasCtx.moveTo(i, 0);
       canvasCtx.lineTo(i, this.height);
     }

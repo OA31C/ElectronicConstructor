@@ -3,7 +3,7 @@
 
 import {Location, UIElement} from '../../core/base/models';
 import {isCircleHover, isEqual} from '../../core/utils';
-import {gridStep} from '../../constants';
+import {GRID_STEP} from '../../constants';
 import {createElement} from '../index';
 import {LineCtrl} from './controllers';
 
@@ -31,7 +31,7 @@ export class Line extends UIElement {
 
     // `true`: updates the current instance; `false`: creates a new instance
     this.mutable = mutable;
-    this.immutableLineColor = '#ff5644';
+    this.immutableLineColor = '#ff2e34';
 
     this.isDisplayed = true;
 
@@ -106,8 +106,8 @@ export class Line extends UIElement {
     if (!this.coordinates.length) throw new Error('Line has to have initial coordinates!');
 
     // 3) move location to the nearest grid point
-    mousePos.x = Math.round(mousePos.x / gridStep) * gridStep;
-    mousePos.y = Math.round(mousePos.y / gridStep) * gridStep;
+    mousePos.x = Math.round(mousePos.x / GRID_STEP) * GRID_STEP;
+    mousePos.y = Math.round(mousePos.y / GRID_STEP) * GRID_STEP;
 
     const theLatestLocation = this[this.hold].location;
 

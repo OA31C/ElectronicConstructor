@@ -7,4 +7,6 @@ export const canvasCtx = $canvas.getContext('2d');
 
 export const FPS = 60;
 
-export const gridStep = 20;
+export const GRID_STEP = 20;
+
+export const DEFAULT_CURSOR = 'default';
