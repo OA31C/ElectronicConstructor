@@ -3,8 +3,7 @@
 import {UICtrl} from '../../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas} from '../../constants';
-import {hoverCursor} from '../line/controllers';
+import {$canvas, DEFAULT_CURSOR} from '../../constants';
 /**
  * ...
  */
@@ -57,7 +56,7 @@ export class MenuCtrl extends UICtrl {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
       return false;
-    } else $canvas.style.cursor = 'DEFAULT_CURSOR';
+    } else $canvas.style.cursor = DEFAULT_CURSOR;
 
     if (this.model.isResizeHold) {
       $canvas.style.cursor = 'col-resize';
