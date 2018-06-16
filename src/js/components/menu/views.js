@@ -14,7 +14,6 @@ export class MenuView extends UIView {
    * render menu and its items
    */
   render(menu: Menu) {
-
     if (menu.isDisplayed) {
       this.drawBackground(menu);
       this.drawBorder(menu);
@@ -104,7 +103,7 @@ export class MenuView extends UIView {
    */
   renderButton(button: MenuButton) {
     if (!button.isDisplayed) return;
-    drawImage(button.img, button.location.x + button.width-18, button.height - 17, button.width, button.height);
+    drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
   }
 }
 

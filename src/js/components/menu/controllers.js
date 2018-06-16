@@ -20,9 +20,10 @@ export class MenuCtrl extends UICtrl {
 
     // redirect the event to menu buttons
     for (const button of MenuButton.instances) {
-      if (isElementHover(button, mousePosition)) {
-        button.onClick && button.onClick();
-      }
+      if (button.onClick && isElementHover(button, mousePosition)) {
+        button.onClick();
+        return false;
+    }
     }
     // FIXME: check is mouse in menu rect. Return `true` otherwise
     for (const item of this.model.items) {
@@ -41,35 +42,40 @@ export class MenuCtrl extends UICtrl {
   */
   onMouseDown(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
-    if (this.model.checkBorder(mousePosition.x, this.model.location.x)) {
+    if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
       this.model.isResizeHold = true;
     } else return true;
   }
 
+  /**
+   * the mouse is moving in menu
+  */
   onMouseMove(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
 
-    if (this.model.checkBorder(mousePosition.x, this.model.location.x)) {
+    if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
       $canvas.style.cursor = 'col-resize';
+      // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
       return false;
-    } else $canvas.style.cursor = 'default';
+    } else $canvas.style.cursor = 'DEFAULT_CURSOR';
 
     if (this.model.isResizeHold) {
       $canvas.style.cursor = 'col-resize';
       this.model.width = this.model.width + this.model.location.x - mousePosition.x;
 
-
       redraw();
-
       // hides the menu
-      if (this.model.width <= 4) {
-        this.model.hide();
-        this.model.width = this.model.getParentWidth() / this.model.partOfCanvas;
+      if (this.model.width <= this.model.defaultWidth / 4) {
+          this.model.hide();
+      } else if (!this.model.isDisplayed) {
+          this.model.show();
       }
     } else return true;
   }
-
-  onMouseUp(event: MouseEvent): boolean {
+ /**
+  * the mouse is up in menu
+  */
+  onMouseUp() {
     this.model.isResizeHold = false;
     return true;
   }

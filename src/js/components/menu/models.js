@@ -39,13 +39,17 @@ export class Menu extends UIElement {
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
+    this.defaultWidth = this.width;
+    const closeButtonWidth = 20;
 
     this.closeButton = new MenuButton({
-        location: new Location(this.location.x+this.width-19, 0),
-        width: 18, height: 18,
-        background: '#EE3742', text: '◄',
+        location: new Location(this.location.x+this.width-closeButtonWidth, 0),
+        width: closeButtonWidth, height: 18,
+        background: '#EE3742',
     });
-    this.closeButton.onClick = (event) => {this.show()};
+    this.closeButton.onClick = (event) => {
+      this.show();
+    };
     this.initItems();
   }
 
@@ -56,6 +60,9 @@ export class Menu extends UIElement {
     return new Location(this.getParentWidth() - this.width, 0);
   }
 
+    /**
+     * returns hight menu
+  */
   get height(): number {
     return this.getParentHeight();
   }
@@ -69,6 +76,9 @@ export class Menu extends UIElement {
     this._width = value;
   }
 
+  /**
+   * Getter width
+  */
   get width(): number {
     return this._width;
   }
@@ -87,15 +97,24 @@ export class Menu extends UIElement {
   /**
    * Check if mouse position x is close to menu border
    */
-  checkBorder(mouseX, elementLocationX) {
-      return Math.abs(mouseX - elementLocationX) < this.borderWidth;
+  isBorderHover(mouseX, elementX) {
+      return Math.abs(mouseX - elementX) < this.borderWidth;
   }
 
+  /**
+   * show the menu + hide closeButton
+   */
   show() {
+    if (!this.isResizeHold) {
+        this.width = this.defaultWidth;
+    }
     super.show();
     this.closeButton.hide();
   }
 
+  /**
+   * hide the menu + show closeButton
+  */
   hide() {
     super.hide();
     this.closeButton.show();
@@ -171,7 +190,6 @@ export class MenuButton extends UIElement {
       this.img = 'buttons/menu_button.png';
 
       this.isDisplayed = false;
-
       MenuButton.instances.push(this);
   }
 }
