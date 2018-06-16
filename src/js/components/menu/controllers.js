@@ -40,27 +40,24 @@ export class MenuCtrl extends UICtrl {
    * Resize Width in Menu
   */
   onMouseDown(event: MouseEvent): boolean {
-    let mousePosition = getMousePos(event);
-    if (this.checkCloseEnough(mousePosition.x, this.model.location.x)) {
+    const mousePosition = getMousePos(event);
+    if (this.model.checkBorder(mousePosition.x, this.model.location.x)) {
       this.model.isResizeHold = true;
     } else return true;
   }
 
   onMouseMove(event: MouseEvent): boolean {
-    let mousePosition = getMousePos(event);
-    const colResize = 'col-resize';
-    this.prevCursor = $canvas.style.cursor !== colResize ? $canvas.style.cursor : this.prevCursor;
+    const mousePosition = getMousePos(event);
 
-    if (this.checkCloseEnough(mousePosition.x, this.model.location.x)) {
-      $canvas.style.cursor = colResize;
+    if (this.model.checkBorder(mousePosition.x, this.model.location.x)) {
+      $canvas.style.cursor = 'col-resize';
       return false;
-    } else $canvas.style.cursor = this.prevCursor;
+    } else $canvas.style.cursor = 'default';
 
     if (this.model.isResizeHold) {
-      $canvas.style.cursor = colResize;
-      let resize = mousePosition.x;
-      let resizeWidth = this.model.width + this.model.location.x - resize;
-      this.model.width = resizeWidth;
+      $canvas.style.cursor = 'col-resize';
+      this.model.width = this.model.width + this.model.location.x - mousePosition.x;
+
 
       redraw();
 
@@ -75,12 +72,5 @@ export class MenuCtrl extends UICtrl {
   onMouseUp(event: MouseEvent): boolean {
     this.model.isResizeHold = false;
     return true;
-  }
-
-  /**
-   * Check if mouse position x is close to menu border
-   */
-  checkCloseEnough(mouseX, elementLocationX) {
-    return Math.abs(mouseX - elementLocationX) < this.model.borderWidth;
   }
 }

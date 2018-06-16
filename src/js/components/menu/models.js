@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 // @flow
 
 import {isElementHover} from '../../core/utils.js';
@@ -48,7 +47,6 @@ export class Menu extends UIElement {
     });
     this.closeButton.onClick = (event) => {this.show()};
     this.initItems();
-    console.log(this.isDisplayed);
   }
 
   /**
@@ -85,6 +83,23 @@ export class Menu extends UIElement {
       new MenuItem('another item'),
     ];
   };
+
+  /**
+   * Check if mouse position x is close to menu border
+   */
+  checkBorder(mouseX, elementLocationX) {
+      return Math.abs(mouseX - elementLocationX) < this.borderWidth;
+  }
+
+  show() {
+    super.show();
+    this.closeButton.hide();
+  }
+
+  hide() {
+    super.hide();
+    this.closeButton.show();
+  }
 }
 
 /**
@@ -142,7 +157,7 @@ export class MenuButton extends UIElement {
   /**
     * [constructor description]
   * */
-  constructor({location, width, height, background, text}) {
+  constructor({location, width, height, background}) {
       super();
       this.location = location;
 
@@ -153,13 +168,12 @@ export class MenuButton extends UIElement {
       this.borderColor = '#050505';
       this.borderWidth = 1;
 
-      this.imgButton = 'buttons/menu_button.png';
+      this.img = 'buttons/menu_button.png';
 
-      this.isDisplayed = true;
+      this.isDisplayed = false;
 
       MenuButton.instances.push(this);
   }
 }
 
 MenuButton.instances = [];
-console.log(MenuButton.partOfCanvas);
