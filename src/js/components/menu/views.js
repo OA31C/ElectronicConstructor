@@ -3,8 +3,8 @@
 import {canvasCtx} from '../../constants.js';
 import {Location, UIElement} from '../../core/base/models.js';
 import {UIView} from '../../core/base/views.js';
-import {Menu, MenuItem} from './models.js';
-
+import {Menu, MenuItem, MenuButton} from './models.js';
+import {drawImage} from '../../core/utils';
 
 /**
  * ...
@@ -14,14 +14,17 @@ export class MenuView extends UIView {
    * render menu and its items
    */
   render(menu: Menu) {
-    if (!menu.isDisplayed) return;
-    this.drawBackground(menu);
-    this.drawBorder(menu);
+    if (menu.isDisplayed) {
+      this.drawBackground(menu);
+      this.drawBorder(menu);
+      menu.items.forEach((item, index) => {
+        this.renderItem(item, ++index, menu);
+        });
+    }
 
-    // render items
-    menu.items.forEach((item, index) => {
-      this.renderItem(item, ++index, menu);
-    });
+    for (const button of MenuButton.instances) {
+        this.renderButton(button);
+    }
   }
 
   /**
@@ -94,4 +97,13 @@ export class MenuView extends UIView {
     let y = posY-item.textSize;
     item.location = new Location(x, y);
   }
+
+  /**
+   * Paint Menu Button
+   */
+  renderButton(button: MenuButton) {
+    if (!button.isDisplayed) return;
+    drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
+  }
 }
+

@@ -10,12 +10,16 @@ export class Menu extends UIElement {
   partOfCanvas: number;
   items: Array<MenuItem>;
   workingSpace: Object;
+  getParentHeight: Function;
+  getParentWidth: Function;
 
   /**
    * [constructor description]
    */
-  constructor({parentHeight, parentWidth, workingSpace}) {
+  constructor({getParentHeight, getParentWidth, workingSpace}) {
     super();
+    this.getParentHeight = getParentHeight;
+    this.getParentWidth = getParentWidth;
     this.workingSpace = workingSpace;
 
     // size, that one will be cut for the menu
@@ -24,25 +28,47 @@ export class Menu extends UIElement {
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
     // ccccccccccccccccccccccccmmmmmmmm
+
+    this.isResizeHold = false;
+
     this.partOfCanvas = 5;
-
-    this.height = parentHeight;
-    this.width = parentWidth / this.partOfCanvas;
-    this.location = new Location(parentWidth - this.width, 0);
-
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
     this.background = '#cccccc';
 
     this.isDisplayed = true;
+    this.width = this.getParentWidth() / this.partOfCanvas;
+    this.defaultWidth = this.width;
+    const closeButtonWidth = 20;
 
+    this.closeButton = new MenuButton({
+        location: new Location(this.location.x+this.width-closeButtonWidth, 0),
+        width: closeButtonWidth, height: 18,
+        background: '#EE3742',
+    });
+    this.closeButton.onClick = (event) => {
+      this.show();
+    };
     this.initItems();
   }
 
   /**
-   * ...
-   * @param value
+   * returns the location
+   */
+  get location(): Location {
+    return new Location(this.getParentWidth() - this.width, 0);
+  }
+
+    /**
+     * returns hight menu
+  */
+  get height(): number {
+    return this.getParentHeight();
+  }
+
+  /**
+   * return width
    */
   set width(value: number) {
     this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
@@ -51,9 +77,8 @@ export class Menu extends UIElement {
   }
 
   /**
-   * ...
-   * @returns {number}
-   */
+   * Getter width
+  */
   get width(): number {
     return this._width;
   }
@@ -68,6 +93,32 @@ export class Menu extends UIElement {
       new MenuItem('another item'),
     ];
   };
+
+  /**
+   * Check if mouse position x is close to menu border
+   */
+  isBorderHover(mouseX, elementX) {
+      return Math.abs(mouseX - elementX) < this.borderWidth;
+  }
+
+  /**
+   * show the menu + hide closeButton
+   */
+  show() {
+    if (!this.isResizeHold) {
+        this.width = this.defaultWidth;
+    }
+    super.show();
+    this.closeButton.hide();
+  }
+
+  /**
+   * hide the menu + show closeButton
+  */
+  hide() {
+    super.hide();
+    this.closeButton.show();
+  }
 }
 
 /**
@@ -117,3 +168,30 @@ export class MenuItem extends UIText {
     return isElementHover(this, mousePos);
   }
 }
+
+/**
+ * Start create button
+ */
+export class MenuButton extends UIElement {
+  /**
+    * [constructor description]
+  * */
+  constructor({location, width, height, background}) {
+      super();
+      this.location = location;
+
+      this.width = width;
+      this.height = height;
+
+      this.background = background;
+      this.borderColor = '#050505';
+      this.borderWidth = 1;
+
+      this.img = 'buttons/menu_button.png';
+
+      this.isDisplayed = false;
+      MenuButton.instances.push(this);
+  }
+}
+
+MenuButton.instances = [];

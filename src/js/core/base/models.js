@@ -2,6 +2,8 @@
 
 // FIXME: use flow interfaces!!!
 
+import {redraw} from "../utils";
+
 /**
  * Use it for all of coordinate instances
  */
@@ -58,11 +60,13 @@ export class UIElement {
 
   isDisplayed: boolean;
 
+
   /**
    * [show description]
    */
   show() {
     this.isDisplayed = true;
+    redraw();
   }
 
   /**
@@ -70,6 +74,7 @@ export class UIElement {
    */
   hide() {
     this.isDisplayed = false;
+    redraw();
   }
 }
 

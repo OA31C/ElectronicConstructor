@@ -2,7 +2,8 @@
 
 import {UICtrl} from './base/controllers.js';
 import {$canvas} from '../constants.js';
-
+import {redraw} from './utils';
+import {App} from '../app.js';
 
 /**
  * The main controller that contains all other controllers
@@ -10,19 +11,37 @@ import {$canvas} from '../constants.js';
 export class AppController {
   controllers: Array<UICtrl>;
   availableEvents: Array<string>;
+  app: App;
 
   /**
    * [constructor description]
    */
-  constructor() {
+  constructor(app) {
     // *** PROPERTIES ***
     this.controllers = [];
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
+    this.app = app;
+
 
     // *** Initializations ***
+    this.initAppEvents();
     this.handleEvents();
 
     AppController.instance = this;
+  }
+
+  /**
+   * change of space on resize
+   **/
+  initAppEvents() {
+    window.addEventListener('resize', () => this.onResizeWindow());
+  }
+
+  onResizeWindow() {
+    this.app.width = window.innerWidth;
+    this.app.height = window.innerHeight;
+    this.app._qualitySetup();
+    redraw();
   }
 
   /**
