@@ -3,7 +3,7 @@
 import {UICtrl} from '../../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas, canvasCtx} from '../../constants';
+import {$canvas} from '../../constants';
 import {hoverCursor} from '../line/controllers';
 /**
  * ...
@@ -18,7 +18,7 @@ export class MenuCtrl extends UICtrl {
   onClick(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
 
-    // checked button
+    // redirect the event to menu buttons
     for (const button of MenuButton.instances) {
       if (isElementHover(button, mousePosition)) {
         button.onClick && button.onClick();

@@ -41,10 +41,12 @@ export class Menu extends UIElement {
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
 
-    this.closeButton = new MenuButton({location: new Location(this.location.x+this.width-19, 0), width: 18, height: 18, background: '#EE3742', text: '◄'});
-    this.closeButton.onClick = (event) => {
-this.show();
-};
+    this.closeButton = new MenuButton({
+        location: new Location(this.location.x+this.width-19, 0),
+        width: 18, height: 18,
+        background: '#EE3742', text: '◄',
+    });
+    this.closeButton.onClick = (event) => {this.show()};
     this.initItems();
     console.log(this.isDisplayed);
   }

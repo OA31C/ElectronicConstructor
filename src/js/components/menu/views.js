@@ -16,8 +16,9 @@ export class MenuView extends UIView {
    */
   render(menu: Menu) {
     if (!menu.isDisplayed) {
-      for (let button of MenuButton.instances) {
+      for (const button of MenuButton.instances) {
         this.renderButton(button);
+        return;
       }
     }
 
@@ -106,7 +107,7 @@ export class MenuView extends UIView {
    */
   renderButton(button: MenuButton) {
     if (!button.isDisplayed) return;
-    drawImage(button.imgButton, button.location.x + button.width-19, 0, 20, 20);
+    drawImage(button.imgButton, button.location.x + button.width-18, button.height - 17, button.width, button.height);
   }
 }
 
