@@ -7,9 +7,7 @@ import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
 import {createElement} from './components';
-import {MenuCtrl} from './menu/controllers';
-import {MenuView} from './menu/views';
-import {Menu} from './menu/models';
+import {createMenu} from './menu';
 
 /**
  * ...
@@ -37,7 +35,14 @@ export class App {
     this.qualitySetup();
 
     this.controller = new AppController(this);
-    this.createMenu();
+    // create the menu
+    this.controller.addCtrl(
+      createMenu({
+        getParentHeight: () => this.height,
+        getParentWidth: () => this.width,
+        workingSpace: this.workingSpace,
+      })
+    );
     this.constructor.initElements();
 
     $canvas.style.cursor = DEFAULT_CURSOR;
@@ -61,18 +66,6 @@ export class App {
     $canvas.style.width = this.width + 'px';
     $canvas.style.height = this.height + 'px';
     canvasCtx.scale(ratio, ratio);
-  }
-
-  /**
-   * creates menu
-   */
-  createMenu() {
-    const menu = new Menu({
-      getParentHeight: () => this.height,
-      getParentWidth: () => this.width,
-      workingSpace: this.workingSpace,
-    });
-    this.controller.addCtrl(new MenuCtrl(menu, new MenuView()));
   }
 
   /**
