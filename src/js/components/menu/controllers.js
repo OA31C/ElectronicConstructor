@@ -22,8 +22,9 @@ export class MenuCtrl extends UICtrl {
       if (button.onClick && isElementHover(button, mousePosition)) {
         button.onClick();
         return false;
+      }
     }
-    }
+
     // FIXME: check is mouse in menu rect. Return `true` otherwise
     for (const item of this.model.items) {
       if (item.isHover(mousePosition)) {
@@ -52,7 +53,7 @@ export class MenuCtrl extends UICtrl {
   onMouseMove(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
 
-    if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
+    if (this.model.isDisplayed && this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
       return false;
@@ -75,6 +76,9 @@ export class MenuCtrl extends UICtrl {
   * the mouse is up in menu
   */
   onMouseUp() {
+    if (this.model.isResizeHold) {
+      $canvas.style.cursor = DEFAULT_CURSOR;
+    }
     this.model.isResizeHold = false;
     return true;
   }

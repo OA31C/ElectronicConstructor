@@ -40,16 +40,14 @@ export class Menu extends UIElement {
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
     this.defaultWidth = this.width;
-    const closeButtonWidth = 20;
 
+    const closeButtonWidth = 20;
     this.closeButton = new MenuButton({
-        location: new Location(this.location.x+this.width-closeButtonWidth, 0),
+        location: new Location(this.location.x + this.width - closeButtonWidth, 0),
         width: closeButtonWidth, height: 18,
         background: '#EE3742',
     });
-    this.closeButton.onClick = (event) => {
-      this.show();
-    };
+    this.closeButton.onClick = () => this.show();
     this.initItems();
   }
 
@@ -60,9 +58,9 @@ export class Menu extends UIElement {
     return new Location(this.getParentWidth() - this.width, 0);
   }
 
-    /**
-     * returns hight menu
-  */
+  /**
+   * returns height menu
+   */
   get height(): number {
     return this.getParentHeight();
   }
@@ -78,7 +76,7 @@ export class Menu extends UIElement {
 
   /**
    * Getter width
-  */
+   */
   get width(): number {
     return this._width;
   }
@@ -97,7 +95,7 @@ export class Menu extends UIElement {
   /**
    * Check if mouse position x is close to menu border
    */
-  isBorderHover(mouseX, elementX) {
+  isBorderHover(mouseX: number, elementX: number) {
       return Math.abs(mouseX - elementX) < this.borderWidth;
   }
 
@@ -114,7 +112,7 @@ export class Menu extends UIElement {
 
   /**
    * hide the menu + show closeButton
-  */
+   */
   hide() {
     super.hide();
     this.closeButton.show();
@@ -164,7 +162,7 @@ export class MenuItem extends UIText {
   /**
    * [isHover description]
    */
-  isHover(mousePos: Object): boolean {
+  isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
   }
 }
@@ -173,9 +171,11 @@ export class MenuItem extends UIText {
  * Start create button
  */
 export class MenuButton extends UIElement {
+  img: string;
+
   /**
-    * [constructor description]
-  * */
+   * [constructor description]
+   */
   constructor({location, width, height, background}) {
       super();
       this.location = location;
@@ -193,5 +193,4 @@ export class MenuButton extends UIElement {
       MenuButton.instances.push(this);
   }
 }
-
 MenuButton.instances = [];

@@ -31,7 +31,7 @@ export class App {
     this.workingSpace = {'height': this.height, 'width': this.width, 'location': new Location(0, 0)};
 
     // *** Initializations ***
-    this._qualitySetup();
+    this.qualitySetup();
 
     this.controller = new AppController(this);
     this.initElements();
@@ -44,7 +44,7 @@ export class App {
   /**
    * [_qualitySetup description]
    */
-  _qualitySetup() {
+  qualitySetup() {
     let devicePixelRatio = window.devicePixelRatio || 1;
     let backingStoreRatio = canvasCtx.webkitBackingStorePixelRatio ||
                             canvasCtx.mozBackingStorePixelRatio ||
@@ -66,7 +66,7 @@ export class App {
     createElement('menu', {
       getParentHeight: () => this.height,
       getParentWidth: () => this.width,
-      workingSpace: this.workingSpace
+      workingSpace: this.workingSpace,
     });
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});

@@ -22,7 +22,6 @@ export class AppController {
     this.availableEvents = ['onClick', 'onMouseMove', 'onMouseDown', 'onMouseUp'];
     this.app = app;
 
-
     // *** Initializations ***
     this.initAppEvents();
     this.handleEvents();
@@ -32,15 +31,18 @@ export class AppController {
 
   /**
    * change of space on resize
-   **/
+   */
   initAppEvents() {
     window.addEventListener('resize', () => this.onResizeWindow());
   }
 
+  /**
+   * resize canvas to current window size
+   */
   onResizeWindow() {
     this.app.width = window.innerWidth;
     this.app.height = window.innerHeight;
-    this.app._qualitySetup();
+    this.app.qualitySetup();
     redraw();
   }
 
