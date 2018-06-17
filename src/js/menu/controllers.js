@@ -1,9 +1,10 @@
 // @flow
 
-import {UICtrl} from '../../core/base/controllers';
-import {getMousePos, isElementHover, redraw} from '../../core/utils';
+import {UICtrl} from '../core/base/controllers';
+import {getMousePos, isElementHover, redraw} from '../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas, DEFAULT_CURSOR} from '../../constants';
+import {$canvas, DEFAULT_CURSOR} from '../constants';
+
 /**
  * ...
  */

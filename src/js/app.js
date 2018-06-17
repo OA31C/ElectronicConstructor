@@ -7,6 +7,9 @@ import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
 import {createElement} from './components';
+import {MenuCtrl} from './menu/controllers';
+import {MenuView} from './menu/views';
+import {Menu} from './menu/models';
 
 /**
  * ...
@@ -34,7 +37,8 @@ export class App {
     this.qualitySetup();
 
     this.controller = new AppController(this);
-    this.initElements();
+    this.createMenu();
+    this.constructor.initElements();
 
     $canvas.style.cursor = DEFAULT_CURSOR;
 
@@ -60,14 +64,21 @@ export class App {
   }
 
   /**
-   * create elements that should be added just after loaded app
+   * creates menu
    */
-  initElements() {
-    createElement('menu', {
+  createMenu() {
+    const menu = new Menu({
       getParentHeight: () => this.height,
       getParentWidth: () => this.width,
       workingSpace: this.workingSpace,
     });
+    this.controller.addCtrl(new MenuCtrl(menu, new MenuView()));
+  }
+
+  /**
+   * create elements that should be added just after loaded app
+   */
+  static initElements() {
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
     createElement('battery', {location: new Location(605, 195)});

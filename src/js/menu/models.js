@@ -1,7 +1,7 @@
 // @flow
 
-import {isElementHover} from '../../core/utils.js';
-import {Location, UIElement, UIText} from '../../core/base/models.js';
+import {isElementHover} from '../core/utils.js';
+import {Location, UIElement, UIText} from '../core/base/models.js';
 
 /**
  * ...
