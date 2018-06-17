@@ -136,7 +136,7 @@ export class MenuItem extends UIText {
     this.title = '';
     this.description = '';
 
-    this.textAlign = 'center';
+    this.textAlign = 'left';
     this.textColor = '#000000';
     this.textFont = 'Tahoma';
     this.textSize = 18;
