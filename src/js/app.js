@@ -7,6 +7,9 @@ import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
 import {createElement} from './components';
+import {MenuCtrl} from './menu/controllers';
+import {MenuView} from './menu/views';
+import {Menu} from './menu/models';
 
 /**
  * ...
@@ -31,10 +34,15 @@ export class App {
     this.workingSpace = {'height': this.height, 'width': this.width, 'location': new Location(0, 0)};
 
     // *** Initializations ***
-    this._qualitySetup();
+    this.qualitySetup();
 
     this.controller = new AppController(this);
+<<<<<<< HEAD
     this.initElements();
+=======
+    this.createMenu();
+    this.constructor.initElements();
+>>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93
 
     $canvas.style.cursor = DEFAULT_CURSOR;
 
@@ -44,7 +52,7 @@ export class App {
   /**
    * [_qualitySetup description]
    */
-  _qualitySetup() {
+  qualitySetup() {
     let devicePixelRatio = window.devicePixelRatio || 1;
     let backingStoreRatio = canvasCtx.webkitBackingStorePixelRatio ||
                             canvasCtx.mozBackingStorePixelRatio ||
@@ -60,14 +68,30 @@ export class App {
   }
 
   /**
+   * creates menu
+   */
+  createMenu() {
+    const menu = new Menu({
+      getParentHeight: () => this.height,
+      getParentWidth: () => this.width,
+      workingSpace: this.workingSpace,
+    });
+    this.controller.addCtrl(new MenuCtrl(menu, new MenuView()));
+  }
+
+  /**
    * create elements that should be added just after loaded app
    */
+<<<<<<< HEAD
   initElements() {
     createElement('menu', {
       getParentHeight: () => this.height,
       getParentWidth: () => this.width,
       workingSpace: this.workingSpace
     });
+=======
+  static initElements() {
+>>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
     createElement('battery', {location: new Location(605, 195)});
