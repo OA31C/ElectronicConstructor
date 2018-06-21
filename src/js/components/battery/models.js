@@ -13,7 +13,7 @@ export class Battery extends UIElement {
     this.width = 50;
     this.height = 50;
 
-    this.img = 'battery/battery.png';
+    // this.img = 'battery/battery.png';
 
     this.line = createElement(
       'line', {
@@ -22,5 +22,9 @@ export class Battery extends UIElement {
         mutable: false,
       }
     );
+  }
+
+  static img() {
+      return 'battery/battery.png';
   }
 }

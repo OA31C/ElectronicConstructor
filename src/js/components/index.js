@@ -11,7 +11,7 @@ import {BatteryView} from './battery/views';
 import {BatteryCtrl} from './battery/controllers';
 
 
-const ELEMENTS = {
+export const ELEMENTS = {
   battery: {model: Battery, view: BatteryView, ctrl: BatteryCtrl},
   lamp: {model: Lamp, view: LampView, ctrl: LampCtrl},
   line: {model: Line, view: LineView, ctrl: LineCtrl},

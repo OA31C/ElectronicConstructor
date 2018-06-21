@@ -1,52 +1,35 @@
 // @flow
 
-<<<<<<< HEAD:src/js/components/menu/views.js
-import {canvasCtx} from '../../constants.js';
-import {Location, UIElement} from '../../core/base/models.js';
-import {UIView} from '../../core/base/views.js';
-import {Menu, MenuItem, MenuButton} from './models.js';
-import {drawImage} from '../../core/utils';
-=======
 import {canvasCtx} from '../constants.js';
 import {Location, UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
 import {drawImage} from '../core/utils';
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93:src/js/menu/views.js
 
 /**
- * ...
- */
+* ...
+*/
 export class MenuView extends UIView {
   /**
    * render menu and its items
    */
   render(menu: Menu) {
     if (menu.isDisplayed) {
-<<<<<<< HEAD:src/js/components/menu/views.js
-      this.drawBackground(menu);
-      this.drawBorder(menu);
-=======
-      this.constructor.drawBackground(menu);
-      this.constructor.drawBorder(menu);
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93:src/js/menu/views.js
-      menu.items.forEach((item, index) => {
-        this.renderItem(item, ++index, menu);
+        this.constructor.drawBackground(menu);
+        this.constructor.drawBorder(menu);
+        menu.items.forEach((item, index) => {
+            this.renderItem(item, ++index, menu);
         });
     }
 
     for (const button of MenuButton.instances) {
-<<<<<<< HEAD:src/js/components/menu/views.js
-        this.renderButton(button);
-=======
         this.constructor.renderButton(button);
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93:src/js/menu/views.js
     }
   }
 
   /**
-  * @param  {Menu | MenuItem} element
-  */
+   * @param  {Menu | MenuItem} element
+   */
   static drawBackground(element: UIElement) {
     if (!element.background) return;
     canvasCtx.fillStyle = element.background;
@@ -54,20 +37,20 @@ export class MenuView extends UIView {
   }
 
   /**
-  * @param  {Menu | MenuItem} element
-  */
+   * @param  {Menu | MenuItem} element
+   */
   static drawBorder(element: UIElement) {
     let isBorder = false;
     if (element.borderWidth) {
-      canvasCtx.lineWidth = element.borderWidth;
-      isBorder = true;
+        canvasCtx.lineWidth = element.borderWidth;
+        isBorder = true;
     }
     if (element.borderColor) {
-      canvasCtx.strokeStyle = element.borderColor;
-      isBorder = true;
+        canvasCtx.strokeStyle = element.borderColor;
+        isBorder = true;
     }
     if (isBorder) {
-      canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height);
+        canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height);
     }
   }
 
@@ -84,7 +67,7 @@ export class MenuView extends UIView {
     canvasCtx.fillStyle = item.textColor;
     canvasCtx.font = `${item.textSize}px ${item.textFont}`;
     if (item.isSelected) {
-      canvasCtx.font = `bold ${canvasCtx.font}`;
+        canvasCtx.font = `bold ${canvasCtx.font}`;
     }
     canvasCtx.textAlign = item.textAlign;
 
@@ -113,18 +96,13 @@ export class MenuView extends UIView {
     let x = menu.location.x + (menu.width / 2) - (item.width / 2);
     let y = posY-item.textSize;
     item.location = new Location(x, y);
+    item.element.view.renderIcon(item.location, item.width, item.height);
   }
-
   /**
    * Paint Menu Button
    */
-<<<<<<< HEAD:src/js/components/menu/views.js
-  renderButton(button: MenuButton) {
-=======
   static renderButton(button: MenuButton) {
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93:src/js/menu/views.js
     if (!button.isDisplayed) return;
     drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
   }
 }
-

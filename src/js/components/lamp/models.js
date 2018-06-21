@@ -34,7 +34,7 @@ export class Lamp extends UIElement {
     this.isDisplayed = true;
 
     this.imgActive = 'lamp/lamp_on.png';
-    this.imgInactive = 'lamp/lamp_off.png';
+    // this.imgInactive = 'lamp/lamp_off.png';
   }
 
   /**
@@ -58,5 +58,9 @@ export class Lamp extends UIElement {
   off() {
     this.active = false;
     redraw();
+  }
+
+  static imgInactive() {
+    return 'lamp/lamp_off.png';
   }
 }

@@ -2,6 +2,7 @@
 
 import {isElementHover} from '../core/utils.js';
 import {Location, UIElement, UIText} from '../core/base/models.js';
+import {ELEMENTS} from '../components';
 
 /**
  * ...
@@ -83,20 +84,24 @@ export class Menu extends UIElement {
 
   /**
    * [initItems description]
-   */
+  */
   initItems() {
-    this.items = [
-      new MenuItem('-------------'),
-      new MenuItem('Copper'),
-      new MenuItem('another item'),
-    ];
+    this.items = [];
+    for (let key in ELEMENTS) {
+      this.items.push(new MenuItem(this.capitalizeFirstLetter(key), ELEMENTS[key]));
+    }
+    // this.items = [
+    //   new MenuItem('-------------'),
+    //   new MenuItem('Copper'),
+    //   new MenuItem('another item'),
+    // ];
   };
 
   /**
    * Check if mouse position x is close to menu border
    */
   isBorderHover(mouseX: number, elementX: number) {
-      return Math.abs(mouseX - elementX) < this.borderWidth;
+    return Math.abs(mouseX - elementX) < this.borderWidth;
   }
 
   /**
@@ -117,6 +122,10 @@ export class Menu extends UIElement {
     super.hide();
     this.closeButton.show();
   }
+
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 }
 
 /**
@@ -128,13 +137,14 @@ export class MenuItem extends UIText {
   /**
    * [constructor description]
    */
-  constructor(text: string) {
+  constructor(text: string, element) {
     super(text);
 
     this.title = '';
     this.description = '';
+    this.element = element;
 
-    this.textAlign = 'center';
+    this.textAlign = 'left';
     this.textColor = '#000000';
     this.textFont = 'Tahoma';
     this.textSize = 18;
@@ -188,7 +198,6 @@ export class MenuButton extends UIElement {
       this.borderWidth = 1;
 
       this.img = 'buttons/menu_button.png';
-
       this.isDisplayed = false;
       MenuButton.instances.push(this);
   }

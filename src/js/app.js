@@ -7,13 +7,11 @@ import {AppController} from './core/app_controller';
 import {Location} from './core/base/models';
 import {redraw} from './core/utils';
 import {createElement} from './components';
-import {MenuCtrl} from './menu/controllers';
-import {MenuView} from './menu/views';
-import {Menu} from './menu/models';
+import {createMenu} from './menu';
 
 /**
- * ...
- */
+* ...
+*/
 export class App {
   background: string;
   controller: AppController;
@@ -37,12 +35,15 @@ export class App {
     this.qualitySetup();
 
     this.controller = new AppController(this);
-<<<<<<< HEAD
-    this.initElements();
-=======
-    this.createMenu();
+    // create the menu
+    this.controller.addCtrl(
+        createMenu({
+            getParentHeight: () => this.height,
+            getParentWidth: () => this.width,
+            workingSpace: this.workingSpace,
+        })
+    );
     this.constructor.initElements();
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93
 
     $canvas.style.cursor = DEFAULT_CURSOR;
 
@@ -55,10 +56,10 @@ export class App {
   qualitySetup() {
     let devicePixelRatio = window.devicePixelRatio || 1;
     let backingStoreRatio = canvasCtx.webkitBackingStorePixelRatio ||
-                            canvasCtx.mozBackingStorePixelRatio ||
-                            canvasCtx.msBackingStorePixelRatio ||
-                            canvasCtx.oBackingStorePixelRatio ||
-                            canvasCtx.backingStorePixelRatio || 1;
+        canvasCtx.mozBackingStorePixelRatio ||
+        canvasCtx.msBackingStorePixelRatio ||
+        canvasCtx.oBackingStorePixelRatio ||
+        canvasCtx.backingStorePixelRatio || 1;
     let ratio = devicePixelRatio / backingStoreRatio;
     $canvas.width = this.width * ratio;
     $canvas.height = this.height * ratio;
@@ -68,30 +69,9 @@ export class App {
   }
 
   /**
-   * creates menu
-   */
-  createMenu() {
-    const menu = new Menu({
-      getParentHeight: () => this.height,
-      getParentWidth: () => this.width,
-      workingSpace: this.workingSpace,
-    });
-    this.controller.addCtrl(new MenuCtrl(menu, new MenuView()));
-  }
-
-  /**
    * create elements that should be added just after loaded app
    */
-<<<<<<< HEAD
-  initElements() {
-    createElement('menu', {
-      getParentHeight: () => this.height,
-      getParentWidth: () => this.width,
-      workingSpace: this.workingSpace
-    });
-=======
   static initElements() {
->>>>>>> e22fd340982ae6365c109bc195d7d3ca3ddb3d93
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
     createElement('battery', {location: new Location(605, 195)});
@@ -118,13 +98,13 @@ export class App {
     canvasCtx.beginPath();
     // horizontal
     for (let i = 0; this.height > i; i+=GRID_STEP) {
-      canvasCtx.moveTo(0, i);
-      canvasCtx.lineTo(this.width, i);
+        canvasCtx.moveTo(0, i);
+        canvasCtx.lineTo(this.width, i);
     }
     // vertical
     for (let i = 0; this.width > i; i+=GRID_STEP) {
-      canvasCtx.moveTo(i, 0);
-      canvasCtx.lineTo(i, this.height);
+        canvasCtx.moveTo(i, 0);
+        canvasCtx.lineTo(i, this.height);
     }
     canvasCtx.stroke();
   }

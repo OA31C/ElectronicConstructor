@@ -2,7 +2,7 @@
 
 // FIXME: use flow interfaces!!!
 
-import {redraw} from "../utils";
+import {redraw} from '../utils';
 
 /**
  * Use it for all of coordinate instances
