@@ -37,11 +37,19 @@ export class App {
     this.controller = new AppController(this);
     // create the menu
     this.controller.addCtrl(
+<<<<<<< HEAD
         createMenu({
             getParentHeight: () => this.height,
             getParentWidth: () => this.width,
             workingSpace: this.workingSpace,
         })
+=======
+      createMenu({
+        getParentHeight: () => this.height,
+        getParentWidth: () => this.width,
+        workingSpace: this.workingSpace,
+      })
+>>>>>>> 54287b480d5e6fd37d24009ee4640a8c3b2d28c1
     );
     this.constructor.initElements();
 
