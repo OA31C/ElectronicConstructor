@@ -72,12 +72,15 @@ export function drawImage(url: string, ...args) {
   let img = drawImage[cacheKey];
 
   if (img) {
-    canvasCtx.drawImage(img, ...args);
+    // if img is not loaded yet -> wait for it
+    if (!img.complete) {
+      img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
+    } else {
+      canvasCtx.drawImage(img, ...args);
+    }
   } else {
     img = new Image();
-    img.onload = function() {
-      canvasCtx.drawImage(img, ...args);
-    };
+    img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
     img.src = `/src/img/${url}`;
     // save img to cache
     drawImage[cacheKey] = img;
