@@ -2,9 +2,9 @@ import {Location, UIElement} from '../../core/base/models';
 import {createElement} from '../index';
 import {LineCtrl} from '../line/controllers';
 
+export const IMG = 'battery/battery.png';
 
 export class Battery extends UIElement {
-  img: string;
   line: LineCtrl;
 
   constructor({location}) {
@@ -13,7 +13,7 @@ export class Battery extends UIElement {
     this.width = 50;
     this.height = 50;
 
-    // this.img = 'battery/battery.png';
+    this.img = 'battery/battery 2.png';
 
     this.line = createElement(
       'line', {
@@ -22,9 +22,5 @@ export class Battery extends UIElement {
         mutable: false,
       }
     );
-  }
-
-  static img() {
-      return 'battery/battery.png';
   }
 }

@@ -5,6 +5,7 @@ import {Location, UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
 import {drawImage} from '../core/utils';
+import {ELEMENTS} from '../components';
 
 /**
 * ...

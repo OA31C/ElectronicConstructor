@@ -90,11 +90,6 @@ export class Menu extends UIElement {
     for (let key in ELEMENTS) {
       this.items.push(new MenuItem(this.capitalizeFirstLetter(key), ELEMENTS[key]));
     }
-    // this.items = [
-    //   new MenuItem('-------------'),
-    //   new MenuItem('Copper'),
-    //   new MenuItem('another item'),
-    // ];
   };
 
   /**
@@ -137,12 +132,12 @@ export class MenuItem extends UIText {
   /**
    * [constructor description]
    */
-  constructor(text: string, element) {
+  constructor(text: string, element: string) {
     super(text);
+    this.element = element;
 
     this.title = '';
     this.description = '';
-    this.element = element;
 
     this.textAlign = 'left';
     this.textColor = '#000000';
