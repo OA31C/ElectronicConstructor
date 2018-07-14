@@ -2,7 +2,7 @@
 
 // FIXME: use flow interfaces!!!
 
-import {redraw} from "../utils";
+import {redraw} from '../utils';
 
 /**
  * Use it for all of coordinate instances
@@ -22,25 +22,6 @@ export class Location {
     }
     this.x = x;
     this.y = y;
-  }
-}
-
-/**
- * Every custom list of ui elements should inheritance from this class
- */
-export class UIElementsList extends Array {
-  /**
-   * [displayedChildren description]
-   */
-  get displayedChildren() {
-    return this.filter((item) => item.isDisplayed);
-  }
-
-  /**
-   * [displayedChildrenLength description]
-   */
-  get displayedChildrenLength() {
-    return this.displayedChildren.length;
   }
 }
 

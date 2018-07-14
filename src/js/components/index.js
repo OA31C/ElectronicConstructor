@@ -34,3 +34,28 @@ export function createElement(name: string, modelOptions: Object): UICtrl {
   AppController.instance.addCtrl(ctrl);
   return ctrl;
 }
+
+
+/**
+ * Array to keep all elements
+ */
+export class ElementsList extends Array {
+
+  /**
+   * get a specific element
+   * @param elementName
+   * @param params
+   * @returns {UICtrl} and raises and error when there's no elements with such params, or when more than one element
+   */
+  get(elementName, params={}): UICtrl {
+    const elements = this.filter((item) => item.isDisplayed);
+  }
+
+  filter() {
+    return ;
+  }
+
+  delete() {
+
+  }
+}

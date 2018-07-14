@@ -1,9 +1,9 @@
 
-// TODO: add state machine pattern for modes
+// TODO: state machine pattern
 
-// Modes(states):
+// States:
 //  - Edit: when we can change our electronic circuit
 //  - Run: when we're checking what the electronic circuit does
 
 // Context:
-// - setMode
+// - setState

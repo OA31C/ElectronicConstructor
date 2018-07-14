@@ -6,11 +6,4 @@ import {BatteryView} from './views';
 export class BatteryCtrl extends UICtrl {
   model: Battery;
   view: BatteryView;
-
-  /**
-   * ...
-   */
-  // render() {
-  //   this.view.render(this.model);
-  // }
 }
