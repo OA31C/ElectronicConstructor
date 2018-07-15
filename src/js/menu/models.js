@@ -3,6 +3,7 @@
 import {isElementHover} from '../core/utils.js';
 import {Location, UIElement, UIText} from '../core/base/models.js';
 import {ELEMENTS} from '../components';
+import {redraw} from "../core/utils";
 
 /**
  * ...
@@ -36,7 +37,7 @@ export class Menu extends UIElement {
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
-    this.background = '#cccccc';
+    this.background = '#ffffff';
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
@@ -88,7 +89,8 @@ export class Menu extends UIElement {
   initItems() {
     this.items = [];
     for (let key in ELEMENTS) {
-      this.items.push(new MenuItem(this.capitalizeFirstLetter(key), ELEMENTS[key]));
+      this.items.push(new MenuItem(Menu.capitalizeFirstLetter(key), ELEMENTS[key], ELEMENTS[key].model.description));
+      // console.log(ELEMENTS[key].model.description);
     }
   };
 
@@ -118,7 +120,11 @@ export class Menu extends UIElement {
     this.closeButton.show();
   }
 
-  capitalizeFirstLetter(string) {
+  /**
+   * @param string
+   * @returns {string}
+   */
+  static capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
@@ -126,28 +132,37 @@ export class Menu extends UIElement {
 /**
  * ...
  */
-export class MenuItem extends UIText {
+export class MenuItem {
   isSelected: boolean;
-
+  location: Location;
   /**
    * [constructor description]
    */
-  constructor(text: string, element: string) {
-    super(text);
+  constructor(text: string, element: string, description: string) {
+    this.text = text;
     this.element = element;
 
     this.title = '';
-    this.description = '';
+    this.description = description;
 
-    this.textAlign = 'left';
+    this.textAlign = 'start';
     this.textColor = '#000000';
-    this.textFont = 'Tahoma';
-    this.textSize = 18;
-
-    this.topMargin = 10;
+    this.textFont = 'Helvetica';
+    this.textSize = 16;
+    this.font = 'bold';
+    this.height = 50;
 
     this.isDisplayed = true;
     this.isSelected = false;
+
+    this.isHovered = false;
+    this.inmutable = '#ffffff';
+    this.mutable = '#eeeeee';
+
+    this.borderWidth = 1;
+    this.borderColor = 'black';
+
+    this.width = Menu.width;
   }
 
   /**
@@ -169,6 +184,30 @@ export class MenuItem extends UIText {
    */
   isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
+  }
+
+  /**
+   * @returns {string}
+   * change color background
+   */
+  get backgroundColor() {
+    return this.isHovered ? this.mutable : this.inmutable;
+  }
+
+  /**
+   * ....
+   */
+  hold() {
+    this.isHovered = true;
+    redraw();
+  }
+
+  /**
+   * ...
+   */
+  unhold() {
+    this.isHovered = false;
+    redraw();
   }
 }
 

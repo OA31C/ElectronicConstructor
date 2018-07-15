@@ -5,7 +5,6 @@ import {Location, UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
 import {drawImage} from '../core/utils';
-import {ELEMENTS} from '../components';
 
 /**
 * ...
@@ -17,15 +16,15 @@ export class MenuView extends UIView {
   render(menu: Menu) {
     if (menu.isDisplayed) {
         this.constructor.drawBackground(menu);
-        this.constructor.drawBorder(menu);
         menu.items.forEach((item, index) => {
-            this.renderItem(item, ++index, menu);
+            this.constructor.renderItem(item, ++index, menu);
         });
     }
 
     for (const button of MenuButton.instances) {
         this.constructor.renderButton(button);
     }
+      this.constructor.drawBorder(menu);
   }
 
   /**
@@ -59,14 +58,13 @@ export class MenuView extends UIView {
    * [renderItem description]
    * @param  {[type]} item:       MenuItem      [description]
    * @param  {[type]} itemNum: number        [description]
+   * @param {{type}} menu: Menu
    */
-  renderItem(item: MenuItem, itemNum: number, menu: Menu) { // FIXME: remove menu here!!!
+  static renderItem(item: MenuItem, itemNum: number, menu: Menu) { // FIXME: remove menu here!!!
     if (!item.isDisplayed) return;
-    this.constructor.drawBackground(item);
-    this.constructor.drawBorder(item);
 
     canvasCtx.fillStyle = item.textColor;
-    canvasCtx.font = `${item.textSize}px ${item.textFont}`;
+    canvasCtx.font = `${item.font} ${item.textSize}px ${item.textFont}`;
     if (item.isSelected) {
         canvasCtx.font = `bold ${canvasCtx.font}`;
     }
@@ -74,14 +72,12 @@ export class MenuView extends UIView {
 
     // center by width of the item rect
     // FIXME: add `if` for check whether textAlign === center
-    let posX = menu.location.x + menu.width / 2;
+    let posX = menu.location.x + menu.width / 3.5;
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
-    let posY = item.textSize * itemNum + item.topMargin * itemNum;
+    let posY = item.height * itemNum;
 
-    canvasCtx.fillText(item.text, posX, posY);
-
-    item.width = canvasCtx.measureText(item.text).width;
-    item.height = item.textSize;
+    // item.width = canvasCtx.measureText(item.text).width;
+    item.width = menu.width;
 
     // FIXME: should it be in drawElement method maybe? before drawBackground
     // FIXME: remove it
@@ -91,14 +87,33 @@ export class MenuView extends UIView {
     //     * where it isn't filled by another item
     //     * check whether height and width also isn't filled
     //     + top and left margin
-    // ...
 
     // TODO: get X position for centered text item
-    let x = menu.location.x + (menu.width / 2) - (item.width / 2);
-    let y = posY-item.textSize;
+    // let x = menu.location.x + (menu.width / 2) - (item.width / 2);
+    let x = menu.location.x;
+
+    let y = posY-item.height;
     item.location = new Location(x, y);
+    canvasCtx.fillStyle = item.backgroundColor;
+    canvasCtx.fillRect(item.location.x, item.location.y, item.width, item.height);
+
+    canvasCtx.fillStyle = item.textColor;
+    canvasCtx.fillText(item.text, posX - 15, posY - 22);
+
+    canvasCtx.font = 'normal 14px Helvetica';
+    canvasCtx.fillText(item.description, posX + 38, posY - 22);
+
     item.element.view.renderIcon(item.location, item.width, item.height);
+
+    // button Line in item
+      if (item.isHovered) {
+        canvasCtx.lineWidth = 3;
+        MenuView.drawBorder(item);
+      } else {
+          canvasCtx.fillRect(item.location.x + 5, item.location.y + 49.5, item.location.x, 1);
+      }
   }
+
   /**
    * Paint Menu Button
    */

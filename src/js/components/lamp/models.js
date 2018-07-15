@@ -2,7 +2,6 @@ import {Location, UIElement} from '../../core/base/models';
 import {createElement} from '../index';
 import {LineCtrl} from '../line/controllers';
 import {redraw} from '../../core/utils';
-import {Battery} from "../battery/models";
 
 export const ImgActive = 'lamp/lamp_on.png';
 export const ImgInActive = 'lamp/lamp_off.png';
@@ -12,7 +11,6 @@ export const ImgInActive = 'lamp/lamp_off.png';
  */
 export class Lamp extends UIElement {
   active: boolean;
-  imgActive: string;
   line: LineCtrl;
 
   /**
@@ -24,7 +22,6 @@ export class Lamp extends UIElement {
     this.active = false;
     this.width = 60;
     this.height = 60;
-    this.imgInAcitve = 'lamp/lamp_off 2.png';
 
     this.line = createElement(
       'line', {
@@ -41,7 +38,7 @@ export class Lamp extends UIElement {
    * get an image of current lamp state (on/off)
    */
   get img(): string {
-    return this.active ? ImgActive : this.imgInAcitve;
+    return this.active ? ImgActive : ImgInActive;
   }
 
   /**
@@ -58,5 +55,12 @@ export class Lamp extends UIElement {
   off() {
     this.active = false;
     redraw();
+  }
+
+  /**
+   * description lamp
+   */
+  static get description() {
+    return '- Device that generates visible light from an electric current stream';
   }
 }

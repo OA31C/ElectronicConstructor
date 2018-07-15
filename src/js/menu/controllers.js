@@ -2,8 +2,10 @@
 
 import {UICtrl} from '../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../core/utils';
-import {Menu, MenuButton} from './models';
-import {$canvas, DEFAULT_CURSOR} from '../constants';
+import {Menu, MenuButton, MenuItem} from './models';
+import {$canvas, canvasCtx, DEFAULT_CURSOR} from '../constants';
+import {MenuView} from "./views";
+import {Location} from "../core/base/models";
 
 /**
  * ...
@@ -60,9 +62,18 @@ export class MenuCtrl extends UICtrl {
       return false;
     } else $canvas.style.cursor = DEFAULT_CURSOR;
 
+    for (let item of this.model.items) {
+      if (item.isHover(mousePosition)) {
+        item.hold();
+      } else {
+        item.unhold();
+      }
+    }
+
     if (this.model.isResizeHold) {
       $canvas.style.cursor = 'col-resize';
       this.model.width = this.model.width + this.model.location.x - mousePosition.x;
+      // console.log(`${this.model.width} its this model width`)
 
       redraw();
       // hides the menu

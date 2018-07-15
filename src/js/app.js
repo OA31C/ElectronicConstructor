@@ -10,8 +10,8 @@ import {createElement} from './components';
 import {createMenu} from './menu';
 
 /**
-* ...
-*/
+ * ...
+ */
 export class App {
   background: string;
   controller: AppController;
@@ -37,19 +37,11 @@ export class App {
     this.controller = new AppController(this);
     // create the menu
     this.controller.addCtrl(
-<<<<<<< HEAD
         createMenu({
             getParentHeight: () => this.height,
             getParentWidth: () => this.width,
             workingSpace: this.workingSpace,
         })
-=======
-      createMenu({
-        getParentHeight: () => this.height,
-        getParentWidth: () => this.width,
-        workingSpace: this.workingSpace,
-      })
->>>>>>> 54287b480d5e6fd37d24009ee4640a8c3b2d28c1
     );
     this.constructor.initElements();
 
@@ -59,8 +51,8 @@ export class App {
   }
 
   /**
-   * [_qualitySetup description]
-   */
+  * [_qualitySetup description]
+  */
   qualitySetup() {
     let devicePixelRatio = window.devicePixelRatio || 1;
     let backingStoreRatio = canvasCtx.webkitBackingStorePixelRatio ||
@@ -78,7 +70,7 @@ export class App {
 
   /**
    * create elements that should be added just after loaded app
-   */
+  */
   static initElements() {
     createElement('line', {startPoint: new Location(100, 100), endPoint: new Location(100, 200)});
     createElement('lamp', {location: new Location(600, 100)});
@@ -86,15 +78,15 @@ export class App {
   }
 
   /**
-   * [clear description]
-   */
+  * [clear description]
+  */
   clear() {
     canvasCtx.clearRect(0, 0, this.width, this.height);
   }
 
   /**
-   * draw background & grid
-   */
+  * draw background & grid
+  */
   renderBackground() {
     // draw background
     canvasCtx.fillStyle = this.background;
@@ -118,8 +110,8 @@ export class App {
   }
 
   /**
-   * [render description]
-   */
+  * [render description]
+  */
   render() {
     requestAnimationFrame(this.render.bind(this));
 
