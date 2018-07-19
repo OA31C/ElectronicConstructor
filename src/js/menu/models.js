@@ -90,7 +90,6 @@ export class Menu extends UIElement {
     this.items = [];
     for (let key in ELEMENTS) {
       this.items.push(new MenuItem(Menu.capitalizeFirstLetter(key), ELEMENTS[key], ELEMENTS[key].model.description));
-      // console.log(ELEMENTS[key].model.description);
     }
   };
 
@@ -145,12 +144,14 @@ export class MenuItem {
     this.title = '';
     this.description = description;
 
+    this.iconWidth = 50;
+
     this.textAlign = 'start';
     this.textColor = '#000000';
     this.textFont = 'Helvetica';
     this.textSize = 16;
     this.font = 'bold';
-    this.height = 50;
+    this.height = 40;
 
     this.isDisplayed = true;
     this.isSelected = false;

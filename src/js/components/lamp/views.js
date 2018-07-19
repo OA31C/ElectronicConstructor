@@ -14,7 +14,10 @@ export class LampView extends UIView {
     drawImage(ImgInActive, lamp.location.x, lamp.location.y, lamp.width, lamp.height);
   }
 
+  /**
+   * render icon Lamp
+   */
   static renderIcon(location: Location, width, height) {
-   return drawImage(ImgInActive, location.x + 10, location.y + 5, 35, 35);
+    return drawImage(ImgInActive, location.x, location.y, width, height);
   }
 }

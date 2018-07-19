@@ -61,6 +61,6 @@ export class Lamp extends UIElement {
    * description lamp
    */
   static get description() {
-    return '- Device that generates visible light from an electric current stream';
+    return ' - Device that generates visible light from an electric current stream';
   }
 }

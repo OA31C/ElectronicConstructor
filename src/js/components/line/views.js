@@ -59,11 +59,10 @@ export class LineView extends UIView {
   /**
    * render icon on menu item
    */
-  static renderIcon(location: Location, width, height) {
-    // canvasCtx.fillRect(location.x, location.y, width, height);
-    let px = location.x + 30/2;
+  static renderIcon(location: Location, width) {
+    let px = location.x + 30/2 - 5;
     let py = location.y + 45/2;
-    let array = [new Location(location.x + 10, location.y + 25), new Location(location.x + 42, location.y + 25)];
+    let array = [new Location(px, py), new Location(px + width / 1.3, py)];
     LineView.renderLine(array, DEFAULT_LINE_WIDTH,
         {location: array[0], radius: DEFAULT_LINE_WIDTH+1},
         {location: array[array.length-1], radius: DEFAULT_LINE_WIDTH+1},

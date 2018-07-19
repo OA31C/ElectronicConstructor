@@ -72,13 +72,14 @@ export class MenuView extends UIView {
 
     // center by width of the item rect
     // FIXME: add `if` for check whether textAlign === center
-    let posX = menu.location.x + menu.width / 3.5;
+    let posX = menu.location.x + item.iconWidth * 1.3;
+
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
     let posY = item.height * itemNum;
 
-    // item.width = canvasCtx.measureText(item.text).width;
     item.width = menu.width;
-
+    const textWidth = canvasCtx.measureText(item.text).width + posX;
+    const textHeight = posY - 15;
     // FIXME: should it be in drawElement method maybe? before drawBackground
     // FIXME: remove it
     // use the next algorithm:
@@ -89,8 +90,7 @@ export class MenuView extends UIView {
     //     + top and left margin
 
     // TODO: get X position for centered text item
-    // let x = menu.location.x + (menu.width / 2) - (item.width / 2);
-    let x = menu.location.x;
+    let x = menu.location.x + (menu.width / 2) - (item.width / 2);
 
     let y = posY-item.height;
     item.location = new Location(x, y);
@@ -98,20 +98,22 @@ export class MenuView extends UIView {
     canvasCtx.fillRect(item.location.x, item.location.y, item.width, item.height);
 
     canvasCtx.fillStyle = item.textColor;
-    canvasCtx.fillText(item.text, posX - 15, posY - 22);
+    canvasCtx.fillText(item.text, posX, textHeight);
 
     canvasCtx.font = 'normal 14px Helvetica';
-    canvasCtx.fillText(item.description, posX + 38, posY - 22);
+    canvasCtx.fillText(item.description, textWidth, textHeight);
 
-    item.element.view.renderIcon(item.location, item.width, item.height);
+    // render icon item
+    item.element.view.renderIcon(item.location, item.iconWidth, item.height);
+    canvasCtx.strokeStyle = 'green';
+    canvasCtx.lineWidth = 5;
 
     // button Line in item
-      if (item.isHovered) {
-        canvasCtx.lineWidth = 3;
-        MenuView.drawBorder(item);
-      } else {
-          canvasCtx.fillRect(item.location.x + 5, item.location.y + 49.5, item.location.x, 1);
-      }
+    if (item.isHovered) {
+      MenuView.drawBorder(item);
+    } else {
+        // canvasCtx.strokeRect(item.location.x, item.location.y, item.width, item.height);
+    }
   }
 
   /**

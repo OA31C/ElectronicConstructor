@@ -4,9 +4,15 @@ import {LineCtrl} from '../line/controllers';
 
 export const IMG = 'battery/battery.png';
 
+/**
+ * Battery class
+ */
 export class Battery extends UIElement {
   line: LineCtrl;
 
+  /**
+  * description
+  */
   constructor({location}) {
     super();
     this.location = location;

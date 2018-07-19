@@ -160,7 +160,7 @@ export class Line extends UIElement {
    * description line
    */
   static get description() {
-    return '- Material that produces light or electricity (as opposed to a dielectric). '+
+    return ' - Material that produces light or electricity (as opposed to a dielectric). '+
         'For a conductor characterized by high heat or electrical conductivity.';
   }
 }
