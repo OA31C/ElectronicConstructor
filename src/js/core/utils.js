@@ -67,22 +67,30 @@ export function isEqual(first: any, second: any): boolean {
  * - saves a loaded image to cache and loads it next times for the same `url`
  */
 export function drawImage(url: string, ...args) {
-  const cacheKey = `img__${url}`;
+    const cacheKey = `img__${url}`;
   // try to get the image from cache
   let img = drawImage[cacheKey];
 
   if (img) {
-    // if img is not loaded yet -> wait for it
-    if (!img.complete) {
-      img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
-    } else {
-      canvasCtx.drawImage(img, ...args);
-    }
+      // if img is not loaded yet -> wait for it
+      if (!img.complete) {
+          img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
+      } else {
+          canvasCtx.drawImage(img, ...args);
+      }
   } else {
-    img = new Image();
-    img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
-    img.src = `/src/img/${url}`;
-    // save img to cache
-    drawImage[cacheKey] = img;
+      img = new Image();
+      img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
+      img.src = `/src/img/${url}`;
+      // save img to cache
+      drawImage[cacheKey] = img;
   }
+}
+
+/**
+ * @param element
+ */
+export function strokeInsaide(element) {
+    const halfBorderWidth = element.borderWidth / 2;
+    canvasCtx.strokeRect(element.location.x + halfBorderWidth, element.location.y + halfBorderWidth, element.width - element.borderWidth, element.height - element.borderWidth);
 }

@@ -4,7 +4,7 @@ import {canvasCtx} from '../constants.js';
 import {Location, UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
-import {drawImage} from '../core/utils';
+import {drawImage, redraw, strokeInsaide} from '../core/utils';
 
 /**
 * ...
@@ -105,14 +105,18 @@ export class MenuView extends UIView {
 
     // render icon item
     item.element.view.renderIcon(item.location, item.iconWidth, item.height);
-    canvasCtx.strokeStyle = 'green';
-    canvasCtx.lineWidth = 5;
-
     // button Line in item
     if (item.isHovered) {
-      MenuView.drawBorder(item);
+      canvasCtx.strokeStyle = item.borderColor;
+      canvasCtx.lineWidth = item.borderWidth;
+      strokeInsaide(item);
     } else {
-        // canvasCtx.strokeRect(item.location.x, item.location.y, item.width, item.height);
+        // canvasCtx.lineWidth = 1;
+        // canvasCtx.moveTo(item.location.x, item.location.y);
+        // canvasCtx.lineTo(item.location.x + item.width, item.location.y);
+        // canvasCtx.stroke();
+        // canvasCtx.lineWidth = strokeInsaide(item);
+
     }
   }
 
