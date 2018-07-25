@@ -90,7 +90,7 @@ export class Menu extends UIElement {
   initItems() {
     if (this.items.length) throw new Error('Menu items already have been specified!');
     for (const [elementName, element] of Object.entries(ELEMENTS)) {
-      const prevItem = this.items.length >= 0 ? this.items[this.items.length-1] : null;
+      const prevItem = this.items.length ? this.items[this.items.length-1] : null;
       this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
     }
   };
