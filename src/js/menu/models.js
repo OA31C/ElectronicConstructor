@@ -160,7 +160,7 @@ export class MenuItem {
     this.inmutable = '#ffffff';
     this.mutable = '#eeeeee';
 
-    this.borderWidth = 1;
+    this.borderWidth = 1.5;
     this.borderColor = 'black';
 
     this.width = Menu.width;

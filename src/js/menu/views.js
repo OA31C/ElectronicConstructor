@@ -4,7 +4,7 @@ import {canvasCtx} from '../constants.js';
 import {Location, UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
-import {drawImage, redraw, strokeInsaide} from '../core/utils';
+import {drawImage, strokeInside, strokeOutside} from '../core/utils';
 
 /**
 * ...
@@ -92,7 +92,7 @@ export class MenuView extends UIView {
     // TODO: get X position for centered text item
     let x = menu.location.x + (menu.width / 2) - (item.width / 2);
 
-    let y = posY-item.height;
+    let y = posY-item.height + item.borderWidth;
     item.location = new Location(x, y);
     canvasCtx.fillStyle = item.backgroundColor;
     canvasCtx.fillRect(item.location.x, item.location.y, item.width, item.height);
@@ -109,14 +109,11 @@ export class MenuView extends UIView {
     if (item.isHovered) {
       canvasCtx.strokeStyle = item.borderColor;
       canvasCtx.lineWidth = item.borderWidth;
-      strokeInsaide(item);
+      strokeInside(item);
     } else {
-        // canvasCtx.lineWidth = 1;
-        // canvasCtx.moveTo(item.location.x, item.location.y);
-        // canvasCtx.lineTo(item.location.x + item.width, item.location.y);
-        // canvasCtx.stroke();
-        // canvasCtx.lineWidth = strokeInsaide(item);
-
+        canvasCtx.strokeStyle = 'black';
+        canvasCtx.lineWidth = 1;
+        strokeOutside(item);
     }
   }
 
