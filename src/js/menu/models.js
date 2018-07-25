@@ -1,9 +1,9 @@
 // @flow
 
 import {isElementHover} from '../core/utils.js';
-import {Location, UIElement, UIText} from '../core/base/models.js';
+import {Location, UIElement} from '../core/base/models.js';
 import {ELEMENTS} from '../components';
-import {redraw} from "../core/utils";
+import {redraw} from '../core/utils';
 
 /**
  * ...
@@ -33,6 +33,7 @@ export class Menu extends UIElement {
 
     this.isResizeHold = false;
 
+    this.items = [];
     this.partOfCanvas = 5;
     this.borderWidth = 1;
     this.borderColor = '#000000';
@@ -87,9 +88,10 @@ export class Menu extends UIElement {
    * [initItems description]
   */
   initItems() {
-    this.items = [];
-    for (let key in ELEMENTS) {
-      this.items.push(new MenuItem(Menu.capitalizeFirstLetter(key), ELEMENTS[key], ELEMENTS[key].model.description));
+    if (this.items.length) throw new Error('Menu items already have been specified!');
+    for (const [elementName, element] of Object.entries(ELEMENTS)) {
+      const prevItem = this.items.length >= 0 ? this.items[this.items.length-1] : null;
+      this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
     }
   };
 
@@ -118,33 +120,30 @@ export class Menu extends UIElement {
     super.hide();
     this.closeButton.show();
   }
-
-  /**
-   * @param string
-   * @returns {string}
-   */
-  static capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 }
 
 /**
  * ...
  */
-export class MenuItem {
+export class MenuItem extends UIElement {
+  description: string;
+  element: string;
   isSelected: boolean;
   location: Location;
+
   /**
    * [constructor description]
    */
-  constructor(text: string, element: string, description: string) {
-    this.text = text;
+  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string) {
+    super();
     this.element = element;
-
-    this.title = '';
     this.description = description;
 
     this.iconWidth = 50;
+    this.location = new Location(
+      menu.location.x + menu.borderWidth,
+      prevItem ? prevItem.location.y + prevItem.height + menu.borderWidth : menu.borderWidth
+    );
 
     this.textAlign = 'start';
     this.textColor = '#000000';
@@ -152,18 +151,14 @@ export class MenuItem {
     this.textSize = 16;
     this.font = 'bold';
     this.height = 40;
+    this.width = menu.width;
 
     this.isDisplayed = true;
     this.isSelected = false;
 
     this.isHovered = false;
-    this.inmutable = '#ffffff';
-    this.mutable = '#eeeeee';
-
-    this.borderWidth = 1.5;
-    this.borderColor = 'black';
-
-    this.width = Menu.width;
+    this.backgroundColor = '#ffffff';
+    this.hoverBackgroundColor = '#eeeeee';
   }
 
   /**
@@ -191,14 +186,14 @@ export class MenuItem {
    * @returns {string}
    * change color background
    */
-  get backgroundColor() {
-    return this.isHovered ? this.mutable : this.inmutable;
+  get background() {
+    return this.isHovered ? this.hoverBackgroundColor : this.backgroundColor;
   }
 
   /**
    * ....
    */
-  hold() {
+  hover() {
     this.isHovered = true;
     redraw();
   }
@@ -206,7 +201,7 @@ export class MenuItem {
   /**
    * ...
    */
-  unhold() {
+  unhover() {
     this.isHovered = false;
     redraw();
   }

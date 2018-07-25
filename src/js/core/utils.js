@@ -88,20 +88,36 @@ export function drawImage(url: string, ...args) {
 }
 
 /**
- * stroke in side
+ * draw a border inside the element
  */
-export function strokeInside(element) {
-    const halfBorderWidth = element.borderWidth / 2;
-    canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height - halfBorderWidth);
+export function strokeInside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x + halfBorderWidth,
+    element.location.y + halfBorderWidth,
+    element.width - borderWidth,
+    element.height - borderWidth
+  );
 }
 
 /**
- * Stroke Out Side
+ * draw a border outside the element
  */
-export function strokeOutside(element) {
-    canvasCtx.beginPath();
-    canvasCtx.lineWidth = 0.3;
-    canvasCtx.moveTo(element.location.x + 3, element.location.y + 39);
-    canvasCtx.lineTo(element.location.x + element.width, element.location.y + 39);
-    canvasCtx.stroke();
+export function strokeOutside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x - halfBorderWidth,
+    element.location.y - halfBorderWidth,
+    element.width + borderWidth,
+    element.height + borderWidth
+  );
+}
+
+/**
+ * 'test text' -> 'Test text'
+ */
+export function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }

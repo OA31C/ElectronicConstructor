@@ -64,9 +64,9 @@ export class MenuCtrl extends UICtrl {
 
     for (let item of this.model.items) {
       if (item.isHover(mousePosition)) {
-        item.hold();
+        item.hover();
       } else {
-        item.unhold();
+        item.unhover();
       }
     }
 
