@@ -91,6 +91,8 @@ export function drawImage(url: string, ...args) {
  * stroke in side
  */
 export function strokeInside(element) {
+    canvasCtx.lineWidth = element.borderWidth;
+    canvasCtx.strokeStyle = element.borderColor;
     const halfBorderWidth = element.borderWidth / 2;
     canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height - halfBorderWidth);
 }
@@ -101,6 +103,7 @@ export function strokeInside(element) {
 export function strokeOutside(element) {
     canvasCtx.beginPath();
     canvasCtx.lineWidth = 0.3;
+    canvasCtx.strokeStyle = 'black';
     canvasCtx.moveTo(element.location.x + 3, element.location.y + 39);
     canvasCtx.lineTo(element.location.x + element.width, element.location.y + 39);
     canvasCtx.stroke();

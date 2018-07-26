@@ -20,7 +20,6 @@ export class MenuView extends UIView {
             this.constructor.renderItem(item, ++index, menu);
         });
     }
-
     for (const button of MenuButton.instances) {
         this.constructor.renderButton(button);
     }
@@ -107,12 +106,8 @@ export class MenuView extends UIView {
     item.element.view.renderIcon(item.location, item.iconWidth, item.height);
     // button Line in item
     if (item.isHovered) {
-      canvasCtx.strokeStyle = item.borderColor;
-      canvasCtx.lineWidth = item.borderWidth;
       strokeInside(item);
     } else {
-        canvasCtx.strokeStyle = 'black';
-        canvasCtx.lineWidth = 1;
         strokeOutside(item);
     }
   }
