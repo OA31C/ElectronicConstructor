@@ -1,9 +1,9 @@
 // @flow
 
 import {isElementHover} from '../core/utils.js';
-import {Location, UIElement, UIText} from '../core/base/models.js';
+import {Location, UIElement} from '../core/base/models.js';
 import {ELEMENTS} from '../components';
-import {redraw} from "../core/utils";
+import {redraw} from '../core/utils';
 
 /**
  * ...
@@ -33,6 +33,7 @@ export class Menu extends UIElement {
 
     this.isResizeHold = false;
 
+    this.items = [];
     this.partOfCanvas = 5;
     this.borderWidth = 1;
     this.borderColor = '#000000';
@@ -45,9 +46,9 @@ export class Menu extends UIElement {
 
     const closeButtonWidth = 20;
     this.closeButton = new MenuButton({
-        location: new Location(this.location.x + this.width - closeButtonWidth, 0),
-        width: closeButtonWidth, height: 18,
-        background: '#EE3742',
+      location: new Location(this.location.x + this.width - closeButtonWidth, 0),
+      width: closeButtonWidth, height: 18,
+      background: '#EE3742',
     });
     this.closeButton.onClick = () => this.show();
     this.initItems();
@@ -74,6 +75,9 @@ export class Menu extends UIElement {
     this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
     this.__filledWorkingSpace = value;
     this._width = value;
+    for (const item of this.items) {
+        item.width = this._width;
+    }
   }
 
   /**
@@ -85,11 +89,12 @@ export class Menu extends UIElement {
 
   /**
    * [initItems description]
-  */
+   */
   initItems() {
-    this.items = [];
-    for (let key in ELEMENTS) {
-      this.items.push(new MenuItem(Menu.capitalizeFirstLetter(key), ELEMENTS[key], ELEMENTS[key].model.description));
+    if (this.items.length) throw new Error('Menu items already have been specified!');
+    for (const [elementName, element] of Object.entries(ELEMENTS)) {
+        const prevItem = this.items.length ? this.items[this.items.length-1] : null;
+        this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
     }
   };
 
@@ -118,33 +123,29 @@ export class Menu extends UIElement {
     super.hide();
     this.closeButton.show();
   }
-
-  /**
-   * @param string
-   * @returns {string}
-   */
-  static capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 }
 
 /**
  * ...
  */
-export class MenuItem {
+export class MenuItem extends UIElement {
+  description: string;
+  element: string;
   isSelected: boolean;
-  location: Location;
+  menu: Menu;
+  prevItem: MenuItem;
+
   /**
    * [constructor description]
    */
-  constructor(text: string, element: string, description: string) {
-    this.text = text;
+  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string) {
+    super();
     this.element = element;
-
-    this.title = '';
     this.description = description;
+    this.menu = menu;
+    this.prevItem = prevItem;
 
-    this.iconWidth = 50;
+    this.iconWidth = 40;
 
     this.textAlign = 'start';
     this.textColor = '#000000';
@@ -152,25 +153,21 @@ export class MenuItem {
     this.textSize = 16;
     this.font = 'bold';
     this.height = 40;
+    this.width = menu.width;
 
     this.isDisplayed = true;
     this.isSelected = false;
 
     this.isHovered = false;
-    this.inmutable = '#ffffff';
-    this.mutable = '#eeeeee';
-
-    this.borderWidth = 1.5;
-    this.borderColor = 'black';
-
-    this.width = Menu.width;
+    this.backgroundColor = '#ffffff';
+    this.hoverBackgroundColor = '#eeeeee';
   }
 
   /**
    * [select description]
    */
   select() {
-    this.isSelected = true;
+      this.isSelected = true;
   }
 
   /**
@@ -184,21 +181,21 @@ export class MenuItem {
    * [isHover description]
    */
   isHover(mousePos: Location): boolean {
-    return isElementHover(this, mousePos);
+      return isElementHover(this, mousePos);
   }
 
   /**
    * @returns {string}
    * change color background
    */
-  get backgroundColor() {
-    return this.isHovered ? this.mutable : this.inmutable;
+  get background() {
+    return this.isHovered ? this.hoverBackgroundColor : this.backgroundColor;
   }
 
   /**
    * ....
    */
-  hold() {
+  hover() {
     this.isHovered = true;
     redraw();
   }
@@ -206,9 +203,25 @@ export class MenuItem {
   /**
    * ...
    */
-  unhold() {
+  unhover() {
     this.isHovered = false;
     redraw();
+  }
+
+  /**
+   * Location item
+   */
+  get location(): Location {
+    return new Location(this.menu.location.x + this.menu.borderWidth,
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
+    );
+  }
+
+  /**
+   * Icon location
+   */
+  get iconLocation(): Location {
+    return new Location(this.location.x + 3, this.location.y);
   }
 }
 
@@ -222,19 +235,19 @@ export class MenuButton extends UIElement {
    * [constructor description]
    */
   constructor({location, width, height, background}) {
-      super();
-      this.location = location;
+    super();
+    this.location = location;
 
-      this.width = width;
-      this.height = height;
+    this.width = width;
+    this.height = height;
 
-      this.background = background;
-      this.borderColor = '#050505';
-      this.borderWidth = 1;
+    this.background = background;
+    this.borderColor = '#050505';
+    this.borderWidth = 1;
 
-      this.img = 'buttons/menu_button.png';
-      this.isDisplayed = false;
-      MenuButton.instances.push(this);
+    this.img = 'buttons/menu_button.png';
+    this.isDisplayed = false;
+    MenuButton.instances.push(this);
   }
 }
 MenuButton.instances = [];

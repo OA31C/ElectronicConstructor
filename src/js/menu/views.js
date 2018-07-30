@@ -1,14 +1,15 @@
 // @flow
 
 import {canvasCtx} from '../constants.js';
-import {Location, UIElement} from '../core/base/models.js';
+import {UIElement} from '../core/base/models.js';
 import {UIView} from '../core/base/views.js';
 import {Menu, MenuItem, MenuButton} from './models.js';
-import {drawImage, strokeInside, strokeOutside} from '../core/utils';
+import {capitalize, drawImage, strokeInside, strokeOutside} from '../core/utils';
+import {ELEMENTS} from '../components';
 
 /**
-* ...
-*/
+ * ...
+ */
 export class MenuView extends UIView {
   /**
    * render menu and its items
@@ -20,10 +21,11 @@ export class MenuView extends UIView {
             this.constructor.renderItem(item, ++index, menu);
         });
     }
+
     for (const button of MenuButton.instances) {
         this.constructor.renderButton(button);
     }
-      this.constructor.drawBorder(menu);
+    this.constructor.drawBorder(menu);
   }
 
   /**
@@ -38,7 +40,7 @@ export class MenuView extends UIView {
   /**
    * @param  {Menu | MenuItem} element
    */
-  static drawBorder(element: UIElement) {
+  static drawBorder(element: Menu) {
     let isBorder = false;
     if (element.borderWidth) {
         canvasCtx.lineWidth = element.borderWidth;
@@ -49,7 +51,7 @@ export class MenuView extends UIView {
         isBorder = true;
     }
     if (isBorder) {
-        canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height);
+        strokeInside(element, element.borderWidth);
     }
   }
 
@@ -70,45 +72,40 @@ export class MenuView extends UIView {
     canvasCtx.textAlign = item.textAlign;
 
     // center by width of the item rect
-    // FIXME: add `if` for check whether textAlign === center
-    let posX = menu.location.x + item.iconWidth * 1.3;
+    let posX = item.location.x + item.iconWidth * 1.3;
 
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
     let posY = item.height * itemNum;
 
-    item.width = menu.width;
-    const textWidth = canvasCtx.measureText(item.text).width + posX;
+    const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posX;
     const textHeight = posY - 15;
-    // FIXME: should it be in drawElement method maybe? before drawBackground
-    // FIXME: remove it
-    // use the next algorithm:
-    // 1) if item doesn't have location:
-    //   - set location to the nearest X, Y:
-    //     * where it isn't filled by another item
-    //     * check whether height and width also isn't filled
-    //     + top and left margin
 
-    // TODO: get X position for centered text item
-    let x = menu.location.x + (menu.width / 2) - (item.width / 2);
+    // item background
+    this.drawBackground(item);
 
-    let y = posY-item.height + item.borderWidth;
-    item.location = new Location(x, y);
-    canvasCtx.fillStyle = item.backgroundColor;
-    canvasCtx.fillRect(item.location.x, item.location.y, item.width, item.height);
-
+    // item title
     canvasCtx.fillStyle = item.textColor;
-    canvasCtx.fillText(item.text, posX, textHeight);
+    canvasCtx.fillText(capitalize(item.element), posX, textHeight);
 
+    // item description
     canvasCtx.font = 'normal 14px Helvetica';
     canvasCtx.fillText(item.description, textWidth, textHeight);
 
     // render icon item
-    item.element.view.renderIcon(item.location, item.iconWidth, item.height);
+    ELEMENTS[item.element].view.renderIcon(item.iconLocation, item.iconWidth, item.height);
     // button Line in item
     if (item.isHovered) {
-      strokeInside(item);
+        canvasCtx.strokeStyle = menu.borderColor;
+        strokeOutside(item, menu.borderWidth);
     } else {
-        strokeOutside(item);
+      canvasCtx.beginPath();
+      canvasCtx.strokeStyle = menu.borderColor;
+      canvasCtx.lineWidth = menu.borderWidth;
+      const bottomLineMargin = (item.width * 0.05) / 2; // cut 5% off from the whole line width
+      const bottomLinePosY = item.location.y + item.height + menu.borderWidth / 2;
+      canvasCtx.moveTo(item.location.x + bottomLineMargin, bottomLinePosY);
+      canvasCtx.lineTo(item.location.x + item.width - bottomLineMargin, bottomLinePosY);
+      canvasCtx.stroke();
     }
   }
 
@@ -117,6 +114,6 @@ export class MenuView extends UIView {
    */
   static renderButton(button: MenuButton) {
     if (!button.isDisplayed) return;
-    drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
+      drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
   }
 }

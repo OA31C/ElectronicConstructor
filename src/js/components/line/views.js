@@ -60,12 +60,13 @@ export class LineView extends UIView {
    * render icon on menu item
    */
   static renderIcon(location: Location, width) {
-    let px = location.x + 30/2 - 5;
+    const DEFAULT_LINE_WIDTH = 1;
+    let px = location.x + DEFAULT_LINE_WIDTH * 4;
     let py = location.y + 45/2;
-    let array = [new Location(px, py), new Location(px + width / 1.3, py)];
+    let array = [new Location(px, py), new Location(px + (width - (DEFAULT_LINE_WIDTH * 2) * 4), py)];
     LineView.renderLine(array, DEFAULT_LINE_WIDTH,
-        {location: array[0], radius: DEFAULT_LINE_WIDTH+1},
-        {location: array[array.length-1], radius: DEFAULT_LINE_WIDTH+1},
+        {location: array[0], radius: DEFAULT_LINE_WIDTH+2},
+        {location: array[array.length-1], radius: DEFAULT_LINE_WIDTH+2},
         'black',
         );
   }

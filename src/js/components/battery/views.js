@@ -19,6 +19,6 @@ export class BatteryView extends UIView {
    * render icon
    */
   static renderIcon(location: Location, width, height) {
-    return drawImage(IMG, location.x + 5, location.y, width, height);
+    return drawImage(IMG, location.x, location.y, width, height);
   }
 }

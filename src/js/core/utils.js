@@ -17,8 +17,8 @@ export function getMousePos(event: MouseEvent): Location {
  */
 export function isElementHover(element: UIElement, mousePos: Location): boolean {
   if (!element.isDisplayed || !element.location || !element.width || !element.height) return false;
-  return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
-         (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+    return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
+      (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }
 
 /**
@@ -47,7 +47,7 @@ export function redraw() {
  */
 export function isEqual(first: any, second: any): boolean {
   if (typeof first !== 'object' || typeof second !== 'object' ||
-      first === null || second === null) {
+    first === null || second === null) {
     return first === second;
   }
   if (first.constructor !== second.constructor) return false;
@@ -67,44 +67,57 @@ export function isEqual(first: any, second: any): boolean {
  * - saves a loaded image to cache and loads it next times for the same `url`
  */
 export function drawImage(url: string, ...args) {
-    const cacheKey = `img__${url}`;
+  const cacheKey = `img__${url}`;
   // try to get the image from cache
   let img = drawImage[cacheKey];
 
   if (img) {
-      // if img is not loaded yet -> wait for it
-      if (!img.complete) {
-          img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
-      } else {
-          canvasCtx.drawImage(img, ...args);
+    // if img is not loaded yet -> wait for it
+    if (!img.complete) {
+      img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
+    } else {
+        canvasCtx.drawImage(img, ...args);
       }
   } else {
-      img = new Image();
-      img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
-      img.src = `/src/img/${url}`;
-      // save img to cache
-      drawImage[cacheKey] = img;
+    img = new Image();
+    img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
+    img.src = `/src/img/${url}`;
+    // save img to cache
+    drawImage[cacheKey] = img;
   }
 }
 
 /**
- * stroke in side
+ * draw a border inside the element
  */
-export function strokeInside(element) {
-    canvasCtx.lineWidth = element.borderWidth;
-    canvasCtx.strokeStyle = element.borderColor;
-    const halfBorderWidth = element.borderWidth / 2;
-    canvasCtx.strokeRect(element.location.x, element.location.y, element.width, element.height - halfBorderWidth);
+export function strokeInside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x + halfBorderWidth,
+    element.location.y + halfBorderWidth,
+    element.width - borderWidth,
+    element.height - borderWidth
+  );
 }
 
 /**
- * Stroke Out Side
+ * draw a border outside the element
  */
-export function strokeOutside(element) {
-    canvasCtx.beginPath();
-    canvasCtx.lineWidth = 0.3;
-    canvasCtx.strokeStyle = 'black';
-    canvasCtx.moveTo(element.location.x + 3, element.location.y + 39);
-    canvasCtx.lineTo(element.location.x + element.width, element.location.y + 39);
-    canvasCtx.stroke();
+export function strokeOutside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x - halfBorderWidth,
+    element.location.y - halfBorderWidth,
+    element.width + borderWidth,
+    element.height + borderWidth
+    );
+}
+
+/**
+ * 'test text' -> 'Test text'
+ */
+export function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
