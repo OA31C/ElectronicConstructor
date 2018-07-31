@@ -26,25 +26,6 @@ export class Location {
 }
 
 /**
- * Every custom list of ui elements should inheritance from this class
- */
-export class UIElementsList extends Array {
-  /**
-   * [displayedChildren description]
-   */
-  get displayedChildren() {
-    return this.filter((item) => item.isDisplayed);
-  }
-
-  /**
-   * [displayedChildrenLength description]
-   */
-  get displayedChildrenLength() {
-    return this.displayedChildren.length;
-  }
-}
-
-/**
  * Every model that one is needed to be shown in the canvas - should be inherited from this class
  */
 export class UIElement {
