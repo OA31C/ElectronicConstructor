@@ -76,7 +76,7 @@ export class Menu extends UIElement {
     this.__filledWorkingSpace = value;
     this._width = value;
     for (const item of this.items) {
-        item.width = this._width;
+      item.width = this._width;
     }
   }
 
@@ -93,8 +93,8 @@ export class Menu extends UIElement {
   initItems() {
     if (this.items.length) throw new Error('Menu items already have been specified!');
     for (const [elementName, element] of Object.entries(ELEMENTS)) {
-        const prevItem = this.items.length ? this.items[this.items.length-1] : null;
-        this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
+      const prevItem = this.items.length ? this.items[this.items.length-1] : null;
+      this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
     }
   };
 
@@ -110,7 +110,7 @@ export class Menu extends UIElement {
    */
   show() {
     if (!this.isResizeHold) {
-        this.width = this.defaultWidth;
+      this.width = this.defaultWidth;
     }
     super.show();
     this.closeButton.hide();
@@ -167,7 +167,7 @@ export class MenuItem extends UIElement {
    * [select description]
    */
   select() {
-      this.isSelected = true;
+    this.isSelected = true;
   }
 
   /**
@@ -181,7 +181,7 @@ export class MenuItem extends UIElement {
    * [isHover description]
    */
   isHover(mousePos: Location): boolean {
-      return isElementHover(this, mousePos);
+    return isElementHover(this, mousePos);
   }
 
   /**

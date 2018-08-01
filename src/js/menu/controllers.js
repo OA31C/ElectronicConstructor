@@ -3,7 +3,7 @@
 import {UICtrl} from '../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas, DEFAULT_CURSOR} from '../constants';
+import {$canvas, canvasCtx, DEFAULT_CURSOR} from '../constants';
 
 
 /**
@@ -35,9 +35,9 @@ export class MenuCtrl extends UICtrl {
             item.deselect();
         }
         redraw();
+      }
+      return true;
     }
-    return true;
-  }
 
   /**
   * Resize Width in Menu
@@ -62,11 +62,11 @@ export class MenuCtrl extends UICtrl {
       } else $canvas.style.cursor = DEFAULT_CURSOR;
 
       for (let item of this.model.items) {
-         if (item.isHover(mousePosition)) {
-           item.hover();
-         } else {
-           item.unhover();
-         }
+        if (item.isHover(mousePosition)) {
+          item.hover();
+        } else {
+          item.unhover();
+        }
       }
 
       if (this.model.isResizeHold) {
@@ -76,9 +76,9 @@ export class MenuCtrl extends UICtrl {
         redraw();
         // hides the menu
         if (this.model.width <= this.model.defaultWidth / 4) {
-            this.model.hide();
+          this.model.hide();
         } else if (!this.model.isDisplayed) {
-            this.model.show();
+          this.model.show();
         }
       } else return true;
   }
@@ -86,10 +86,10 @@ export class MenuCtrl extends UICtrl {
    * the mouse is up in menu
    */
   onMouseUp() {
-      if (this.model.isResizeHold) {
-          $canvas.style.cursor = DEFAULT_CURSOR;
-      }
-      this.model.isResizeHold = false;
-      return true;
+    if (this.model.isResizeHold) {
+      $canvas.style.cursor = DEFAULT_CURSOR;
+    }
+    this.model.isResizeHold = false;
+    return true;
   }
 }

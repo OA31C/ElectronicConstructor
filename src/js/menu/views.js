@@ -16,16 +16,15 @@ export class MenuView extends UIView {
    */
   render(menu: Menu) {
     if (menu.isDisplayed) {
-        this.constructor.drawBackground(menu);
-        menu.items.forEach((item, index) => {
-            this.constructor.renderItem(item, ++index, menu);
-        });
+      this.constructor.drawBackground(menu);
+      this.constructor.drawBorder(menu);
+      menu.items.forEach((item, index) => {
+        this.constructor.renderItem(item, ++index, menu);
+      });
     }
-
     for (const button of MenuButton.instances) {
-        this.constructor.renderButton(button);
+      this.constructor.renderButton(button);
     }
-    this.constructor.drawBorder(menu);
   }
 
   /**
@@ -43,15 +42,15 @@ export class MenuView extends UIView {
   static drawBorder(element: Menu) {
     let isBorder = false;
     if (element.borderWidth) {
-        canvasCtx.lineWidth = element.borderWidth;
-        isBorder = true;
+      canvasCtx.lineWidth = element.borderWidth;
+      isBorder = true;
     }
     if (element.borderColor) {
-        canvasCtx.strokeStyle = element.borderColor;
-        isBorder = true;
+      canvasCtx.strokeStyle = element.borderColor;
+      isBorder = true;
     }
     if (isBorder) {
-        strokeInside(element, element.borderWidth);
+      strokeInside(element, element.borderWidth);
     }
   }
 
@@ -95,8 +94,8 @@ export class MenuView extends UIView {
     ELEMENTS[item.element].view.renderIcon(item.iconLocation, item.iconWidth, item.height);
     // button Line in item
     if (item.isHovered) {
-        canvasCtx.strokeStyle = menu.borderColor;
-        strokeOutside(item, menu.borderWidth);
+      canvasCtx.strokeStyle = menu.borderColor;
+      strokeOutside(item, menu.borderWidth);
     } else {
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = menu.borderColor;
