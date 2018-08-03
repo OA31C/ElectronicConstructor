@@ -18,8 +18,8 @@ export class MenuView extends UIView {
     if (menu.isDisplayed) {
       this.constructor.drawBackground(menu);
       this.constructor.drawBorder(menu);
-      menu.items.forEach((item, index) => {
-        this.constructor.renderItem(item, ++index, menu);
+      menu.items.forEach((item) => {
+        this.constructor.renderItem(item, menu);
       });
     }
     for (const button of MenuButton.instances) {
@@ -60,7 +60,7 @@ export class MenuView extends UIView {
    * @param  {[type]} itemNum: number        [description]
    * @param {{type}} menu: Menu
    */
-  static renderItem(item: MenuItem, itemNum: number, menu: Menu) { // FIXME: remove menu here!!!
+  static renderItem(item: MenuItem, menu: Menu) { // FIXME: remove menu here!!!
     if (!item.isDisplayed) return;
 
     canvasCtx.fillStyle = item.textColor;
@@ -71,7 +71,7 @@ export class MenuView extends UIView {
     let posXItemText = item.location.x + item.iconWidth * item.iconMargin;
 
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
-    let posYItemText = item.height * itemNum;
+    let posYItemText = item.height + item.location.y;
 
     const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posXItemText;
     const textHeight = posYItemText - item.topMargin;
