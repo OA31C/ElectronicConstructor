@@ -1,13 +1,13 @@
 import {canvasCtx} from '../../constants';
 import {UIView} from '../../core/base/views';
-import {Line} from './models';
-import {DEFAULT_LINE_WIDTH} from './models';
+import {Line, DEFAULT_LINE_WIDTH} from './models';
 import {Location} from '../../core/base/models';
 
 /**
  * ...
  */
 export class LineView extends UIView {
+  line: Line;
   /**
    * draw a point(like *) on input location
    */
@@ -42,12 +42,12 @@ export class LineView extends UIView {
     canvasCtx.lineWidth = DEFAULT_LINE_WIDTH;
     canvasCtx.beginPath();
     for (let i = 0, len = coordinates.length; i < len; i++) {
-        let coordinate = coordinates[i];
-        if (!i) { // first coordinate
-            canvasCtx.moveTo(coordinate.x, coordinate.y);
-            continue;
-        }
-        canvasCtx.lineTo(coordinate.x, coordinate.y);
+      let coordinate = coordinates[i];
+      if (!i) { // first coordinate
+        canvasCtx.moveTo(coordinate.x, coordinate.y);
+        continue;
+      }
+      canvasCtx.lineTo(coordinate.x, coordinate.y);
     }
     canvasCtx.strokeStyle = color;
     canvasCtx.stroke();
@@ -59,15 +59,18 @@ export class LineView extends UIView {
   /**
    * render icon on menu item
    */
-  static renderIcon(location: Location, width) {
-    const DEFAULT_LINE_WIDTH = 1;
-    let px = location.x + DEFAULT_LINE_WIDTH * 4;
-    let py = location.y + 45/2;
-    let array = [new Location(px, py), new Location(px + (width - (DEFAULT_LINE_WIDTH * 2) * 4), py)];
-    LineView.renderLine(array, DEFAULT_LINE_WIDTH,
-        {location: array[0], radius: DEFAULT_LINE_WIDTH+2},
-        {location: array[array.length-1], radius: DEFAULT_LINE_WIDTH+2},
+  static renderIcon(location: Location, width: number) {
+    const lineWidth = 1;
+    const height = 45/2;
+    const pointWidth = lineWidth * 3;
+    let px = location.x + lineWidth * 5;
+    let py = location.y + height;
+    let array = [new Location(px, py), new Location(px + width - lineWidth * 8, py)];
+    LineView.renderLine(
+        array, lineWidth,
+        {location: array[0], radius: pointWidth},
+        {location: array[array.length-1], radius: pointWidth},
         'black',
-        );
+    );
   }
 }

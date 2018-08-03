@@ -27,7 +27,8 @@ export class Line extends UIElement {
     super();
     this.coordinates = [startPoint, endPoint];
     this.lineColor = '#3e3e3e';
-    // this.lineWidth = 3;
+    this.lineWidth = DEFAULT_LINE_WIDTH;
+    this.pointWidth = this.lineWidth + 1;
 
     // `true`: updates the current instance; `false`: creates a new instance
     this.mutable = mutable;
@@ -80,7 +81,7 @@ export class Line extends UIElement {
   get input(): Object {
     return {
       location: this.coordinates[0],
-      radius: DEFAULT_LINE_WIDTH+1,
+      radius: this.pointWidth,
     };
   }
 
@@ -90,7 +91,7 @@ export class Line extends UIElement {
   get output(): Object {
     return {
       location: this.coordinates[this.coordinates.length-1],
-      radius: DEFAULT_LINE_WIDTH+1,
+      radius: this.pointWidth,
     };
   }
 
@@ -160,7 +161,7 @@ export class Line extends UIElement {
    * description line
    */
   static get description() {
-    return ' - Material that produces light or electricity (as opposed to a dielectric). '+
+    return ' material that produces light or electricity (as opposed to a dielectric). '+
         'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

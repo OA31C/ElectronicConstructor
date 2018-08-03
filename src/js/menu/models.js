@@ -152,6 +152,7 @@ export class MenuItem extends UIElement {
     this.textFont = 'Helvetica';
     this.textSize = 16;
     this.font = 'bold';
+    this.fontDescription = 'normal 14px Helvetica';
     this.height = 40;
     this.width = menu.width;
 
@@ -161,20 +162,10 @@ export class MenuItem extends UIElement {
     this.isHovered = false;
     this.backgroundColor = '#ffffff';
     this.hoverBackgroundColor = '#eeeeee';
-  }
 
-  /**
-   * [select description]
-   */
-  select() {
-    this.isSelected = true;
-  }
-
-  /**
-   * [deselect description]
-   */
-  deselect() {
-    this.isSelected = false;
+    this.topMargin = 14;
+    this.iconMargin = 1.3;
+    this.iconMarginLeft = 3;
   }
 
   /**
@@ -186,7 +177,6 @@ export class MenuItem extends UIElement {
 
   /**
    * @returns {string}
-   * change color background
    */
   get background() {
     return this.isHovered ? this.hoverBackgroundColor : this.backgroundColor;
@@ -212,8 +202,10 @@ export class MenuItem extends UIElement {
    * Location item
    */
   get location(): Location {
-    return new Location(this.menu.location.x + this.menu.borderWidth,
-      this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
+    return new Location(
+             this.menu.location.x + this.menu.borderWidth,
+             this.prevItem ? this.prevItem.location.y + this.prevItem.height +
+             this.menu.borderWidth : this.menu.borderWidth
     );
   }
 
@@ -221,7 +213,7 @@ export class MenuItem extends UIElement {
    * Icon location
    */
   get iconLocation(): Location {
-    return new Location(this.location.x + 3, this.location.y);
+    return new Location(this.location.x + this.iconMarginLeft, this.location.y);
   }
 }
 

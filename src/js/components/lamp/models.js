@@ -3,8 +3,8 @@ import {createElement} from '../index';
 import {LineCtrl} from '../line/controllers';
 import {redraw} from '../../core/utils';
 
-export const ImgActive = 'lamp/lamp_on.png';
-export const ImgInActive = 'lamp/lamp_off.png';
+export const IMG_ACTIVE = 'lamp/lamp_on.png';
+export const IMG_INACTIVE = 'lamp/lamp_off.png';
 
 /**
  * ...
@@ -38,7 +38,7 @@ export class Lamp extends UIElement {
    * get an image of current lamp state (on/off)
    */
   get img(): string {
-    return this.active ? ImgActive : ImgInActive;
+    return this.active ? IMG_ACTIVE : IMG_INACTIVE;
   }
 
   /**
@@ -61,6 +61,6 @@ export class Lamp extends UIElement {
    * description lamp
    */
   static get description() {
-    return ' - Device that generates visible light from an electric current stream';
+    return ' device that generates visible light from an electric current stream';
   }
 }

@@ -65,29 +65,26 @@ export class MenuView extends UIView {
 
     canvasCtx.fillStyle = item.textColor;
     canvasCtx.font = `${item.font} ${item.textSize}px ${item.textFont}`;
-    if (item.isSelected) {
-        canvasCtx.font = `bold ${canvasCtx.font}`;
-    }
     canvasCtx.textAlign = item.textAlign;
 
     // center by width of the item rect
-    let posX = item.location.x + item.iconWidth * 1.3;
+    let posXItemText = item.location.x + item.iconWidth * item.iconMargin;
 
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
-    let posY = item.height * itemNum;
+    let posYItemText = item.height * itemNum;
 
-    const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posX;
-    const textHeight = posY - 15;
+    const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posXItemText;
+    const textHeight = posYItemText - item.topMargin;
 
     // item background
     this.drawBackground(item);
 
     // item title
     canvasCtx.fillStyle = item.textColor;
-    canvasCtx.fillText(capitalize(item.element), posX, textHeight);
+    canvasCtx.fillText(capitalize(item.element), posXItemText, textHeight);
 
     // item description
-    canvasCtx.font = 'normal 14px Helvetica';
+    canvasCtx.font = item.fontDescription;
     canvasCtx.fillText(item.description, textWidth, textHeight);
 
     // render icon item

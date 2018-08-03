@@ -23,21 +23,9 @@ export class MenuCtrl extends UICtrl {
     for (const button of MenuButton.instances) {
       if (button.onClick && isElementHover(button, mousePosition)) {
         button.onClick();
-          return false;
         }
     }
-
-    // FIXME: check is mouse in menu rect. Return `true` otherwise
-    for (const item of this.model.items) {
-      if (item.isHover(mousePosition)) {
-        item.select();
-        } else {
-            item.deselect();
-        }
-        redraw();
-      }
-      return true;
-    }
+  }
 
   /**
   * Resize Width in Menu
@@ -59,9 +47,8 @@ export class MenuCtrl extends UICtrl {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
        return false;
-      } else $canvas.style.cursor = DEFAULT_CURSOR;
-
-      for (let item of this.model.items) {
+      }
+      for (const item of this.model.items) {
         if (item.isHover(mousePosition)) {
           item.hover();
         } else {
@@ -72,7 +59,6 @@ export class MenuCtrl extends UICtrl {
       if (this.model.isResizeHold) {
         $canvas.style.cursor = 'col-resize';
         this.model.width = this.model.width + this.model.location.x - mousePosition.x;
-        // console.log(`${this.model.width} its this model width`)
         redraw();
         // hides the menu
         if (this.model.width <= this.model.defaultWidth / 4) {
@@ -86,9 +72,6 @@ export class MenuCtrl extends UICtrl {
    * the mouse is up in menu
    */
   onMouseUp() {
-    if (this.model.isResizeHold) {
-      $canvas.style.cursor = DEFAULT_CURSOR;
-    }
     this.model.isResizeHold = false;
     return true;
   }
