@@ -2,7 +2,6 @@ import {UIView} from '../../core/base/views';
 import {drawImage} from '../../core/utils';
 import {Battery} from './models';
 import {IMG} from './models';
-import {canvasCtx} from "../../constants";
 
 /**
  * BatteryView class

@@ -164,6 +164,7 @@ export class MenuItem extends UIElement {
     this.hoverBackgroundColor = '#eeeeee';
 
     this.topMargin = 14;
+    this.marginText = 3;
     this.iconMargin = 1.3;
     this.iconMarginLeft = 3;
   }

@@ -73,7 +73,7 @@ export class MenuView extends UIView {
     // concatenates font sizes of all items above and current + concatenates top margin of all items above and current
     let posYItemText = item.height + item.location.y;
 
-    const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posXItemText;
+    const textWidth = canvasCtx.measureText(capitalize(item.element)).width + posXItemText + item.marginText;
     const textHeight = posYItemText - item.topMargin;
 
     // item background
