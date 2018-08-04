@@ -148,9 +148,9 @@ export class Line extends UIElement {
       // * if it's a horizontal or vertical line:
       //   - remove the second coordinate
       if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x &&
-           lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
-          (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
-           lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
+        lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
+        (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
+        lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
         this.coordinates.splice(this.hold === 'output' ? -2 : 1, 1);
       }
     }
@@ -161,7 +161,7 @@ export class Line extends UIElement {
    * description line
    */
   static get description() {
-    return ' material that produces light or electricity (as opposed to a dielectric). '+
+    return 'material that produces light or electricity (as opposed to a dielectric). '+
         'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

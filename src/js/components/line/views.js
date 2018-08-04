@@ -7,7 +7,6 @@ import {Location} from '../../core/base/models';
  * ...
  */
 export class LineView extends UIView {
-  line: Line;
   /**
    * draw a point(like *) on input location
    */
@@ -67,10 +66,10 @@ export class LineView extends UIView {
     let py = location.y + height;
     let array = [new Location(px, py), new Location(px + width - lineWidth * 8, py)];
     LineView.renderLine(
-        array, lineWidth,
-        {location: array[0], radius: pointWidth},
-        {location: array[array.length-1], radius: pointWidth},
-        'black',
+      array, lineWidth,
+      {location: array[0], radius: pointWidth},
+      {location: array[array.length-1], radius: pointWidth},
+      'black',
     );
   }
 }
