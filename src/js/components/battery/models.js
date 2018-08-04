@@ -32,7 +32,11 @@ export class Battery extends UIElement {
    * description battery
    */
   static get description() {
+<<<<<<< HEAD
     return 'element of an electric circuit, which ' +
+=======
+      return 'element of an electric circuit, which ' +
+>>>>>>> 66a92b1... Fixed bugs
         'ensures that a certain electric current flows in it.';
   }
 }
