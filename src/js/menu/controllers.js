@@ -3,7 +3,7 @@
 import {UICtrl} from '../core/base/controllers';
 import {getMousePos, isElementHover, redraw} from '../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas, canvasCtx, DEFAULT_CURSOR} from '../constants';
+import {$canvas} from '../constants';
 
 
 /**
@@ -23,7 +23,7 @@ export class MenuCtrl extends UICtrl {
     for (const button of MenuButton.instances) {
       if (button.onClick && isElementHover(button, mousePosition)) {
         button.onClick();
-        }
+      }
     }
   }
 
@@ -46,7 +46,7 @@ export class MenuCtrl extends UICtrl {
     if (this.model.isDisplayed && this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
-       return false;
+      return false;
       }
       for (const item of this.model.items) {
         if (item.isHover(mousePosition)) {

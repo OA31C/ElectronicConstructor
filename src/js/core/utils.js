@@ -112,7 +112,7 @@ export function strokeOutside(element: UIElement, borderWidth: number) {
     element.location.y - halfBorderWidth,
     element.width + borderWidth,
     element.height + borderWidth
-    );
+  );
 }
 
 /**
