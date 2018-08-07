@@ -67,13 +67,8 @@ export class LineView extends UIView {
     let array = [new Location(px, py), new Location(px + width - radius * 2, py)];
     LineView.renderLine(
       array, lineWidth,
-<<<<<<< HEAD
       {location: array[0], radius: radius},
       {location: array[array.length-1], radius: radius},
-=======
-      {location: array[0], radius: pointWidth},
-      {location: array[array.length-1], radius: pointWidth},
->>>>>>> 66a92b1... Fixed bugs
       'black',
     );
   }
