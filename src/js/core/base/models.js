@@ -41,6 +41,14 @@ export class UIElement {
 
   isDisplayed: boolean;
 
+  priority: number; // specifies the stack order of an element (usually used for events)
+
+  /**
+   * sets default properties
+   */
+  constructor() {
+    this.priority = 0;
+  }
 
   /**
    * [show description]
