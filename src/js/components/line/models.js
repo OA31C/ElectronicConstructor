@@ -1,6 +1,5 @@
 // @flow
 
-
 import {Location, UIElement} from '../../core/base/models';
 import {isCircleHover, isEqual} from '../../core/utils';
 import {GRID_STEP} from '../../constants';
@@ -18,14 +17,21 @@ export class Line extends UIElement {
   lineColor: string;
   lineWidth: number;
   mutable: boolean;
+  location: Array<Location>;
 
   /**
    * ...
    */
-  constructor({startPoint, endPoint, mutable=true}) {
-    if (!startPoint || !endPoint) throw new Error('arguments are required!');
+  constructor({startPoint, endPoint, mutable=true, location}) {
     super();
-    this.coordinates = [startPoint, endPoint];
+    if (startPoint && endPoint) {
+      this.coordinates = [startPoint, endPoint];
+    } else {
+      this.defaultLine = 50;
+      this.coordinates = [
+        new Location(location.x, location.y + 25), new Location(location.x + this.defaultLine, location.y+25),
+      ];
+    }
     this.lineColor = '#3e3e3e';
     this.lineWidth = DEFAULT_LINE_WIDTH;
     this.pointWidth = this.lineWidth + 1;

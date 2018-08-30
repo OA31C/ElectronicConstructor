@@ -43,7 +43,6 @@ export class App {
       })
     );
     this.constructor.initElements();
-
     $canvas.style.cursor = DEFAULT_CURSOR;
   }
 

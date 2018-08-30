@@ -56,8 +56,7 @@ export class MenuView extends UIView {
 
   /**
    * [renderItem description]
-   * @param  {[type]} item:       MenuItem      [description]
-   * @param  {[type]} itemNum: number        [description]
+   * @param  {[type]} item: MenuItem [description]
    * @param {{type}} menu: Menu
    */
   static renderItem(item: MenuItem, menu: Menu) { // FIXME: remove menu here!!!
@@ -102,6 +101,11 @@ export class MenuView extends UIView {
       canvasCtx.moveTo(item.location.x + bottomLineMargin, bottomLinePosY);
       canvasCtx.lineTo(item.location.x + item.width - bottomLineMargin, bottomLinePosY);
       canvasCtx.stroke();
+    }
+    if (item.focus) {
+      canvasCtx.globalAlpha = 0.5;
+      ELEMENTS[item.element].view.renderIcon(item.locationElement, item.iconWidth, item.iconHeight);
+      canvasCtx.globalAlpha = 1;
     }
   }
 

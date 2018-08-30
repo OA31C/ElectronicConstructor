@@ -13,12 +13,20 @@ export function getMousePos(event: MouseEvent): Location {
 }
 
 /**
+ * ....
+ */
+export function isRectHover(element: Object, mousePos: Location): boolean {
+  if (!element.location || !element.width || !element.height) return false;
+  return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
+         (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+}
+
+/**
  * ...
  */
 export function isElementHover(element: UIElement, mousePos: Location): boolean {
-  if (!element.isDisplayed || !element.location || !element.width || !element.height) return false;
-    return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
-      (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+  if (!element.isDisplayed) return false;
+  return isRectHover(element, mousePos);
 }
 
 /**

@@ -1,5 +1,6 @@
 // @flow
 
+
 import {isElementHover} from '../core/utils.js';
 import {Location, UIElement} from '../core/base/models.js';
 import {ELEMENTS} from '../components';
@@ -88,7 +89,7 @@ export class Menu extends UIElement {
   }
 
   /**
-   * [initItems description]
+   * [initItems descript-ion]
    */
   initItems() {
     if (this.items.length) throw new Error('Menu items already have been specified!');
@@ -134,18 +135,18 @@ export class MenuItem extends UIElement {
   isSelected: boolean;
   menu: Menu;
   prevItem: MenuItem;
+  locationElement: Location;
 
   /**
    * [constructor description]
    */
-  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string) {
+  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string, locationElement: Location) {
     super();
     this.element = element;
     this.description = description;
     this.menu = menu;
     this.prevItem = prevItem;
 
-    this.iconWidth = 40;
 
     this.textAlign = 'start';
     this.textColor = '#000000';
@@ -158,6 +159,7 @@ export class MenuItem extends UIElement {
 
     this.isDisplayed = true;
     this.isSelected = false;
+    this.focus = false;
 
     this.isHovered = false;
     this.backgroundColor = '#ffffff';
@@ -165,12 +167,16 @@ export class MenuItem extends UIElement {
 
     this.topMargin = 14;
     this.marginText = 3;
+
+    this.iconWidth = 40;
+    this.iconHeight = this.height;
     this.iconMargin = 1.3;
     this.iconMarginLeft = 3;
+    this.locationElement = locationElement;
   }
 
   /**
-   * [isHover description]
+   * isHover description
    */
   isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
@@ -204,15 +210,15 @@ export class MenuItem extends UIElement {
    */
   get location(): Location {
     return new Location(
-             this.menu.location.x + this.menu.borderWidth,
-             this.prevItem ? this.prevItem.location.y + this.prevItem.height +
-             this.menu.borderWidth : this.menu.borderWidth
+      this.menu.location.x + this.menu.borderWidth,
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height +
+      this.menu.borderWidth : this.menu.borderWidth
     );
   }
 
   /**
-   * Icon location
-   */
+  * Icon location
+  */
   get iconLocation(): Location {
     return new Location(this.location.x + this.iconMarginLeft, this.location.y);
   }

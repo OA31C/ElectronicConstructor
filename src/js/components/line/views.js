@@ -58,12 +58,12 @@ export class LineView extends UIView {
   /**
    * render icon on menu item
    */
-  static renderIcon(location: Location, width: number) {
+  static renderIcon(location: Location, width: number, height: number) {
     const lineWidth = 1;
     const radius = lineWidth + 2;
-    const height = 45/2;
+    const center = height/2;
     let px = location.x + lineWidth + radius;
-    let py = location.y + height;
+    let py = location.y + center;
     let array = [new Location(px, py), new Location(px + width - radius * 2, py)];
     LineView.renderLine(
       array, lineWidth,
