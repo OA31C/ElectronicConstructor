@@ -60,15 +60,15 @@ export class LineView extends UIView {
    */
   static renderIcon(location: Location, width: number) {
     const lineWidth = 1;
+    const radius = lineWidth + 2;
     const height = 45/2;
-    const pointWidth = lineWidth * 3;
-    let px = location.x + lineWidth * 5;
+    let px = location.x + lineWidth + radius;
     let py = location.y + height;
-    let array = [new Location(px, py), new Location(px + width - lineWidth * 8, py)];
+    let array = [new Location(px, py), new Location(px + width - radius * 2, py)];
     LineView.renderLine(
       array, lineWidth,
-      {location: array[0], radius: pointWidth},
-      {location: array[array.length-1], radius: pointWidth},
+      {location: array[0], radius: radius},
+      {location: array[array.length-1], radius: radius},
       'black',
     );
   }
