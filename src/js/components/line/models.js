@@ -1,12 +1,13 @@
 // @flow
 
+
 import {Location, UIElement} from '../../core/base/models';
 import {isCircleHover, isEqual} from '../../core/utils';
 import {GRID_STEP} from '../../constants';
 import {createElement} from '../index';
 import {LineCtrl} from './controllers';
 
-export const DEFAULT_LINE_WIDTH = 3;
+
 /**
  * ...
  */
@@ -17,24 +18,16 @@ export class Line extends UIElement {
   lineColor: string;
   lineWidth: number;
   mutable: boolean;
-  location: Array<Location>;
 
   /**
    * ...
    */
-  constructor({startPoint, endPoint, mutable=true, location}) {
+  constructor({startPoint, endPoint, mutable=true}) {
+    if (!startPoint || !endPoint) throw new Error('arguments are required!');
     super();
-    if (startPoint && endPoint) {
-      this.coordinates = [startPoint, endPoint];
-    } else {
-      this.defaultLine = 50;
-      this.coordinates = [
-        new Location(location.x, location.y + 25), new Location(location.x + this.defaultLine, location.y+25),
-      ];
-    }
+    this.coordinates = [startPoint, endPoint];
     this.lineColor = '#3e3e3e';
-    this.lineWidth = DEFAULT_LINE_WIDTH;
-    this.pointWidth = this.lineWidth + 1;
+    this.lineWidth = 3;
 
     // `true`: updates the current instance; `false`: creates a new instance
     this.mutable = mutable;
@@ -87,7 +80,7 @@ export class Line extends UIElement {
   get input(): Object {
     return {
       location: this.coordinates[0],
-      radius: this.pointWidth,
+      radius: this.lineWidth+1,
     };
   }
 
@@ -97,7 +90,7 @@ export class Line extends UIElement {
   get output(): Object {
     return {
       location: this.coordinates[this.coordinates.length-1],
-      radius: this.pointWidth,
+      radius: this.lineWidth+1,
     };
   }
 
@@ -155,20 +148,12 @@ export class Line extends UIElement {
       // * if it's a horizontal or vertical line:
       //   - remove the second coordinate
       if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x &&
-        lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
-        (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
-        lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
+           lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
+          (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
+           lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
         this.coordinates.splice(this.hold === 'output' ? -2 : 1, 1);
       }
     }
     return true;
-  }
-
-  /**
-   * description line
-   */
-  static get description() {
-    return 'material that produces light or electricity (as opposed to a dielectric). '+
-        'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

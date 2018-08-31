@@ -68,6 +68,26 @@ export class UIElement {
 }
 
 /**
+ * Every model that shows text in the canvas - should inheritance from this class
+ */
+export class UIText extends UIElement {
+  text: string;
+  textAlign: string;
+  textColor: string;
+  textFont: string;
+  textSize: number;
+  topMargin: number;
+
+  /**
+   * [constructor description]
+   */
+  constructor(text: string) {
+    super();
+    this.text = text;
+  }
+}
+
+/**
  * ...
  */
 export class Electron {}
