@@ -84,7 +84,7 @@ export class MenuView extends UIView {
     canvasCtx.fillText(capitalize(item.element), posXItemText, textHeight);
 
     // item description
-    canvasCtx.font = item.fontDescription;
+    canvasCtx.font = item.descriptionFont;
     canvasCtx.fillText(item.description, textWidth, textHeight);
 
     // render icon item
@@ -110,6 +110,6 @@ export class MenuView extends UIView {
    */
   static renderButton(button: MenuButton) {
     if (!button.isDisplayed) return;
-      drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
+    drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
   }
 }

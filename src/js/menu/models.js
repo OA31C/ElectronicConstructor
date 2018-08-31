@@ -152,7 +152,7 @@ export class MenuItem extends UIElement {
     this.textFont = 'Helvetica';
     this.textSize = 16;
     this.font = 'bold';
-    this.fontDescription = 'normal 14px Helvetica';
+    this.descriptionFont = 'normal 14px Helvetica';
     this.height = 40;
     this.width = menu.width;
 
@@ -204,9 +204,9 @@ export class MenuItem extends UIElement {
    */
   get location(): Location {
     return new Location(
-             this.menu.location.x + this.menu.borderWidth,
-             this.prevItem ? this.prevItem.location.y + this.prevItem.height +
-             this.menu.borderWidth : this.menu.borderWidth
+       this.menu.location.x + this.menu.borderWidth,
+       this.prevItem ? this.prevItem.location.y + this.prevItem.height +
+       this.menu.borderWidth : this.menu.borderWidth
     );
   }
 
