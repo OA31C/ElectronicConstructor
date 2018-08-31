@@ -7,6 +7,8 @@ import {createElement} from '../index';
 import {LineCtrl} from './controllers';
 
 export const DEFAULT_LINE_WIDTH = 3;
+export const LINE_COLOR = '#3e3e3e';
+
 /**
  * ...
  */
@@ -14,10 +16,11 @@ export class Line extends UIElement {
   coordinates: Array<Location>;
   hold: string | boolean;
   immutableLineColor: string;
+  isDisplayed: boolean;
   lineColor: string;
   lineWidth: number;
   mutable: boolean;
-  location: Array<Location>;
+  pointWidth: number;
 
   /**
    * ...
@@ -32,7 +35,7 @@ export class Line extends UIElement {
         new Location(location.x, location.y + 25), new Location(location.x + this.defaultLine, location.y+25),
       ];
     }
-    this.lineColor = '#3e3e3e';
+    this.lineColor = LINE_COLOR;
     this.lineWidth = DEFAULT_LINE_WIDTH;
     this.pointWidth = this.lineWidth + 1;
 
@@ -154,9 +157,9 @@ export class Line extends UIElement {
       // * if it's a horizontal or vertical line:
       //   - remove the second coordinate
       if ((lastThreeCoordinates[0].x === lastThreeCoordinates[1].x &&
-        lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
-        (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
-        lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
+           lastThreeCoordinates[0].x === lastThreeCoordinates[2].x) ||
+          (lastThreeCoordinates[0].y === lastThreeCoordinates[1].y &&
+           lastThreeCoordinates[0].y === lastThreeCoordinates[2].y)) {
         this.coordinates.splice(this.hold === 'output' ? -2 : 1, 1);
       }
     }
@@ -168,6 +171,6 @@ export class Line extends UIElement {
    */
   static get description() {
     return 'material that produces light or electricity (as opposed to a dielectric). '+
-        'For a conductor characterized by high heat or electrical conductivity.';
+           'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

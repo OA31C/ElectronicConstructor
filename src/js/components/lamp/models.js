@@ -11,7 +11,11 @@ export const IMG_INACTIVE = 'lamp/lamp_off.png';
  */
 export class Lamp extends UIElement {
   active: boolean;
+  height: number;
+  isDisplayed: boolean;
   line: LineCtrl;
+  location: Location;
+  width: number;
 
   /**
    * ...

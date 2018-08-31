@@ -10,11 +10,18 @@ import {redraw} from '../core/utils';
  * ...
  */
 export class Menu extends UIElement {
-  partOfCanvas: number;
-  items: Array<MenuItem>;
-  workingSpace: Object;
+  background: string;
+  borderColor: string;
+  borderWidth: number;
+  closeButton: MenuButton;
+  defaultWidth: number;
   getParentHeight: Function;
   getParentWidth: Function;
+  isDisplayed: boolean;
+  isResizeHold: boolean;
+  items: Array<MenuItem>;
+  partOfCanvas: number;
+  workingSpace: Object;
 
   /**
    * [constructor description]
@@ -130,13 +137,28 @@ export class Menu extends UIElement {
  * ...
  */
 export class MenuItem extends UIElement {
+  backgroundColor: string;
   description: string;
+  descriptionFont: string;
   element: string;
+  font: string;
+  height: number;
+  hoverBackgroundColor: string;
+  iconMargin: number;
+  iconMarginLeft: number;
+  iconWidth: number;
+  isDisplayed: boolean;
+  isHovered: boolean;
   isSelected: boolean;
+  marginText: number;
   menu: Menu;
   prevItem: MenuItem;
-  locationElement: Location;
-
+  textAlign: string;
+  textColor: string;
+  textFont: string;
+  textSize: number;
+  topMargin: number;
+  width: number;
   /**
    * [constructor description]
    */
@@ -153,7 +175,7 @@ export class MenuItem extends UIElement {
     this.textFont = 'Helvetica';
     this.textSize = 16;
     this.font = 'bold';
-    this.fontDescription = 'normal 14px Helvetica';
+    this.descriptionFont = 'normal 14px Helvetica';
     this.height = 40;
     this.width = menu.width;
 
@@ -228,7 +250,14 @@ export class MenuItem extends UIElement {
  * Start create button
  */
 export class MenuButton extends UIElement {
+  background: string;
+  borderColor: string;
+  borderWidth: number;
+  height: number;
   img: string;
+  isDisplayed: boolean;
+  location: Location;
+  width: number;
 
   /**
    * [constructor description]
