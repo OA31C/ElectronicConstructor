@@ -61,14 +61,14 @@ export class LineView extends UIView {
   static renderIcon(location: Location, width: number, height: number) {
     const lineWidth = 1;
     const radius = lineWidth + 2;
-    const center = height/2;
+    const centerByY = height / 2;
     let px = location.x + lineWidth + radius;
-    let py = location.y + center;
-    let array = [new Location(px, py), new Location(px + width - radius * 2, py)];
+    let py = location.y + centerByY;
+    let coordinates = [new Location(px, py), new Location(px + width - radius * 2, py)];
     LineView.renderLine(
-      array, lineWidth,
-      {location: array[0], radius},
-      {location: array[array.length-1], radius},
+      coordinates, lineWidth,
+      {location: coordinates[0], radius},
+      {location: coordinates[coordinates.length-1], radius},
       LINE_COLOR,
     );
   }

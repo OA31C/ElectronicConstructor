@@ -89,7 +89,6 @@ export class MenuCtrl extends UICtrl {
   onMouseUp(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
     this.model.isResizeHold = false;
-
     for (const item of this.model.items) {
       if (item.focus) {
         if (isRectHover(app.workingSpace, mousePosition)) {

@@ -46,6 +46,9 @@ export class Menu extends UIElement {
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
+    this.partOfCanvas = 5;
+    this.borderWidth = 1;
+    this.borderColor = '#000000';
     this.background = '#ffffff';
 
     this.isDisplayed = true;
@@ -159,6 +162,7 @@ export class MenuItem extends UIElement {
   textSize: number;
   topMargin: number;
   width: number;
+
   /**
    * [constructor description]
    */
@@ -168,7 +172,6 @@ export class MenuItem extends UIElement {
     this.description = description;
     this.menu = menu;
     this.prevItem = prevItem;
-
 
     this.textAlign = 'start';
     this.textColor = '#000000';
@@ -198,7 +201,7 @@ export class MenuItem extends UIElement {
   }
 
   /**
-   * isHover description
+   * [isHover description]
    */
   isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
@@ -233,8 +236,7 @@ export class MenuItem extends UIElement {
   get location(): Location {
     return new Location(
       this.menu.location.x + this.menu.borderWidth,
-      this.prevItem ? this.prevItem.location.y + this.prevItem.height +
-      this.menu.borderWidth : this.menu.borderWidth
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
     );
   }
 

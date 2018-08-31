@@ -72,7 +72,9 @@ export class AppController {
       }
 
       $canvas.addEventListener(jsEventName, (event) => {
-        for (const controller of this.controllers) {
+        // sort controllers by priority
+        const controllers = this.controllers.slice().sort((ctrl, ctrl2) => ctrl.model.priority < ctrl2.model.priority);
+        for (const controller of controllers) {
           const controllerHandler = controller[availableEvent];
           if (!controllerHandler || typeof controllerHandler !== 'function') continue;
 

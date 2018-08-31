@@ -18,7 +18,7 @@ export function getMousePos(event: MouseEvent): Location {
 export function isRectHover(element: Object, mousePos: Location): boolean {
   if (!element.location || !element.width || !element.height) return false;
   return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
-         (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+           (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }
 
 /**
