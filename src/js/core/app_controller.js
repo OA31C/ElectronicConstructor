@@ -34,7 +34,7 @@ export class AppController {
 
   /**
    * change of space on resize
-   */
+   **/
   initAppEvents() {
     window.addEventListener('resize', () => this.onResizeWindow());
   }

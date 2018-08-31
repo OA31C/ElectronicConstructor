@@ -1,7 +1,10 @@
 // @flow
 
+
 import {isElementHover} from '../core/utils.js';
-import {Location, UIElement, UIText} from '../core/base/models.js';
+import {Location, UIElement} from '../core/base/models.js';
+import {ELEMENTS} from '../components';
+import {redraw} from '../core/utils';
 
 /**
  * ...
@@ -31,11 +34,12 @@ export class Menu extends UIElement {
 
     this.isResizeHold = false;
 
+    this.items = [];
     this.partOfCanvas = 5;
     this.borderWidth = 1;
     this.borderColor = '#000000';
 
-    this.background = '#cccccc';
+    this.background = '#ffffff';
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
@@ -43,9 +47,9 @@ export class Menu extends UIElement {
 
     const closeButtonWidth = 20;
     this.closeButton = new MenuButton({
-        location: new Location(this.location.x + this.width - closeButtonWidth, 0),
-        width: closeButtonWidth, height: 18,
-        background: '#EE3742',
+      location: new Location(this.location.x + this.width - closeButtonWidth, 0),
+      width: closeButtonWidth, height: 18,
+      background: '#EE3742',
     });
     this.closeButton.onClick = () => this.show();
     this.initItems();
@@ -72,6 +76,9 @@ export class Menu extends UIElement {
     this.workingSpace.width -= value - (this.__filledWorkingSpace || 0);
     this.__filledWorkingSpace = value;
     this._width = value;
+    for (const item of this.items) {
+      item.width = this._width;
+    }
   }
 
   /**
@@ -82,21 +89,21 @@ export class Menu extends UIElement {
   }
 
   /**
-   * [initItems description]
+   * [initItems descript-ion]
    */
   initItems() {
-    this.items = [
-      new MenuItem('-------------'),
-      new MenuItem('Copper'),
-      new MenuItem('another item'),
-    ];
+    if (this.items.length) throw new Error('Menu items already have been specified!');
+    for (const [elementName, element] of Object.entries(ELEMENTS)) {
+      const prevItem = this.items.length ? this.items[this.items.length-1] : null;
+      this.items.push(new MenuItem(this, prevItem, elementName, element.model.description));
+    }
   };
 
   /**
    * Check if mouse position x is close to menu border
    */
   isBorderHover(mouseX: number, elementX: number) {
-      return Math.abs(mouseX - elementX) < this.borderWidth;
+    return Math.abs(mouseX - elementX) < this.borderWidth;
   }
 
   /**
@@ -104,7 +111,7 @@ export class Menu extends UIElement {
    */
   show() {
     if (!this.isResizeHold) {
-        this.width = this.defaultWidth;
+      this.width = this.defaultWidth;
     }
     super.show();
     this.closeButton.hide();
@@ -122,48 +129,98 @@ export class Menu extends UIElement {
 /**
  * ...
  */
-export class MenuItem extends UIText {
+export class MenuItem extends UIElement {
+  description: string;
+  element: string;
   isSelected: boolean;
+  menu: Menu;
+  prevItem: MenuItem;
+  locationElement: Location;
 
   /**
    * [constructor description]
    */
-  constructor(text: string) {
-    super(text);
+  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string, locationElement: Location) {
+    super();
+    this.element = element;
+    this.description = description;
+    this.menu = menu;
+    this.prevItem = prevItem;
 
-    this.title = '';
-    this.description = '';
 
-    this.textAlign = 'center';
+    this.textAlign = 'start';
     this.textColor = '#000000';
-    this.textFont = 'Tahoma';
-    this.textSize = 18;
-
-    this.topMargin = 10;
+    this.textFont = 'Helvetica';
+    this.textSize = 16;
+    this.font = 'bold';
+    this.fontDescription = 'normal 14px Helvetica';
+    this.height = 40;
+    this.width = menu.width;
 
     this.isDisplayed = true;
     this.isSelected = false;
+    this.focus = false;
+
+    this.isHovered = false;
+    this.backgroundColor = '#ffffff';
+    this.hoverBackgroundColor = '#eeeeee';
+
+    this.topMargin = 14;
+    this.marginText = 3;
+
+    this.iconWidth = 40;
+    this.iconHeight = this.height;
+    this.iconMargin = 1.3;
+    this.iconMarginLeft = 3;
+    this.locationElement = locationElement;
   }
 
   /**
-   * [select description]
-   */
-  select() {
-    this.isSelected = true;
-  }
-
-  /**
-   * [deselect description]
-   */
-  deselect() {
-    this.isSelected = false;
-  }
-
-  /**
-   * [isHover description]
+   * isHover description
    */
   isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
+  }
+
+  /**
+   * @returns {string}
+   */
+  get background() {
+    return this.isHovered ? this.hoverBackgroundColor : this.backgroundColor;
+  }
+
+  /**
+   * ....
+   */
+  hover() {
+    this.isHovered = true;
+    redraw();
+  }
+
+  /**
+   * ...
+   */
+  unhover() {
+    this.isHovered = false;
+    redraw();
+  }
+
+  /**
+   * Location item
+   */
+  get location(): Location {
+    return new Location(
+      this.menu.location.x + this.menu.borderWidth,
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height +
+      this.menu.borderWidth : this.menu.borderWidth
+    );
+  }
+
+  /**
+  * Icon location
+  */
+  get iconLocation(): Location {
+    return new Location(this.location.x + this.iconMarginLeft, this.location.y);
   }
 }
 
@@ -177,20 +234,19 @@ export class MenuButton extends UIElement {
    * [constructor description]
    */
   constructor({location, width, height, background}) {
-      super();
-      this.location = location;
+    super();
+    this.location = location;
 
-      this.width = width;
-      this.height = height;
+    this.width = width;
+    this.height = height;
 
-      this.background = background;
-      this.borderColor = '#050505';
-      this.borderWidth = 1;
+    this.background = background;
+    this.borderColor = '#050505';
+    this.borderWidth = 1;
 
-      this.img = 'buttons/menu_button.png';
-
-      this.isDisplayed = false;
-      MenuButton.instances.push(this);
+    this.img = 'buttons/menu_button.png';
+    this.isDisplayed = false;
+    MenuButton.instances.push(this);
   }
 }
 MenuButton.instances = [];

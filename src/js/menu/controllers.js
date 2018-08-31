@@ -1,9 +1,11 @@
 // @flow
 
 import {UICtrl} from '../core/base/controllers';
-import {getMousePos, isElementHover, redraw} from '../core/utils';
+import {getMousePos, isElementHover, isRectHover, redraw} from '../core/utils';
 import {Menu, MenuButton} from './models';
-import {$canvas, DEFAULT_CURSOR} from '../constants';
+import {$canvas} from '../constants';
+import {createElement} from '../components';
+
 
 /**
  * ...
@@ -13,7 +15,7 @@ export class MenuCtrl extends UICtrl {
   // view: MenuView;
 
   /**
-   * [onClick description]
+   * onClick description
    */
   onClick(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
@@ -22,34 +24,28 @@ export class MenuCtrl extends UICtrl {
     for (const button of MenuButton.instances) {
       if (button.onClick && isElementHover(button, mousePosition)) {
         button.onClick();
-        return false;
       }
     }
-
-    // FIXME: check is mouse in menu rect. Return `true` otherwise
-    for (const item of this.model.items) {
-      if (item.isHover(mousePosition)) {
-        item.select();
-      } else {
-        item.deselect();
-      }
-      redraw();
-    }
-    return true;
   }
 
   /**
-   * Resize Width in Menu
+  * Resize Width in Menu
   */
   onMouseDown(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
+    for (const item of this.model.items) {
+      if (isElementHover(item, mousePosition)) {
+        item.focus = true;
+      }
+    }
+
     if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
       this.model.isResizeHold = true;
     } else return true;
   }
 
   /**
-   * the mouse is moving in menu
+  * the mouse is moving in menu
   */
   onMouseMove(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
@@ -58,29 +54,53 @@ export class MenuCtrl extends UICtrl {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
       return false;
-    } else $canvas.style.cursor = DEFAULT_CURSOR;
+    }
+
+    for (const item of this.model.items) {
+      if (item.isHover(mousePosition)) {
+        item.hover();
+      } else {
+        item.unhover();
+      }
+
+      if (item.focus) {
+        mousePosition.x = mousePosition.x - item.iconWidth/2;
+        mousePosition.y = mousePosition.y - item.iconHeight/2;
+        item.locationElement = mousePosition;
+        item.locationElement = mousePosition;
+      }
+    }
 
     if (this.model.isResizeHold) {
       $canvas.style.cursor = 'col-resize';
       this.model.width = this.model.width + this.model.location.x - mousePosition.x;
-
       redraw();
       // hides the menu
       if (this.model.width <= this.model.defaultWidth / 4) {
-          this.model.hide();
+        this.model.hide();
       } else if (!this.model.isDisplayed) {
-          this.model.show();
+        this.model.show();
       }
     } else return true;
   }
- /**
-  * the mouse is up in menu
-  */
-  onMouseUp() {
-    if (this.model.isResizeHold) {
-      $canvas.style.cursor = DEFAULT_CURSOR;
-    }
+  /**
+   * the mouse is up in menu
+   */
+  onMouseUp(event: MouseEvent): boolean {
+    const mousePosition = getMousePos(event);
     this.model.isResizeHold = false;
+
+    for (const item of this.model.items) {
+      if (item.focus) {
+        if (isRectHover(app.workingSpace, mousePosition)) {
+          mousePosition.x = mousePosition.x - item.iconWidth/2;
+          mousePosition.y = mousePosition.y - item.iconHeight/2;
+          createElement(item.element, {location: mousePosition});
+        }
+        redraw();
+        item.focus = false;
+      }
+    }
     return true;
   }
 }

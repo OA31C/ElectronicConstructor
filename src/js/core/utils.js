@@ -13,12 +13,20 @@ export function getMousePos(event: MouseEvent): Location {
 }
 
 /**
+ * ....
+ */
+export function isRectHover(element: Object, mousePos: Location): boolean {
+  if (!element.location || !element.width || !element.height) return false;
+  return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
+         (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+}
+
+/**
  * ...
  */
 export function isElementHover(element: UIElement, mousePos: Location): boolean {
-  if (!element.isDisplayed || !element.location || !element.width || !element.height) return false;
-  return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
-         (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+  if (!element.isDisplayed) return false;
+  return isRectHover(element, mousePos);
 }
 
 /**
@@ -47,7 +55,7 @@ export function redraw() {
  */
 export function isEqual(first: any, second: any): boolean {
   if (typeof first !== 'object' || typeof second !== 'object' ||
-      first === null || second === null) {
+    first === null || second === null) {
     return first === second;
   }
   if (first.constructor !== second.constructor) return false;
@@ -76,8 +84,8 @@ export function drawImage(url: string, ...args) {
     if (!img.complete) {
       img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
     } else {
-      canvasCtx.drawImage(img, ...args);
-    }
+        canvasCtx.drawImage(img, ...args);
+      }
   } else {
     img = new Image();
     img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
@@ -85,4 +93,39 @@ export function drawImage(url: string, ...args) {
     // save img to cache
     drawImage[cacheKey] = img;
   }
+}
+
+/**
+ * draw a border inside the element
+ */
+export function strokeInside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x + halfBorderWidth,
+    element.location.y + halfBorderWidth,
+    element.width - borderWidth,
+    element.height - borderWidth
+  );
+}
+
+/**
+ * draw a border outside the element
+ */
+export function strokeOutside(element: UIElement, borderWidth: number) {
+  const halfBorderWidth = borderWidth / 2;
+  canvasCtx.lineWidth = borderWidth;
+  canvasCtx.strokeRect(
+    element.location.x - halfBorderWidth,
+    element.location.y - halfBorderWidth,
+    element.width + borderWidth,
+    element.height + borderWidth
+  );
+}
+
+/**
+ * 'test text' -> 'Test text'
+ */
+export function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
