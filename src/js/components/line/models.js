@@ -7,7 +7,8 @@ import {GRID_STEP} from '../../constants';
 import {createElement} from '../index';
 import {LineCtrl} from './controllers';
 
-
+export const DEFAULT_LINE_WIDTH = 3;
+export const LINE_COLOR = '#3e3e3e';
 /**
  * ...
  */
@@ -15,9 +16,11 @@ export class Line extends UIElement {
   coordinates: Array<Location>;
   hold: string | boolean;
   immutableLineColor: string;
+  isDisplayed: boolean;
   lineColor: string;
   lineWidth: number;
   mutable: boolean;
+  pointWidth: number;
 
   /**
    * ...
@@ -26,8 +29,9 @@ export class Line extends UIElement {
     if (!startPoint || !endPoint) throw new Error('arguments are required!');
     super();
     this.coordinates = [startPoint, endPoint];
-    this.lineColor = '#3e3e3e';
-    this.lineWidth = 3;
+    this.lineColor = LINE_COLOR;
+    this.lineWidth = DEFAULT_LINE_WIDTH;
+    this.pointWidth = this.lineWidth + 1;
 
     // `true`: updates the current instance; `false`: creates a new instance
     this.mutable = mutable;
@@ -80,7 +84,7 @@ export class Line extends UIElement {
   get input(): Object {
     return {
       location: this.coordinates[0],
-      radius: this.lineWidth+1,
+      radius: this.pointWidth,
     };
   }
 
@@ -90,7 +94,7 @@ export class Line extends UIElement {
   get output(): Object {
     return {
       location: this.coordinates[this.coordinates.length-1],
-      radius: this.lineWidth+1,
+      radius: this.pointWidth,
     };
   }
 
@@ -155,5 +159,13 @@ export class Line extends UIElement {
       }
     }
     return true;
+  }
+
+  /**
+   * description line
+   */
+  static get description() {
+    return 'material that produces light or electricity (as opposed to a dielectric). '+
+           'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

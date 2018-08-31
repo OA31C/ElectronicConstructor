@@ -1,7 +1,7 @@
 import {canvasCtx} from '../../constants';
 import {UIView} from '../../core/base/views';
-import {Line} from './models';
-
+import {Line, DEFAULT_LINE_WIDTH, LINE_COLOR} from './models';
+import {Location} from '../../core/base/models';
 
 /**
  * ...
@@ -31,7 +31,14 @@ export class LineView extends UIView {
    * ...
    */
   render(coordinates: Array<Line>, lineWidth: number, input: Object, output: Object, color: string) {
-    canvasCtx.lineWidth = lineWidth;
+    LineView.renderLine(coordinates, lineWidth, input, output, color);
+  }
+
+  /**
+   * render static method Line
+   */
+  static renderLine(coordinates: Array<Line>, lineWidth: number, input: Object, output: Object, color: string) {
+    canvasCtx.lineWidth = DEFAULT_LINE_WIDTH;
     canvasCtx.beginPath();
     for (let i = 0, len = coordinates.length; i < len; i++) {
       let coordinate = coordinates[i];
@@ -44,7 +51,25 @@ export class LineView extends UIView {
     canvasCtx.strokeStyle = color;
     canvasCtx.stroke();
 
-    this.constructor.renderInput(input, color);
-    this.constructor.renderOutput(output, color);
+    LineView.renderInput(input, color);
+    LineView.renderOutput(output, color);
+  }
+
+  /**
+   * render icon on menu item
+   */
+  static renderIcon(location: Location, width: number, height: number) {
+    const lineWidth = 1;
+    const radius = lineWidth + 2;
+    const centerByY = height / 2;
+    let px = location.x + lineWidth + radius;
+    let py = location.y + centerByY;
+    let coordinates = [new Location(px, py), new Location(px + width - radius * 2, py)];
+    LineView.renderLine(
+      coordinates, lineWidth,
+      {location: coordinates[0], radius},
+      {location: coordinates[coordinates.length-1], radius},
+      LINE_COLOR,
+    );
   }
 }
