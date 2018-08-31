@@ -228,8 +228,8 @@ export class MenuItem extends UIElement {
    */
   get location(): Location {
     return new Location(
-       this.menu.location.x + this.menu.borderWidth,
-       this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
+      this.menu.location.x + this.menu.borderWidth,
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
     );
   }
 

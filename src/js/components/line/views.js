@@ -1,6 +1,6 @@
 import {canvasCtx} from '../../constants';
 import {UIView} from '../../core/base/views';
-import {Line, DEFAULT_LINE_WIDTH} from './models';
+import {Line, DEFAULT_LINE_WIDTH, LINE_COLOR} from './models';
 import {Location} from '../../core/base/models';
 
 /**
@@ -67,9 +67,9 @@ export class LineView extends UIView {
     let coordinates = [new Location(px, py), new Location(px + width - radius * 2, py)];
     LineView.renderLine(
       coordinates, lineWidth,
-      {location: coordinates[0], radius: radius},
-      {location: coordinates[coordinates.length-1], radius: radius},
-      'black',
+      {location: coordinates[0], radius},
+      {location: coordinates[coordinates.length-1], radius},
+      LINE_COLOR,
     );
   }
 }
