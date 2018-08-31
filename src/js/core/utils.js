@@ -17,8 +17,8 @@ export function getMousePos(event: MouseEvent): Location {
  */
 export function isElementHover(element: UIElement, mousePos: Location): boolean {
   if (!element.isDisplayed || !element.location || !element.width || !element.height) return false;
-    return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
-      (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
+  return (mousePos.x >= element.location.x) && (element.location.x + element.width >= mousePos.x) &&
+           (mousePos.y >= element.location.y) && (element.location.y + element.height >= mousePos.y);
 }
 
 /**
@@ -76,8 +76,8 @@ export function drawImage(url: string, ...args) {
     if (!img.complete) {
       img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
     } else {
-        canvasCtx.drawImage(img, ...args);
-      }
+      canvasCtx.drawImage(img, ...args);
+    }
   } else {
     img = new Image();
     img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));

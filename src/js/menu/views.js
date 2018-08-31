@@ -18,9 +18,9 @@ export class MenuView extends UIView {
     if (menu.isDisplayed) {
       this.constructor.drawBackground(menu);
       this.constructor.drawBorder(menu);
-      menu.items.forEach((item) => {
+      for (const item of menu.items) {
         this.constructor.renderItem(item, menu);
-      });
+      }
     }
     for (const button of MenuButton.instances) {
       this.constructor.renderButton(button);

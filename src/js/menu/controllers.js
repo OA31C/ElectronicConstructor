@@ -32,9 +32,9 @@ export class MenuCtrl extends UICtrl {
   */
   onMouseDown(event: MouseEvent): boolean {
     const mousePosition = getMousePos(event);
-      if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
-        this.model.isResizeHold = true;
-      } else return true;
+    if (this.model.isBorderHover(mousePosition.x, this.model.location.x)) {
+      this.model.isResizeHold = true;
+    } else return true;
   }
 
   /**
@@ -47,26 +47,26 @@ export class MenuCtrl extends UICtrl {
       $canvas.style.cursor = 'col-resize';
       // FIXME: remove *return* when the method won't be raised while cursor is not in menu rect
       return false;
+    }
+    for (const item of this.model.items) {
+      if (item.isHover(mousePosition)) {
+        item.hover();
+      } else {
+        item.unhover();
       }
-      for (const item of this.model.items) {
-        if (item.isHover(mousePosition)) {
-          item.hover();
-        } else {
-          item.unhover();
-        }
-      }
+    }
 
-      if (this.model.isResizeHold) {
-        $canvas.style.cursor = 'col-resize';
-        this.model.width = this.model.width + this.model.location.x - mousePosition.x;
-        redraw();
-        // hides the menu
-        if (this.model.width <= this.model.defaultWidth / 4) {
-          this.model.hide();
-        } else if (!this.model.isDisplayed) {
-          this.model.show();
-        }
-      } else return true;
+    if (this.model.isResizeHold) {
+      $canvas.style.cursor = 'col-resize';
+      this.model.width = this.model.width + this.model.location.x - mousePosition.x;
+      redraw();
+      // hides the menu
+      if (this.model.width <= this.model.defaultWidth / 4) {
+        this.model.hide();
+      } else if (!this.model.isDisplayed) {
+        this.model.show();
+      }
+    } else return true;
   }
   /**
    * the mouse is up in menu
