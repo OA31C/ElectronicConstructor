@@ -129,6 +129,7 @@ export class Line extends UIElement {
       const newLineCtrl: LineCtrl = createElement('line', newLineOptions);
       // move mouse hold from the current line to the new one
       newLineCtrl.model.hold = this.hold;
+      newLineCtrl.model.priority = this.priority + 1;
       this.hold = false;
       return true;
     }
