@@ -7,6 +7,7 @@ import {createElement} from '../index';
 import {LineCtrl} from './controllers';
 
 export const DEFAULT_LINE_WIDTH = 3;
+
 /**
  * ...
  */
@@ -14,25 +15,19 @@ export class Line extends UIElement {
   coordinates: Array<Location>;
   hold: string | boolean;
   immutableLineColor: string;
+  isDisplayed: boolean;
   lineColor: string;
   lineWidth: number;
   mutable: boolean;
-  location: Array<Location>;
+  pointWidth: number;
 
   /**
    * ...
    */
   constructor({startPoint, endPoint, mutable=true, location}) {
     super();
-    if (startPoint && endPoint) {
-      this.coordinates = [startPoint, endPoint];
-    } else {
-      this.defaultLine = 50;
-      this.coordinates = [
-        new Location(location.x, location.y + 25), new Location(location.x + this.defaultLine, location.y+25),
-      ];
-    }
-    this.lineColor = '#3e3e3e';
+    this.coordinates = [startPoint, endPoint];
+    this.lineColor = LINE_COLOR;
     this.lineWidth = DEFAULT_LINE_WIDTH;
     this.pointWidth = this.lineWidth + 1;
 
@@ -132,6 +127,7 @@ export class Line extends UIElement {
       const newLineCtrl: LineCtrl = createElement('line', newLineOptions);
       // move mouse hold from the current line to the new one
       newLineCtrl.model.hold = this.hold;
+      newLineCtrl.model.priority = this.priority + 1;
       this.hold = false;
       return true;
     }
@@ -168,6 +164,6 @@ export class Line extends UIElement {
    */
   static get description() {
     return 'material that produces light or electricity (as opposed to a dielectric). '+
-        'For a conductor characterized by high heat or electrical conductivity.';
+           'For a conductor characterized by high heat or electrical conductivity.';
   }
 }

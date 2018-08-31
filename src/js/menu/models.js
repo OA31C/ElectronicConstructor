@@ -10,11 +10,18 @@ import {redraw} from '../core/utils';
  * ...
  */
 export class Menu extends UIElement {
-  partOfCanvas: number;
-  items: Array<MenuItem>;
-  workingSpace: Object;
+  background: string;
+  borderColor: string;
+  borderWidth: number;
+  closeButton: MenuButton;
+  defaultWidth: number;
   getParentHeight: Function;
   getParentWidth: Function;
+  isDisplayed: boolean;
+  isResizeHold: boolean;
+  items: Array<MenuItem>;
+  partOfCanvas: number;
+  workingSpace: Object;
 
   /**
    * [constructor description]
@@ -38,7 +45,6 @@ export class Menu extends UIElement {
     this.partOfCanvas = 5;
     this.borderWidth = 1;
     this.borderColor = '#000000';
-
     this.background = '#ffffff';
 
     this.isDisplayed = true;
@@ -130,17 +136,33 @@ export class Menu extends UIElement {
  * ...
  */
 export class MenuItem extends UIElement {
+  backgroundColor: string;
   description: string;
+  descriptionFont: string;
   element: string;
+  font: string;
+  height: number;
+  hoverBackgroundColor: string;
+  iconMargin: number;
+  iconMarginLeft: number;
+  iconWidth: number;
+  isDisplayed: boolean;
+  isHovered: boolean;
   isSelected: boolean;
+  marginText: number;
   menu: Menu;
   prevItem: MenuItem;
-  locationElement: Location;
+  textAlign: string;
+  textColor: string;
+  textFont: string;
+  textSize: number;
+  topMargin: number;
+  width: number;
 
   /**
    * [constructor description]
    */
-  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string, locationElement: Location) {
+  constructor(menu: Menu, prevItem: MenuItem, element: string, description: string) {
     super();
     this.element = element;
     this.description = description;
@@ -148,12 +170,15 @@ export class MenuItem extends UIElement {
     this.prevItem = prevItem;
 
 
+    this.iconWidth = 40;
+
     this.textAlign = 'start';
     this.textColor = '#000000';
     this.textFont = 'Helvetica';
     this.textSize = 16;
     this.font = 'bold';
-    this.fontDescription = 'normal 14px Helvetica';
+
+    this.descriptionFont = 'normal 14px Helvetica';
     this.height = 40;
     this.width = menu.width;
 
@@ -172,11 +197,11 @@ export class MenuItem extends UIElement {
     this.iconHeight = this.height;
     this.iconMargin = 1.3;
     this.iconMarginLeft = 3;
-    this.locationElement = locationElement;
   }
 
+
   /**
-   * isHover description
+   * [isHover description]
    */
   isHover(mousePos: Location): boolean {
     return isElementHover(this, mousePos);
@@ -211,8 +236,7 @@ export class MenuItem extends UIElement {
   get location(): Location {
     return new Location(
       this.menu.location.x + this.menu.borderWidth,
-      this.prevItem ? this.prevItem.location.y + this.prevItem.height +
-      this.menu.borderWidth : this.menu.borderWidth
+      this.prevItem ? this.prevItem.location.y + this.prevItem.height + this.menu.borderWidth : this.menu.borderWidth
     );
   }
 
@@ -228,7 +252,14 @@ export class MenuItem extends UIElement {
  * Start create button
  */
 export class MenuButton extends UIElement {
+  background: string;
+  borderColor: string;
+  borderWidth: number;
+  height: number;
   img: string;
+  isDisplayed: boolean;
+  location: Location;
+  width: number;
 
   /**
    * [constructor description]

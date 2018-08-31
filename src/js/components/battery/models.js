@@ -8,7 +8,10 @@ export const IMG = 'battery/battery.png';
  * Battery class
  */
 export class Battery extends UIElement {
+  height: number;
   line: LineCtrl;
+  location: Location;
+  width: number;
 
   /**
   * description
@@ -32,7 +35,6 @@ export class Battery extends UIElement {
    * description battery
    */
   static get description() {
-    return 'element of an electric circuit, which ' +
-      'ensures that a certain electric current flows in it.';
+    return 'element of an electric circuit, which ensures that a certain electric current flows in it.';
   }
 }

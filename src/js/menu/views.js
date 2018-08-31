@@ -18,9 +18,9 @@ export class MenuView extends UIView {
     if (menu.isDisplayed) {
       this.constructor.drawBackground(menu);
       this.constructor.drawBorder(menu);
-      menu.items.forEach((item) => {
+      for (const item of menu.items) {
         this.constructor.renderItem(item, menu);
-      });
+      }
     }
     for (const button of MenuButton.instances) {
       this.constructor.renderButton(button);
@@ -55,9 +55,10 @@ export class MenuView extends UIView {
   }
 
   /**
-   * [renderItem description]
-   * @param  {[type]} item: MenuItem [description]
-   * @param {{type}} menu: Menu
+  \
+   * @param  {[type]} item:       MenuItem      [description]
+   * @param  {[type]} itemNum: number        [description]
+\   * @param {{type}} menu: Menu
    */
   static renderItem(item: MenuItem, menu: Menu) { // FIXME: remove menu here!!!
     if (!item.isDisplayed) return;
@@ -83,7 +84,8 @@ export class MenuView extends UIView {
     canvasCtx.fillText(capitalize(item.element), posXItemText, textHeight);
 
     // item description
-    canvasCtx.font = item.fontDescription;
+
+    canvasCtx.font = item.descriptionFont;
     canvasCtx.fillText(item.description, textWidth, textHeight);
 
     // render icon item
