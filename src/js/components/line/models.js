@@ -20,6 +20,7 @@ export class Line extends UIElement {
   isDisplayed: boolean;
   lineColor: string;
   lineWidth: number;
+  marginByY: number;
   mutable: boolean;
   pointWidth: number;
 
@@ -31,9 +32,11 @@ export class Line extends UIElement {
     if (startPoint && endPoint) {
       this.coordinates = [startPoint, endPoint];
     } else {
-      this.defaultLine = 50;
+      this.defaultLine = 30;
+      this.marginByY = 25;
       this.coordinates = [
-        new Location(location.x, location.y + 25), new Location(location.x + this.defaultLine, location.y+25),
+        new Location(location.x, location.y + this.marginByY),
+        new Location(location.x + this.defaultLine, location.y + this.marginByY),
       ];
     }
     this.lineColor = LINE_COLOR;

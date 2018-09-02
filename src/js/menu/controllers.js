@@ -6,7 +6,6 @@ import {Menu, MenuButton} from './models';
 import {$canvas} from '../constants';
 import {createElement} from '../components';
 
-
 /**
  * ...
  */
@@ -36,6 +35,7 @@ export class MenuCtrl extends UICtrl {
     for (const item of this.model.items) {
       if (isElementHover(item, mousePosition)) {
         item.focus = true;
+        break;
       }
     }
 
@@ -67,7 +67,6 @@ export class MenuCtrl extends UICtrl {
         mousePosition.x = mousePosition.x - item.iconWidth/2;
         mousePosition.y = mousePosition.y - item.iconHeight/2;
         item.locationElement = mousePosition;
-        item.locationElement = mousePosition;
       }
     }
 
@@ -83,6 +82,7 @@ export class MenuCtrl extends UICtrl {
       }
     } else return true;
   }
+
   /**
    * the mouse is up in menu
    */

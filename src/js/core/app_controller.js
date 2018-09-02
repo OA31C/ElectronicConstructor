@@ -123,14 +123,13 @@ export class AppController {
   render() {
     // skip render if nothing has been changed
     if (redraw.isValidCanvasState) return;
-
     this.clear();
     this.renderBackground();
     // render elements
-    for (const controller of this.controllers) {
+    const controllers = this.controllers.slice().sort((ctrl, ctrl2) => ctrl.model.priority > ctrl2.model.priority);
+    for (const controller of controllers) {
       controller.render();
     }
-
     redraw.isValidCanvasState = true;
   }
 

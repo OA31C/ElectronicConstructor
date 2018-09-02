@@ -56,13 +56,6 @@ export class MenuView extends UIView {
 
   /**
    * [renderItem description]
-<<<<<<< HEAD
-   * @param  {[type]} item: MenuItem [description]
-=======
-   * @param  {[type]} item:       MenuItem      [description]
-   * @param  {[type]} itemNum: number        [description]
->>>>>>> c4c2a923aa53878c6e3b6d80478da53085fbf30f
-   * @param {{type}} menu: Menu
    */
   static renderItem(item: MenuItem, menu: Menu) { // FIXME: remove menu here!!!
     if (!item.isDisplayed) return;
@@ -119,6 +112,6 @@ export class MenuView extends UIView {
    */
   static renderButton(button: MenuButton) {
     if (!button.isDisplayed) return;
-      drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
+    drawImage(button.img, button.location.x, button.location.y, button.width, button.height);
   }
 }

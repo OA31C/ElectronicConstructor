@@ -21,6 +21,7 @@ export class Menu extends UIElement {
   isResizeHold: boolean;
   items: Array<MenuItem>;
   partOfCanvas: number;
+  priority: number;
   workingSpace: Object;
 
   /**
@@ -50,6 +51,7 @@ export class Menu extends UIElement {
     this.borderWidth = 1;
     this.borderColor = '#000000';
     this.background = '#ffffff';
+    this.priority = Math.max(Infinity);
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
@@ -241,7 +243,7 @@ export class MenuItem extends UIElement {
   }
 
   /**
-  * Icon location
+  * ....
   */
   get iconLocation(): Location {
     return new Location(this.location.x + this.iconMarginLeft, this.location.y);
