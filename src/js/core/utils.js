@@ -85,7 +85,7 @@ export function drawImage(url: string, ...args) {
       img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));
     } else {
       canvasCtx.drawImage(img, ...args);
-      }
+    }
   } else {
     img = new Image();
     img.addEventListener('load', () => canvasCtx.drawImage(img, ...args));

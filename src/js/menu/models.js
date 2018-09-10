@@ -51,7 +51,7 @@ export class Menu extends UIElement {
     this.borderWidth = 1;
     this.borderColor = '#000000';
     this.background = '#ffffff';
-    this.priority = Math.max(Infinity);
+    this.priority = Infinity;
 
     this.isDisplayed = true;
     this.width = this.getParentWidth() / this.partOfCanvas;
